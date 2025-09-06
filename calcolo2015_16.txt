@@ -1,0 +1,6098 @@
+
+
+
+Capitolo 1
+L'insieme dei numeri macchina
+
+1.1 Introduzione al Calcolo Numerico
+Il Calcolo Numerico `e una disciplina che fa parte di un ampio settore della Matematica Applicata che prende il nome di Analisi Numerica. Si tratta di una materia che `e al confine tra la Matematica e l'Informatica poich`e
+cerca di risolvere i consueti problemi matematici utilizzando pero` una via
+algoritmica. In pratica i problemi vengono risolti indicando un processo che, in un numero finito di passi, fornisca una soluzione numerica e soprattutto che sia implementabile su un elaboratore. I problemi matematici che saranno affrontati nelle pagine seguenti sono problemi di base: risoluzione di sistemi lineari, approssimazione delle radici di funzioni non lineari, approssimazione di funzioni e dati sperimentali, calcolo di integrali definiti.  Tali algoritmi di base molto spesso non sono altro se non un piccolo ingranaggio nella risoluzione di problemi ben piu` complessi.
+
+1.2 Rappresentazione in base di un numero reale
+Dovendo considerare problemi in cui l'elaboratore effettua computazioni esclu- sivamente su dati di tipo numerico risulta decisivo iniziare la trattazione degli argomenti partendo dalla rappresentazione di numeri. Innanzitutto `e oppor- tuno precisare che esistono due modi per rappresentare i numeri: la cosiddet- ta notazione posizionale, in cui il valore di una cifra dipende dalla posizione
+
+1
+
+
+in cui si trova all'interno del numero, da quella notazione non posizionale, in cui ogni numero `e rappresentato da uno, o da un insieme di simboli (si pensi come esempio alla numerazione usata dai Romani). La motivazione che spinge a considerare come primo problema quello della rappresentazione di numeri reali `e che ovviamente si deve sapere il livello di affidabilit`a dei risul- tati forniti dall'elaboratore. Infatti bisogna osservare che i numeri reali sono infiniti mentre la memoria di un calcolatore ha una capacit`a finita che ne ren- de impossibile la rappresentazione esatta. Una seconda osservazione consiste nel fatto che un numero reale ammette molteplici modi di rappresentazione. Per esempio scrivere
+x = 123.47
+`e la rappresentazione, in forma convenzionale, dell'espressione
+x = 123.47 = 1 × 102 + 2 × 101 + 3 × 100 + 4 × ×10-1 + 7 × 10-2,
+da cui, mettendo in evidenza 102:
+x = 102 × 1 × 100 + 2 × 10-1 + 3 × 10-2 + 4 × ×10-3 + 7 × 10-4
+mentre, mettendo in evidenza 103 lo stesso numero viene scritto come
+x = 103 × 1 × 10-1 + 2 × 10-2 + 3 × 10-3 + 4 × ×10-4 + 7 × 10-5
+deducendo che ogni numero, senza una necessaria rappresentazione conven- zionale, pu`o essere scritto in infiniti modi. Il seguente teorema `e fondamentale proprio per definire la rappresentazione dei numeri reali in una determinata base ß.
+Teorema 1.2.1 Sia ß  N, ß  2, allora ogni numero reale x, x = 0, puo` essere rappresentato univocamente in base ß nel seguente modo
+
+
+x = ± ßp
+
+8
+diß-i
+i=1
+
+dove p ? Z, e i valori di ? N (detti cifre), verificano le seguenti proprieta`:
+1. di ? {0, 1, 2, 3, . . . , ß - 1};
+2. d1 /= 0;
+3. le cifre di non sono definivamente uguali a ß - 1.
+
+
+Evitiamo la dimostrazione del Teorema 1.2.1 ma osserviamo che la la terza ipotesi `e essenziale per l'unicit`a della rappresentazione. Consideriamo infatti il seguente esempio (in base ß = 10).
+x  = 0.999999999 . . .
+= 9 × 10-1 + 9 × 10-2 + 9 × 10-3 + . . .
+
+
+
+
+=
+i=1
+
+9 · 10-i = 9
+
+1	i
+
+
+10
+i=1
+
+= 9   1  
+
+
+1   -1
+1 - 10
+
+= 9   1    10  = 1.
+
+L'ultima uguaglianza deriva dalla convergenza della serie geometrica
+
+
+
+
+quando 0 < q < 1, da cui segue
+
+
+i=0
+
+1 - q
+
+
+
+
+
+
+i=1
+e
+8
+
+1 - q
+
+S qi =   1	 - 1 =  q	.
+
+In conclusione, senza la terza ipotesi del Teorema 1.2.1, al numero 1 corri- sponderebbero due differenti rappresentazioni in base.
+Considerato un numero reale x ? R, x /= 0, l'espressione
+x = ± ßp × 0.d1d2 . . . dk . . .
+prende il nome di rappresentazione in base ß di x. Il numero p viene detto esponente (o caratteristica), i valori di sono le cifre della rappresentazio- ne, mentre il numero decimale 0.d1d2 . . . dk . . . si dice mantissa. Il numero
+
+
+x viene normalmente rappresentato con la cosiddetta notazione posizionale x = segno(x)(.d1d2d3 . . . )×ßp, che viene detta normalizzata. In alcuni casi `a ammessa una rappresentazione in notazione posizionale tale che d1 = 0, che viene detta denormalizzata. La basi piu` utilizzate sono ß = 10 (sistema de- cimale), ß = 2 (sistema binario, che, per la sua semplicit`a, `e quello utilizzato dagli elaboratori elettronici), e ß = 16 (sistema esadecimale) e comunque la base `e sempre un numero pari. Nel sistema esadecimale le cifre appartengono all'insieme
+{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F } .
+Bisogna ternere presente che un qualunque numero reale x = 0 pu`o essere rappresentato con infinite cifre nella mantissa e inoltre l'insieme dei numeri reali ha cardinalit`a infinita. Poich`e un elaboratore `e dotato di memoria finita non `e possibile memorizzare:
+a) gli infiniti numeri reali
+b) le infinite (in generale) cifre di un numero reale.
+
+1.3 L'insieme dei numeri macchina
+Assegnati i numeri ß, t, m, M  N si definisce insieme dei numeri di macchina con rappresentazione normalizzata in base ß con t cifre significative
+F(ß, t, m, M ) = (x ? R : x = ±ßp Si=1 diß-i) ? {0}
+dove
+1. t = 1, ß = 2, m, M > 0;
+2. di ? {0, 1 . . . , ß - 1};
+3. d1 /= 0;
+4. p ? Z, -m = p = M.
+E` stato necessario aggiungere il numero zero all'insieme in quanto non am-
+mette rappresentazione in base normalizzata.
+Osserviamo che un elaboratore la cui memoria abbia le seguenti caratteristi- che (riportate anche in Figura 1.1):
+• t campi di memoria per la mantissa, ciascuno dei quali pu`o assumere
+ß differenti configurazioni (e perci`o pu`o memorizzare una cifra di),
+
+
+
+
+
+ 
+segno		mantissa	esponente Figura 1.1: Locazione di memoria.
+un campo di memoria che pu`o assumere m + M + 1 differenti configu-
+razioni (e perci`o pu`o memorizzare i differenti valori p dell'esponente),
+• un campo che pu`o assumere due differenti configurazioni (e perci`o pu`o memorizzare il segno + o -),
+`e in grado di rappresentare tutti gli elementi dell'insieme F(ß, t, m, M ). In realta` poich`e se ß = 2 d1 = 1, allora determinati standard non memorizzano
+la prima cifra della mantissa. Il piu` piccolo numero positivo appartenente
+all'insieme F(ß, t, m, M ) si ottiene prendendo la piu` piccola mantissa (ovvero 0.1) ed il piu` piccolo esponente
+x = 0.1 × ß-m
+mentre il piu` grande ha tutte le cifre della mantissa uguali alla cifra piu`
+grande (ovvero ß - 1) ed il massimo esponente
+
+
+x = 0. d d . . . dd
+t
+
+ßM ,	d = ß - 1.
+
+Un'ultima osservazione riguarda il fatto che non `e necessario rappresentare il segno dell'esponente poich`e questo viene memorizzato utilizzando un'oppor- tuna traslazione, detta offset, che lo rende sempre posiitvo. Consideriamo ora come esempio l'insieme F(2, 2, 2, 2), cio`e i numeri binari con mantissa di due cifre ed esponente compreso tra -2 e 2. Enumeriamo gli elementi di questo insieme. Poich`e il numero zero non appartiene all'insieme dei numeri macchina viene rappresentato solitamente con mantissa nulla ed esponente
+
+
+
+
+•0 ••• • •	•	•1	•	•2	•3
+
+
+Figura 1.2: Elementi dell'insieme F(2, 2, 2, 2).
+
+-m.
+-2	-1	-2	-3
+p = -2  x = 0.10 × 2	= 2	× 2	= 2	= 0.125;
+-2	-1	-2	-2
+x = 0.11 × 2	= (2	+ 2	) × 2	= 3/16 = 0.1875;
+-1	-1	-1	-2
+p = -1  x = 0.10 × 2	= 2	× 2	= 2	= 0.25;
+-1	-1	-2	-1
+x = 0.11 × 2	= (2	+ 2	) × 2	= 3/8 = 0.375;
+0	-1	0	-1
+p = 0	x = 0.10 × 2  = 2	× 2  = 2	= 0.5;
+0	-1	-2	0
+x = 0.11 × 2 = (2	+ 2	) × 2  = 3/4 = 0.75;
+1	-1	1
+p = 1	x = 0.10 × 2  = 2	× 2  = 1;
+1	-1	-2	1
+x = 0.11 × 2 = (2	+ 2	) × 2  = 3/2 = 1.5;
+2	-1	2
+p = 2	x = 0.10 × 2  = 2	× 2  = 2;
+2	-1	-2	2
+x = 0.11 × 2 = (2	+ 2	) × 2  = 3;
+Nella Figura 1.2 `e rappresentato l'insieme dei numeri macchina positivi ap- partenenti a F(2, 2, 2, 2) (i numeri negativi sono esattamente simmetrici ri- spetto allo zero). Dalla rappresentazione dell'insieme dei numeri macchina si evincono le seguenti considerazioni:
+1. L'insieme `e discreto;
+2. I numeri rappresentabili sono solo una piccola parte dell'insieme R;
+3. La distanza tra due numeri macchina consecutivi `e ßp-t, infatti, consi- derando per semplicit`a numeri positivi, sia
+x = +ßp × (0.d1d2 . . . dt-1dt)
+
+
+il successivo numero macchina `e
+y = +ßp × (0.d1d2 . . . dt-1d˜t)
+
+
+dove
+
+La differenza `e pertanto
+
+d˜t = dt + 1.
+
+y - x = +ßp(0. `00 .?.¸. 00x 1) = ßp-t.
+
+Nello standard IEEE (Institute of Electric and Electronic Engineers) singola precisione una voce di memoria ha 32 bit, dei quali 1 riservato al segno, 8 all'esponente e 23 alla mantissa. Allora ß = 2, t = 23, m = 127 e M = 128. In questo caso il valore dell'offset `e 127 quindi per esempio l'esponente 30 viene rappresentato come il numero 93 (= 30 + 127). Nella realt`a spesso non tutte le rappresentazioni dell'esponente sono ammesse (per esempio gli esponenti 0 e 255 sono riservati ad alcune situazioni particolari, ma su questo non `e opportuno soffermarsi ulteriormente).
+Per la doppia precisione si utilizzano 64 bit, di cui 1 per il segno, 11 per l'e- sponente e 52 per la mantissa. Dunque ß = 2, t = 52, m = 1023 e M = 1024. Dopo aver compreso la struttura dell'insieme F(ß, t, m, M ) resta da capire come, assegnato un numero reale x sia possibile rappresentarlo nell'insieme dei numeri macchina, ovvero quale elemento x˜ ? F(ß, t, m, M ) possa essergli
+associato in modo da commettere il piu` piccolo errore di rappresentazio-
+ne possibile. Supponiamo ora che la base ß sia un numero pari. Possono presentarsi diversi casi:
+
+
+• Sia
+
+
+x = ± ßp
+
+
+n
+diß-i
+i=1
+
+con d1 = 0, n	t, e	m	p	M. Allora `e evidente che x F(ß, t, m, M ) e pertanto verr`a rappresentato esattamente su un qua- lunque elaboratore che utilizzi F(ß, t, m, M ) come insieme dei numeri di macchina.
+
+
+• Sia
+
+
+x = ± ßp
+
+
+n
+diß-i
+i=1
+
+
+con n = t ma supponiamo che p ?/ [-m, M ]. Se p < -m allora x `e
+piu` piccolo del piu` piccolo numero di macchina: in questo caso si dice che si `e verificato un underflow (l'elaboratore interrompe la sequenza di calcoli e segnala con un messaggio l'underflow). Se p > M allora
+
+vuol dire che x `e piu`
+
+grande del piu`
+
+grande numero di macchina e
+
+in questo caso si dice che si `e verificato un overflow (anche in questo caso l'elaboratore si ferma e segnala l'overflow, anche se tale eccezione pu`o anche essere gestita via software in modo tale che l'elaborazione continui).
+
+
+• Sia
+
+
+x = ± ßp
+
+
+n
+diß-i
+i=1
+
+con l'esponente -m = p = M ma n > t ed inoltre esiste un indice k, t < k  n, tale che dk = 0. In questo caso, poich`e la mantissa di x ha piu` di t cifre decimali, x / F(ß, t, m, M ). E` pero` possibile rappresentare x mediante un numero in F(ß, t, m, M ) con un'opportuna operazione di taglio delle cifre decimali che seguono la t-esima. Per questo si possono utilizzare due diverse tecniche di approssimazione:
+
+
+
+
+
+
+
+
+
+dove
+1. 
+troncamento di x alla t-esima cifra significativa
+x˜ = tr(x) = ßp × 0.d1d2 . . . dt
+2. arrotondamento di x alla t-esima cifra significativa
+x˜ = arr(x) = ßp × 0.d1d2 . . . d˜t
+
+d˜t
+
+=	dt + 1	se dt+1 = ß/2
+dt	se dt+1 < ß/2.
+
+Per esempio se ß = 10, t = 5 e x = 0.654669235 allora
+tr(x) = 0.65466,	arr(x) = 0.65467
+In pratica quando il numero reale x non appartiene all'insieme F(ß, t, m, M ) esistono sicuramente due numeri a, b ? F(ß, t, m, M ), tali che
+a < x < b.	(1.1)
+
+
+Supponendo per semplicit`a x > 0 si ha che
+tr(x) = a
+mentre se x = (a + b)/2 allora
+arr(x) = b
+altrimenti
+arr(x) = a.
+L'arrotondamento `e un'operazione che fornisce sicuramente un risultato piu` preciso (come risultera` evidente nel prossimo paragrafo), ma pu`o dar luogo ad overflow. Infatti se
+
+M
+x = 0. ddddd . . . ddd · · · × ß
+`	?¸	x
+con d = ß - 1, allora
+arr(x) = 1.0ßM = 0.1ßM+1 ?/ F(ß, t, m, M ).
+La rappresentazione di x R attraverso x˜ F(ß, t, m, M ) si dice rappresen- tazione in virgola mobile di x o rappresentazione floating point, con tronca- mento se x˜ = tr(x), con arrotondamento se x˜ = arr(x). Talvolta il numero macchina che rappresenta x ? R viene indicato con fl(x).
+
+1.4 Errore Assoluto ed Errore Relativo
+Una volta definite le modalita` per associare ad un numero reale x la sua
+rappresentazione macchina x˜ si tratta di stabilire l'errore che si commette in questa operazione di approssimazione. Si possono definire due tipi di errori, l'errore assoluto e l'errore relativo.
+Se x  R ed x˜ `e una sua approssmazione allora si definisce errore assoluto la quantit`a
+Ea = |x˜ - x|
+mentre se x /= 0 si definisce errore relativo la quantit`a
+E = |x˜ - x| .
+|x|
+
+
+
+
+
+a = •tr(x)
+
+b - a = ßp-t
+
+x•	•b
+
+
+ Figura 1.3: Stima dell'errore di rappresentazione nel caso di troncamento.
+
+Se Er ß-q allora si dice che x˜ ha almeno q cifre significative corrette. Nel seguito assumeremo x > 0 e supporremo anche che la rappresentazione di x in F(ß, t, m, M ) non dia luogo ad underflow o overflow. Calcoliamo ora una maggiorazione per tali errori nel caso in cui x˜ sia il troncamento di x > 0. Nella Figura 1.3 a e b rappresentano i due numeri macchina tali che sia vera
+la relazione (1.1). E` evidente ch risulta
+|tr(x) - x| < b - a = ß	.
+Per maggiorare l'errore relativo osserviamo che
+|x| = +ß × 0.d1d2d3 · · · = ß × 0.1 = ß	.
+
+
+da cui
+
+e quindi
+
+1
+
+|x| = ß
+
+
+1-p
+
+|tr(x) - x|	ßp-t	ß1-p = ß1-t.	(1.2)
+|x|
+Passiamo ora alla valutazione degli errori quando
+x˜ = arr(x).
+Nella Figura 1.4 a e b rappresentano i due numeri macchina tali che sia vera la relazione (1.1). Se x > 0 si trova a sinistra del punto medio (a + b)/2 allora l'arrotondamento coincide con il valore a, se si trova nel punto medio
+oppure alla sua destra allora coincide con b. E` evidente che il massimo errore
+si ottiene quando x coincide con il punto medio tra a e b risulta
+1	1 p-t
+|arr(x) - x| = 2 (b - a) = 2 ß	.
+
+
+
+
+1  p-t
+2
+
+1  p-t
+2
+
+
+
+a+b
+2
+
+
+Figura 1.4: Stima dell'errore di rappresentazione nel caso di arrotondamento.
+
+Per maggiorare l'errore relativo procediamo come nel caso del troncamento di x:
+|arr(x) - x| = 1 ßp-t × ß1-p = 1 ß1-t.	(1.3)
+|x|	2	2
+Le quantit`a che compaiono a destra delle maggiorazioni (1.2) e (1.3), ovvero
+u = ß1-t
+
+oppure
+
+u = 1 ß1-t
+2
+
+sono dette precisione di macchina o zero macchina per il troncamento (o per l'arrotondamento, in base alla tecnica in uso).
+Posto
+
+risulta
+
+e = x˜ - x,	e
+x	x	x
+
+| = u
+
+x˜ = x(1 + ex)	(1.4)
+che fornisce la relazione tra un numero x	R e la sua rappresentazione macchina.
+
+1.4.1 Operazioni Macchina
+Se x, y	F(ß, t, m, M ) non `e detto che il risultato di un'operazione aritmetica tra x e y non `e detto che sia un numero macchina. Per esempio se x, y F(10, 2, m, M ) e x = 0.11 100 e y = 0.11 10-2, allora
+x + y = 0.1111 /? F(10, 2, m, M ).
+
+
+Si pone il problema di definire le operazioni aritmetiche in modo tale che ci`o non accada. Se `e una delle quattro operazioni aritmetiche di base allora il risultato `e un numero macchina se
+x · y = fl(x · y).	(1.5)
+L'operazione definita dalla relazione (1.5) `e detta operazione macchina. L'o- perazione macchina associata a viene indicata con e deve soddisfare anch'essa la relazione (1.4), ovvero dev'essere:
+x ? y = (x · y)(1 + e),	|e| < u	(1.6)
+per ogni x, y F(ß, t, m, M ) tali che x y non dia luogo ad overflow o underflow. Si pu`o dimostrare che
+x ? y = tr(x · y)
+e
+x ? y = arr(x · y)
+soddisfano la (1.6) e dunque danno luogo ad operazioni di macchina. Le quattro operazioni cos`i definite danno luogo alla aritmetica di macchina o aritmetica finita. La somma algebrica macchina (addizione e sottrazione) tra due numeri x, y ? F(ß, t, m, M ) richiede le seguenti fasi:
+1. Si scala la mantissa del numero con l'esponente minore in modo tale che i due addendi abbiano lo stesso esponente (ovvero quello dell'esponente maggiore);
+2. Si esegue la somma tra le mantisse;
+3. Si normalizza il risultato aggiustando l'esponente in modo tale che la mantissa sia un numero minore di 1.
+  4. Si arrotonda (o si tronca) la mantissa alle prime t cifre; Consideriamo per esempio i numeri x, y ? F(10, 5, m, M )
+x = 0.78546 × 102,	y = 0.61332 × 10-1
+e calcoliamo il numero macchina x  y.
+1. Scaliamo il numero y fino ad ottenere esponente 2 (quindi si deve spostare
+
+
+il punto decimale di 3 posizioni), y = 0.00061332	102;
+2. Sommiamo le mantisse 0.78546 + 0.00061332 = 0.78607332;
+3. Questa fase non `e necessaria perch`e la mantissa `e gia` minore di 1;
+4. Si arrotonda alla quinta cifra decimale ottenendo
+x ? y = 0.78607 × 102.
+Un fenomeno particolare, detto cancellazione di cifre significative, si verifi- ca quando si effettua la sottrazione tra due numeri reali all'incirca uguali.
+Consideriamo per esempio la differenza tra i due numeri
+x = 0.75868531 × 102,	y = 0.75868100 × 102
+nell'insieme F(10, 5, m, M ). Risulta
+fl(x) = 0.75869 × 102,	fl(y) = 0.75868 × 102
+
+
+e quindi mentre
+
+
+fl(fl(x) - fl(y)) = 0.1 × 10-2
+
+x - y = 0.431 × 10-3
+
+Calcolando l'errore relativo sul risultato dell'operazione si trova
+Er ? 1.32019
+che `e un valore piuttosto alto.
+Per esemplificare il fenomeno appena descritto consideriamo il problema di calcolare (per esempio in MatLab) le radici dell'equazione di secondo grado
+p(x) = ax2 + bx + c
+
+
+applicando la consueta formula
+-b + vb2 - 4ac
+
+
+-b - vb2 - 4ac
+
+x1 =
+
+2a	,	x2 =
+
+.	(1.7)
+2a
+
+In alternativa si potrebbe calcolare la radice piu` grande in modulo
+-b - segno(b)vb2 - 4ac
+
+r1 =
+
+(1.8)
+2a
+
+
+e poi, sfruttando la proprieta` che il prodotto tra le radici `e pari a c/a, ottenere la seconda radice ponendo
+
+
+Considerando il polinomio
+      
+c r2 = ar
+
+.	(1.9)
+
+p(x) = x2 - (107 + 10-7)x + 1
+che ammette come radici 107 e 10-7, applicando le formule (1.7), si ottiene
+x1 = 107,	x2 = 9.9652e - 008
+mentre utilizzando le formule (1.8) e (1.9) i risultati sono esatti
+r1 = 107,	r2 = 10-7.
+Nel primo caso il calcolo vdella radice x1 avviene effettuando la differenza tra
+due numeri (ovvero -b e	b2 - 4ac) che sono molto vicini tra loro e pertanto
+generano il suddetto fenomeno. Nel secondo caso non viene effettuata alcuna differenza e pertanto il risultato `e corretto.
+Il prodotto macchina tra due numeri x, y	F(ß, t, m, M ) richiede le seguenti fasi:
+1. Si esegue il prodotto tra le mantisse;
+2. Si esegue l'arrotondamento (o il troncamento) alle prime t cifre norma- lizzando, se necessario, la mantissa;
+3. Si sommano gli esponenti.
+Consideriamo per esempio il prodotto tra i due numeri
+x = 0.11111 × 103,	y = 0.52521 × 102
+nell'insieme F(10, 5, m, M ).
+1. Il prodotto delle mantisse produce 0.05835608;
+2. L'arrotondamento a 5 cifre produce 0.58356	10-1;
+3. La somma degli esponenti fornisce come risultato
+x * y = 0.58356 × 103+2-1 = 0.58356 × 104.
+La divisione macchina tra due numeri x, y	F(ß, t, m, M ) richiede le seguenti fasi:
+
+
+1. Si scala il dividendo x finch`e la sua mantissa non risulti minore di quella del divisore y;
+2. Si esegue la divisione tra le mantisse;
+3. Si esegue l'arrotondamento (o il troncamento) alle prime t cifre;
+4. Si sottraggono gli esponenti.
+Consideriamo la divisione tra i due numeri
+x = 0.12100 × 105,	y = 0.11000 × 102
+nell'insieme F(10, 5, m, M ).
+1. Scaliamo il dividendo di una cifra decimale 0.012100; l'esponente diventa 6;
+2. Dividiamo le mantisse 0.012100/0.11000 = 0.11000;
+3. Il troncamento fornisce lo stesso numero 0.11000;
+4. Si sottraggono gli esponenti ottenendo il risultato
+x ? y = 0.11000 × 104.
+Si pu`o dimostrare che valgono le seguenti proprieta`:
+1. L'insieme F(ß, t, m, M ) non `e chiuso rispetto alle operazioni macchina;
+2. L'elemento neutro per la somma non `e unico: infatti consideriamo i due numeri macchina
+x = 0.15678 × 103,	y = 0.25441 × 10-2,
+appartenenti all'insieme F(10, 5, m, M ), innanzitutto si scala y
+y = 0.0000025441 × 103,
+sommando le mantisse si ottiene 0.1567825441 mentre l'arrotondamen- to fornisce il risultato finale
+x ? y = 0.15678 × 103 = x.
+3. L'elemento neutro per il prodotto non `e unico;
+4. Non vale la proprieta` associativa di somma e prodotto;
+5. Non vale la proprieta` distributiva della somma rispetto al prodotto.
+
+
+
+
+Capitolo 2
+Equazioni non Lineari
+
+2.1 Introduzione
+Le radici di un'equazione non lineare f(x) = 0 non possono, in generale, essere espresse esplicitamente e anche se ci`o `e possibile spesso l'espressione si presenta in forma talmente complicata da essere praticamente inutilizzabile. Di conseguenza per poter risolvere equazioni di questo tipo siamo obbligati ad utilizzare metodi numerici che sono, in generale, di tipo iterativo, cio`e par- tendo da una (o in alcuni casi piu`) approssimazioni della radice, producono una successione x0, x1, x2, . . . , convergente alla radice. Per alcuni di questi metodi per ottenere la convergenza `e sufficiente la conoscenza di un intervallo [a, b] che contiene la soluzione, altri metodi richiedono invece la conoscenza di una buona approssimazione iniziale. Talvolta `e opportuno utilizzare in maniera combinata due metodi, uno del primo tipo e uno del secondo.
+Prima di analizzare alcuni metodi per l'approssimazione delle radici dell'e- quazione f (x) = 0 diamo la definizione di molteplicit`a di una radice.
+Definizione 2.1.1 Sia f   r([a, b]) per un intero r > 0. Una radice a di
+f (x) si dice di molteplicita` r se
+
+
+lim
+
+f (x)
+
+r = ?,	? /= 0, ? /= ±8.	(2.1)
+
+x?a (x - a)
+Se a `e una radice della funzione f (x) di molteplicit`a r allora risulta
+f (a) = f j(a) = · · · = f (r-1)(a) = 0,	f (r)(a) = ? /= 0.
+
+16
+
+2.2 Localizzazione  delle  radici
+Nei successivi paragrafi saranno descritti alcuni metodi numerici per il calcolo approssimato delle radici di un'equazione non lineare. Tali metodi numerici sono di tipo iterativo, ovvero consistono nel definire una successione (o piu` successioni), che, a partire da un'assegnata approssimazione iniziale (nota), converga alla radice a in un processo al limite. Infatti poich`e non esistono tecniche generali che consentano di trovare l'espressione esplicita di a in un numero finito di operazioni, allora questa pu`o essere calcolata in modo approssimato solo in modo iterativo. Questa perculiarita` tuttavia richiede che sia nota appunto un'approssimazione iniziale o, almeno, un intervallo di appartenenza. Il problema preliminare `e quello di localizzare la radice di una funzione, problema che viene affrontato in modo grafico. Per esempio considerando la funzione
+
+
+f (x) = sin
+
+
+log(x2
+
+
++ 1)
+
+e-x
+- x2 + 1
+
+risulta immediato verificare che il valore dell'ascissa in cui si annulla `e quello in cui si intersecano i grafici delle funzioni
+
+
+g(x) = sin
+
+log(x2
+
++ 1)
+        
+e-x h(x) = x2 + 1 .
+
+
+
+due funzioni, come riportato nella seguente figura in cui il grafico di h(x) `e in rosso, mentre quello di g(x) `e blu, e l'intervallo di variabilita` di x `e [0, 2.5].
+
+
+
+Calcolando le funzioni in valori compresi in tale intervallo di variabilita` si pu`o restringere lo stesso intervallo, infatti risulta
+g(0.5) = 0.2213 < h(0.5) = 0.48522
+e
+g(1) = 0.63896 > h(1) = 0.18394,
+da cui si deduce che a ?]0.5, 1[.
+
+2.3 Il Metodo di Bisezione
+Sia f : [a, b] R, f  ([a, b]), e sia f (a)f (b) < 0. Sotto tali ipotesi esiste sicuramente almeno un punto nell'intervallo [a, b] in cui la funzione si annulla. L'idea alla base del Metodo di Bisezione (o metodo delle bisezioni) consiste
+nel costruire una successione di intervalli {Ik}8 , con I0 = [a0, b0] = [a, b],
+
+1. Ik+1 ? Ik;
+2. a ? Ik, ?k = 0;
+3. l'ampiezza di Ik tende a zero per k ? +8.
+La successione degli Ik viene costruita nel seguente modo. Innanzitutto si pone
+I0 = [a0, b0] = [a, b]
+e si calcola il punto medio
+c = a0 + b0 .
+1	2
+Se f(c1) = 0 allora a = c1, altrimenti si pone:
+
+I1 = [a1, b1] =
+, a1 = c1	b1 = b0	se f (a0)f (c1) > 0.
+Ora, a partire da I1 = [a1, b1], si ripete la stessa procedura. In generale al passo k si calcola
+
+ck+1
+
+= ak + bk .
+2
+
+
+Se f (ck+1) = 0 allora a = ck+1, altrimenti si pone:
+
+Ik+1 = [ak+1, bk+1] =
+, ak+1 = ck+1	bk+1 = bk	se f (ak)f (ck+1) > 0.
+La successione di intervalli Ik cos`i costruita soddisfa automaticamente le condizioni 1) e 2). Per quanto riguarda la 3) abbiamo:
+
+
+bk - ak
+
+= bk-1 - ak-1
+2
+
+= b0 - a0
+2k
+
+e dunque l'ampiezza di Ik tende a zero quando k ? +8.
+
+
+
+
+
+
+
+
+
+
+
+
+a0	c2	c3 c4
+• • •  c•	b
+
+
+
+
+
+I0 I1 I2 I3 I4
+Generalmente costruendo le successioni {ak} e {bk} accade che la condizione
+
+arrotondamento. Quindi `e necessario stabilire un opportuno criterio di stop che ci permetta di fermare la procedura quando riteniamo di aver raggiunto
+Per esempio si pu`o imporre:
+bk - ak = e	(2.2)
+
+
+dove e `e una prefissata tolleranza. La (2.2) determina anche un limite per il numero di iterate infatti:
+
+b0 - a0
+2k
+
+= e	?	k > log2
+
+ b0 - a0  .
+
+Poich`e bk - a = bk - ak, il criterio (2.2) garantisce che a `e approssimata da ck+1 con un errore assoluto minore di e. Se 0 [a, b] si pu`o usare come criterio di stop
+	bk - ak		e	(2.3)
+min (|ak|, |bk|)
+che garantisce che a `e approssimata da ck+1 con un errore relativo minore di
+e. Un ulteriore criterio di stop `e fornito dal test:
+|f (ck)| = e.	(2.4)
+E` comunque buona norma utilizzare due criteri di stop insieme, per esempio (2.2) e (2.4) oppure (2.3) e (2.4).
+
+2.3.1 Il metodo della falsa posizione
+Una variante del metodo delle bisezioni `e appunto il metodo della falsa posi- zione. Partendo sempre da una funzione f (x) continua in un intervallo [a, b] tale che f (a)f (b) < 0, in questo caso si approssima la radice considerando l'intersezione della retta passante per i punti (a, f(a)) e (b.f(b)) con l'asse x.
+L'equazione della retta `e
+y = f (a) + f(b) - f(a)(x	a)
+b - a
+pertanto il punto c1, sua intersezione con l'asse x, `e:
+c  = a	f (a)	b - a	.
+f (b) - f (a)
+Si testa a questo punto l'appartenenza della radice a ad uno dei due inter- valli [a, c1] e [c1, b] e si procede esattamente come nel caso del metodo delle bisezioni, ponendo
+
+
+
+[a1, b1] =
+
+a = a,	b = c	se f (a)f (c ) < 0
+, a1 = c1,  b1 = b	se f (a)f (c1) > 0.
+
+
+Ad un generico passo k si calcola
+	bk - ak	
+c	= a - f (a )
+
+
+e si pone
+
+k+1	k
+
+k f (b ) - f (ak)
+
+
+
+
+[ak+1, bk+1] =
+
+a	= a	b	= c	se f (a )f (c	) < 0
+, ak+1 = ck+1	bk+1 = bk	se f (ak)f (ck+1) > 0.
+
+Anche per questo metodo `e possibile dimostrare la convergenza nella sola ipo- tesi di continuit`a della funzione f (x). Nella seguente figura `e rappresentato graficamente il metodo della falsa posizione.
+
+
+
+
+
+
+
+
+
+
+
+c3
+a0	c1
+• •	c•	b
+
+
+
+
+
+I0 I1 I2 I3
+
+
+function [alfa,k]=bisezione(f,a,b,tol)
+%
+% La funzione approssima la radice con il metodo di bisezione
+%
+% Parametri di input
+
+
+% f = funzione della quale calcolare la radice
+% a = estremo sinistro dell'intervallo
+% b = estremo destro dell'intervallo
+% tol = precisione fissata
+%
+% Parametri di output
+% alfa = approssimazione della radice
+% k = numero di iterazioni
+%
+if nargin==3
+tol = 1e-8; % Tolleranza di default
+end
+fa = feval(f,a); fb = feval(f,b); if fa*fb>0
+error('Il metodo non e'' applicabile')
+end
+c = (a+b)/2;
+fc = feval(f,c); k = 0;
+while (b-a)>tol | abs(fc)>tol if fa*fc<0
+b = c; fb = fc;
+
+else
+
+end
+
+a = c; fa = fc;
+
+c = (a+b)/2;
+fc = feval(f,c); if nargout==2
+k = k+1;
+end
+end
+alfa = c; return
+
+2.4 Metodi di Iterazione Funzionale
+Il metodo di bisezione pu`o essere applicato ad una vastissima classe di fun- zioni, in quanto per poter essere applicato si richiede solo la continuit`a della funzione. Tuttavia ha lo svantaggio di risultare piuttosto lento, infatti ad ogni passo si guadagna in precisione una cifra binaria. Per ridurre l'errore di un decimo sono mediamente necessarie 3.3 iterazioni. Inoltre la velocit`a di convergenza non dipende dalla funzione f (x) poich`e il metodo utilizza esclu- sivamente il segno assunto dalla funzione in determinati punti e non il suo valore. Il metodo delle bisezioni pu`o essere comunque utilizzato con profitto per determinare delle buone approssimazioni della radice a che possono es- sere utilizzate dai metodi iterativi che stiamo per descrivere.
+Infatti richiedendo alla f supplementari condizioni di regolarit`a `e possibile individuare una vasta classe di metodi che forniscono le stesse approssima- zioni del metodo di bisezione utilizzando pero` un numero di iterate molto minore. In generale questi metodi sono del tipo:
+xk+1 = g(xk)	k = 0, 1, 2, . . .	(2.5)
+dove x0 `e un'assegnato valore iniziale e forniscono un'approssimazione delle soluzioni dell'equazione
+x = g(x).	(2.6)
+Ogni punto a tale che a = g(a) si dice punto fisso o punto unito di g.
+Per poter applicare uno schema del tipo (2.5) all'equazione f (x) = 0, bisogna prima trasformare questa nella forma (2.6). Ad esempio se [a, b] `e l'intervallo di definizione di f ed h(x) `e una qualunque funzione tale che h(x) /= 0, per ogni x ? [a, b], si pu`o porre:
+f (x)
+g(x) = x - h(x) .	(2.7)
+Ovviamente ogni punto fisso di g `e uno zero di f e viceversa.
+Nel seguente teorema dimostriamo che se una successione `e definita dalla relazione (2.5) risulta convergente il suo limite coincide con il punto fisso della funzione g(x) (che coincide con la radice a della funzione f (x).
+Teorema 2.4.1 Sia g  ([a, b]) e assumiamo che la successione xk ge- nerata da (2.5) sia contenuta in [a, b]. Allora se tale successione converge, il limite `e il punto fisso di g.
+
+
+
+Dimostrazione.
+
+a =  lim
+k?+8
+
+
+
+xk+1 =  lim
+k?+8
+
+
+
+g(xk) = g	lim
+k?+8
+
+
+
+xk  = g(a). ?
+
+Il seguente teorema fornisce una condizione sufficiente per la convergenza della successione definita dalla relazione (2.5). Questo risultato, unitamente al Teorema 2.4.1, garantisce, sotto le ipotesi del Teorema 2.4.2, la convergenza della successione xk alla radice della funzione f (x).
+Teorema 2.4.2 Sia a punto fisso di g e g   1([a  ?, a + ?]), per qualche
+? > 0, se si suppone che
+|g (x)| < 1,	per ogni x ? [a - ?, a + ?]
+allora valgono le seguenti asserzioni:
+1. se x0 ? [a - ?, a + ?] allora anche xk ? [a - ?, a + ?] per ogni k;
+2. la successione {xk} converge ad a;
+3. a `e l'unico punto fisso di g(x) nell'intervallo [a - ?, a + ?].
+
+
+Dimostrazione.	Sia
+
+
+? =  max
+|x-a|=?
+
+
+|g (x)| < 1.
+
+Innanzitutto dimostriamo per induzione che tutti gli elementi della succes- sione {xk} sono contenuti nell'intervallo di centro a e ampiezza 2?. Per k = 0 si ha banalmente x0 [a ?, a + ?]. Assumiamo che xk a ? e dimostriamolo per k + 1.
+|xk+1 - a| = |g(xk) - g(a)| = |g (?k)||xk - a|
+dove ?k  a < xk  a  ? e l'ultima uguaglianza segue dall'applicazione del teorema di Lagrange. Pertanto
+|xk+1 - a| = ?|xk - a| < |xk - a| = ?.
+
+
+Proviamo ora che:
+
+
+lim
+k?+8
+
+
+xk = a.
+
+
+
+Da |xk+1 - a| = ?|xk - a| segue
+|xk+1 - a| = ?
+
+
+
+k+1
+
+
+|x0 - a|.
+
+Conseguentemente qualunque sia x0 si ha:
+
+lim
+k?+8
+
+xk	a = 0	lim
+k?+8
+
+xk = a.
+
+Per dimostrare l'unicit`a del punto ragioniamo per assurdo che supponiamo ch i punti fissi sono due, a, ß ? [a - ?, a + ?]. Allora
+|a - ß| = |g(a) - g(ß)| = |g (?)||a - ß|
+con ? ? [a - ?, a + ?]. Poich`e |gj(?)| < 1 si ha
+|a - ß| < |a - ß|
+e ci`o `e assurdo. ?
+Nelle figure 2.2 e 2.1 `e rappresentata l'interpretazione geometrica di un metodo di iterazione funzionale in ipotesi di convergenza.
+Definizione 2.4.1 Un metodo iterativo del tipo (2.5) si dice localmente con- vergente ad una soluzione a del problema f (x) = 0 se esiste un intervallo [a, b] contenente a tale che, per ogni x0 [a, b], la successione generata da (2.5) converge a a.
+Come abbiamo gia` visto nel caso del metodo delle bisezioni anche per metodi di iterazione funzionale `e necessario definire dei criteri di arresto per il calcolo delle iterazioni. Teoricamente, una volta stabilita la precisione voluta, e, si dovrebbe arrestare il processo iterativo quando l'errore al passo k
+ek = |a - xk|
+risulta minore della tolleranza prefissata e. In pratica l'errore non pu`o essere noto quindi `e necessario utilizzare qualche stima. Per esempio si potrebbe considerare la differenza tra due iterate consecutive e fermare il calcolo degli elementi della successione quando
+|xk+1 - xk| = e,
+
+oppure
+
+
+  |xk+1 - xk|	 = e	|x
+
+
+|, |x
+
+
+| /= 0
+
+min(|x
+
+k+1
+
+|, |xk|)
+
+k+1	k
+
+se i valori hanno un ordine di grandezza particolarmente elevato. Una stima alternativa valuta il residuo della funzione rispetto al valore in a, cio`e
+|f (xk)| = e.
+
+
+
+
+Figura 2.1: Interpretazione geometrica del processo xk+1 = g(xk), se -1 < gj(a) = 0.
+
+
+Figura 2.2: Interpretazione geometrica del processo xk+1 = g(xk), se 0
+gj(a) < 1.
+
+2.4.1 Ordine di Convergenza
+Per confrontare differenti metodi iterativi che approssimano la stessa radice a di f (x) = 0, si pu`o considerare la velocit`a con cui tali successioni convergono verso a. Lo studio della velocit`a di convergenza passa attraverso il concetto di ordine del metodo.
+Definizione 2.4.2 Sia {xk}8	una successione convergente ad a e tale che
+xk /= a, per ogni k. Se esiste un numero reale p = 1 tale che
+
+
+lim
+k?+8
+
+
+|xk+1 - a| = ?	con
+|xk - a|p
+
+, 0 < ? = 1	se p = 1
+, ? > 0	se p > 1
+
+
+(2.8)
+
+allora si dice che la successione ha ordine di convergenza p. La costante ?
+prende il nome di costante asintotica di convergenza.
+In particolare se p = 1 e 0 < ? < 1 allora la convergenza si dice lineare, mentre se p > 1 allora la convergenza si dice genericamente superlineare, per esempio se p = 2 la convergenza si dice quadratica, se p = 3 cubica e cos`i via.
+Osservazione.  La relazione (2.8) implica che esiste una costante positiva ß
+(ß ? ?) tale che, per k sufficientemente grande:
+
+
+
+ed anche
+
+|xk+1 - a| = ß|xk - a|
+
+(2.9)
+
+|xk+1 - a|	 xk - a 
+
+|a|
+Le (2.9) e (2.10) indicano che ogni passo
+
+= ß|a|		a
+
+.	(2.10)
+(assoluto o relativo) ad
+
+parit`a di ordine, quanto piu` piccola `e la costante asintotica di convergenza. In generale l'ordine di convergenza `e un numero reale maggiore o uguale a
+1. Tuttavia per i metodi di iterazione funzionale di tipo (2.5) `e un numero intero per il quale vale il seguente teorema.
+Teorema 2.4.3 Sia {xk}8	una successione generata dallo schema (2.5)
+convergente ad a, punto fisso di g(x), funzione sufficientemente derivabile in un intorno di a. La successione ha ordine di convergenza p = 1 se e solo se
+gj(a) = gjj(a) = · · · = g(p-1)(a) = 0,	g(p)(a) /= 0.	(2.11)
+
+
+Dimostrazione. Scriviamo lo sviluppo in serie di Taylor della funzione g(x) in xk prendendo come punto iniziale a:
+
+
+g(xk)  =  g(a) + gj(a)(xk - a) +
+
+g(p-1)(a)
+
+gjj(a) 2!
+
+p-1
+
+
+(xk - a)
+
+g(p)(?k)
+
+
++ . . .
+
+p
+
+· · · + (p - 1)! (xk - a)	+	p!	(xk - a) .
+Sostituendo a g(xk) il valore xk+1 e sfruttando l'ipotesi che a `e punto fisso di g(x) risulta
+
+
+xk+1 - a	=  gj(a)(xk - a) +
+
+gjj(a) 2!
+
+
+(xk - a)
+
+
++ . . .
+
+
+· · · +
+
+
+g(p-1)(a)
+(p - 1)! (xk - a)
+
+
+p-1 +
+
+g(p)(?k)	p
+p!	(xk - a)
+
+dove ? `e compreso tra xk e a. Quindi se vale l'ipotesi (2.11) e passando ai moduli risulta
+|xk+1 - a| = |g	(?k)|
+
+
+e quindi
+
+|xk - a|p
+
+p!
+
+(p)
+
+lim |xk+1 - a| = |g	(a)| .
+k?8  |xk - a|p	p!
+Viceversa supponiamo per ipotesi che la successione ha ordine di convergenza
+p e dimostriamo che
+gj(a) = gjj(a) = · · · = g(p-1)(a) = 0.
+Ipotizziamo, per assurdo, che esista una derivata di ordine i, i < p, diversa da zero, ovvero
+g(i)(a) /= 0.
+Scriviamo lo sviluppo in serie di Taylor di xk+1 = g(xk):
+g(i)(?k)	i
+
+
+da cui
+
+xk+1 = g(xk) = g(a) +
+
+g(i)(?k)
+
+i!	(xk - a)
+
+i
+
+xk+1 - a =	i!	(xk - a) .
+
+
+Passando ai moduli e calcolando il limite della successione si ottiene:
+lim  |xk+1 - a| = |g	(a)| /= 0
+k?+8 |xk - a|i	i!
+da cui segue che la successione ha ordine i < p in contrasto con l'ipotesi fatta. ?
+Osservazione. L'ordine di convergenza p pu`o essere anche un numero non intero. In questo caso, posto q = [p], se g ? Cq ([a, b]) si ha anche
+gj(a) = gjj(a) = · · · = g(q)(a) = 0,
+e che g non ha derivata di ordine q + 1 altrimenti per il precedente teorema tutte le successioni ottenute da (2.5) a partire da x0 [a ?, a+?] avrebbero ordine almeno q + 1.
+Definizione 2.4.3 Un metodo iterativo convergente ad a si dice di ordine p (di ordine almeno p) se tutte le successioni ottenute al variare del punto iniziale in un opportuno intorno di a convergono con ordine di convergenza p (almeno p).
+
+2.4.2 Metodo di Newton-Raphson
+Nell'ipotesi che f sia derivabile ed ammetta derivata prima continua allora un altro procedimento per l'approssimazione dello zero della funzione f (x)
+`e il metodo di Newton-Raphson, noto anche come metodo delle tangenti. Nella figura seguente `e riportata l'interpretazione geometrica di tale metodo. A partire dall'approssimazione x0 si considera la retta tangente la funzione f passante per il punto P0 di coordinate (x0, f (x0)). Si calcola l'ascissa x1 del punto di intersezione tra tale retta tangente e l'asse delle x e si ripete il procedimento a partire dal punto P1 di coordinate (x1, f (x1)). Nella seguente figura `e rappresentato graficamente il metodo di Newton-Raphson.
+
+
+
+Per ricavare la funzione iteratrice del metodo consideriamo l'equazione della retta tangente la funzione y = f (x) nel punto di coordinate (xk, f (xk))
+y - f (xk) = f j(xk)(x - xk).
+Posto y = 0 ricaviamo l'espressione di x che diventa il nuovo elemento della successione xk+1:
+
+x	= x
+
+ f(xk)
+-
+
+
+k = 0, 1, 2, . . .	(2.12)
+
+k+1
+
+k	f j(x )
+
+che equivale, scegliendo in (2.7) h(x) = f j(x), al metodo di iterazione fun- zionale in cui la funzione g(x) `e
+f (x)
+g(x) = x - f j(x).	(2.13)
+Per la convergenza e l'ordine del metodo di Newton-Raphson vale il seguente teorema.
+Teorema 2.4.4 Sia f   3([a, b]), tale che f j(x) = 0, per x  [a, b], do- ve [a, b] `e un opportuno intervallo contenente a, allora valgono le seguenti proposizioni:
+1. esiste un intervallo [a  ?, a + ?], tale che, scelto x0 appartenente a tale intervallo, la successione definita dal metodo di Newton-Raphson
+`e convergente ad a;
+
+
+2. la convergenza `e di ordine p = 2.
+
+Dimostrazione.	Per valutare la convergenza del metodo calcoliamo la derivata prima della funzione iteratrice:
+
+
+gj(x) = 1 -
+
+Poich`e f j(a) /= 0 risulta:
+
+[f j(x)]2	f (x)f jj(x)
+[f j(x)]2	=
+
+f (x)f jj(x)
+[f j(x)]2  .
+
+
+
+gj(a) =
+
+f (a)f jj(a)
+[f j(a)]2	= 0
+
+quindi, fissato un numero positivo ? < 1, esiste ? > 0 tale che per ogni x  [a ?, a + ?] si ha gj(x) < ? e quindi vale il teorema di convergenza 2.4.2.
+Per dimostrare la seconda parte del teorema si deve calcolare la derivata seconda di g(x):
+
+
+
+gJJ
+
+(x) =
+
+[f J(x)f JJ(x) + f (x)f JJJ(x)][f J(x)]2	2f (x)f J(x)[f JJ(x)]2
+[f J(x)]4	.
+
+Calcolando la derivata seconda in x = a risulta
+
+
+gJJ
+
+
+(a) =
+
+f JJ(a)
+f J(a)	(2.14)
+
+ne segue che se f JJ(a) = 0 allora anche gJJ(a) = 0 e quindi, applicando il Teorema 2.4.3, l'ordine p = 2. Se invece f JJ(a) = 0 allora l'ordine `e almeno pari a 3. Dalla relazione 2.14 segue inoltre che la costante asintotica di convergenza vale
+1 f JJ(a)
+
+Il Teorema 2.4.4 vale nell'ipotesi in cui f J(a) = 0, cio`e se a `e una radice semplice di f (x). Se invece la radice a ha molteplicit`a r > 1 l'ordine di convergenza del metodo non `e piu` 2. In questo caso infatti si pu`o porre
+f (x) = q(x)(x - a)r,	q(a) /= 0,
+
+
+quindi riscrivendo la funzione iteratrice del metodo di Newton-Raphson ri- sulta
+g(x) = x		q(x)(x - a)	,
+rq(x) + qJ(x)(x - a)
+da cui, dopo una serie di calcoli, risulta
+gJ(a) = 1	1 .	(2.15)
+r
+Pertanto, poich`e r > 1 risulta gJ(x) < 1 e quindi per il Teorema 2.4.2 il metodo `e ancora convergente ma, applicando il Teorema 2.4.3 l'ordine di convergenza `e 1.
+Se si conosce la molteplicit`a della radice si pu`o modificare il metodo di Newton-Raphson ottenendo uno schema numerico con ordine 2. Ponendo
+
+
+x	= x
+
+ f(xk)
+- r
+
+k = 0, 1, 2, . . .
+
+k+1
+
+k	f J(x )
+
+si definisce un metodo con la seguente funzione iteratrice
+f (x)
+g(x) = x - rf J(x)
+da cui segue, tenendo conto della (2.15), che
+gJ(a) = 0.
+Riportiamo nel seguito l'implementazione MatLab del metodo di Newton- Raphson.
+function [alfa,k]=newton(f,f1,x0,tol,Nmax)
+%
+% La funzione calcolo un'approssimazione
+% della radice con il metodo di Newton-Raphson
+%
+% Parametri di input
+% f = funzione della quale calcolare la radice
+% f1 = derivata prima della funzione f
+% x0 = approssimazione iniziale della radice
+% tol = precisione fissata
+
+
+% Nmax = numero massimo di iterazioni fissate
+%
+% Parametri di output
+% alfa = approssimazione della radice
+% k = numero di iterazioni
+%
+if nargin==3
+tol=1e-8; Nmax=1000;
+end k=0;
+x1=x0-feval(f,x0)/feval(f1,x0); fx1 = feval(f,x1);
+while abs(x1-x0)>tol | abs(fx1)>tol x0 = x1;
+x1 = x0-feval(f,x0)/feval(f1,x0); fx1 = feval(f,x1);
+k=k+1;
+if k>Nmax
+disp('Il metodo non converge'); alfa = inf;
+break
+end
+end
+
+alfa=x1; return
+Esempio 2.4.1 Approssimare il numero a =
+Il numero a cercato `e lo zero della funzione
+f (x) = xm - c.
+
+
+
+vm c con m ? R, m = 2, c > 0.
+
+Poich`e per x > 0 la funzione risulta essere monotona allora `e sufficiente scegliere un qualsiasi x0 > 0 per ottenere una successione convergente alla radice m-esima di c. Il metodo di Newton-Raphson fornisce la formula
+
+
+xk+1 = xk -
+
+xm	c	 1
+mxm-1 = m
+
+
+(m - 1)xk + cx1-m
+
+
+,	k = 0, 1, 2, . . . .
+
+
+
+Per m = 2 lo schema diviene
+xk+1
+
+
+= 1	x
+2 k
+
+
++  c 	,
+x
+
+k
+che `e la cosiddetta formula di Erone per il calcolo della radice quadrata, nota gia` agli antichi Greci.
+Considerando come esempio m = 4 e c = 3, poich`e f (0) < 0 e f (3) > 0 allora si pu`o applicare il metodo di bisezione ottenendo la seguente sucessione di intervalli:
+
+IntervalloPunto medioValore di f
+nel punto medio[0, 3]c = 1.5f (c) = 2.0625[0, 1.5]c = 0.75f (c) = -2.6836[0.75, 1.5]c = 1.125f (c) = -1.3982[1.125, 1.5]c = 1.3125f (c) = -0.0325...Dopo 10 iterazioni c = 1.3154 mentre a = 1.3161, e l'errore `e pari circa a 6.4433 10-4.
+Applicando il metodo di Newton-Raphson, si ottiene il processo iterativo
+1	-3 
+xk+1 = xk -	2x + 3x	.
+Poich`e per x > 0 la funzione `e monotona crescente allora si pu`o scegliere
+x0 = 3 come approssimazione iniziale, ottenendo la seguente successione:
+
+x0 = 3f (x0) = 78x1 = 2.2778f (x1) = 23.9182x2 = 1.7718f (x2) = 6.8550x3 = 1.4637f (x3) = 1.5898x4 = 1.3369f (x4) = 0.1948x5 = 1.3166f (x5) = 0.0044..Dopo 10 iterazioni l'approssimazione `e esatta con un errore dell'ordine di 10-16.
+
+2.4.3 Il metodo della direzione costante
+Se applicando ripetutamente la formula di Newton-Raphson accade che la derivata prima della funzione f (x) si mantiene sensibilmente costante allora si pu`o porre
+M = f J(x)
+e applicare la formula
+
+xk+1
+
+= xk
+
+f(xk)
+-	M
+
+(2.16)
+
+anzich`e la (2.12). La (2.16) definisce un metodo che viene detto metodo di Newton semplificato oppure metodo della direzione costante in quanto geo- metricamente equivale all'applicazione del metodo di Newton in cui anzich`e prendere la retta tangente la curva f si considera la retta avente coefficiente angolare uguale a M . La funzione iteratrice del metodo `e
+
+
+
+
+ed il metodo `e convergente se
+
+g(x) = x -
+
+f (x)
+
+
+M
+
+J	f J(x)
+|g (x)| = 1 -	M	< 1
+
+2.4.4 Il Metodo della Secante
+Il metodo della secante `e definito dalla relazione
+	xk - c	
+x	= x - f (x )
+
+k+1	k
+
+k f (x ) - f (c)
+
+dove c  [a, b]. Il significato geometrico di tale metodo `e il seguente: ad un generico passo k si considera la retta congiungente i punti di coordinate (xk, f (xk)) e (c, f (c)) e si pone xk+1 pari all'ascissa del punto di intersezione di tale retta con l'asse x. Dalla formula si evince che la funzione iteratrice
+
+del metodo `e
+
+g(x) = x	f (x)	x - c	.
+f (x) - f (c)
+
+Il metodo `e rappresentato graficamente nella seguente figura.
+
+
+
+In base alla teoria vista nei paragrafi precedenti il metodo ha ordine di conver- genza 1 se gJ(a) = 0. Puo` avere ordine di convergenza almeno 1 se gJ(a) = 0. Tale eventualita` si verifica se la tangente alla curva in a ha lo stesso coeffi- ciente angolare della retta congiungente i punti (a, 0) e (c, f (c)).
+Poich`e il metodo delle secanti ha lo svantaggio di avere, solitamente, conver- genza lineare mentre il metodo di Newton-Raphson, pur avendo convergenza quadratica, ha lo svantaggio di richiedere, ad ogni passo, due valutazioni di funzioni: f (xk) ed f J(xk), quindi se il costo computazionale di f J(xk) `e mol- to piu` elevato rispetto a quello di f (xk) pu`o essere piu` conveniente l'uso di metodi che necessitano solo del calcolo del valore della funzione f (x).
+
+2.5 Sistemi di Equazioni non Lineari
+Supponiamo che sia ? un sottoinsieme di Rn e che siano assegnate le n
+funzioni
+fi : ? ? R,	i = 1, . . . , n.
+Ogni vettore x	Rn, soluzione del sistema non lineare di n equazioni in n
+incognite
+f1(x1, x2, . . . , xn) = 0
+f2(x1, x2, . . . , xn) = 0
+.
+fn(x1, x2, . . . , xn) = 0
+
+
+prende il nome di radice dell'equazione vettoriale
+F (x) = 0
+
+
+oppure di zero della funzione vettoriale
+F : ? ? Rn
+dove il vettore F (x) `e definito da:
+f1(x1, x2, . . . , xn)
+F (x) =
+? fn(x1, x2, . . . , xn)
+
+
+
+
+
+???? .
+
+Tutti i metodi per la risoluzione del sistema non lineare F (x) = 0 partono dalle seguenti due ipotesi:
+1. la funzione F (x) `e calcolabile in ogni punto del dominio ?;
+2. la funzione F (x) `e continua in un opportuno intorno della radice.
+Come nel caso scalare l'equazione F (x) = 0 viene trasformata in un problema del tipo
+
+
+ovvero
+
+x = F(x)	(2.17)
+
+xi = Fi(x1, x2, . . . , xn),	i = 1, 2, . . . , n
+
+con F(x) funzione definita in ? e scelta in modo tale che le proprieta` richiesta ad F (x) si trasferiscano su F, cio`e anch'essa deve essere continua in un opportuno intorno della radice e calcolabile nell'insieme di definizione. Il motivo di tali richieste `e che la funzione F(x) viene utilizzata per definire una successione di vettori nel seguente modo. Sia x(0) un vettore iniziale appartenente a ? e definiamo la seguente successione
+x(k+1) = F(x(k)),	k = 0, 1, 2, 3, . . .
+
+
+ovvero
+
+
+x(k+1) = Fi(x(k), x(k), . . . , x(k)),	i = 1, 2, . . . , n.
+
+i	1	2	n
+La funzione F(x) prende il nome di funzione iteratrice dell'equazione non lineare F (x) = 0. Ricordiamo che un vettore a che soddisfa la (2.17) viene
+
+
+detto punto fisso di F(x) (oppure punto unito). La successione dei vettori x(k) definisce il metodo delle approssimazioni successive per il calcolo appunto di tale punto fisso. Quello che si richiede a tale successione `e che essa converga al vettore a, soluzione del sistema non lineare. In questo caso per convergenza si intende che
+
+
+cio`e, in termini di componenti,
+
+lim x(k) = a
+k?8
+
+
+
+lim x(k) = ai.
+
+k?8  i
+Per la convergenza del metodo delle approssimazioni successive vale quindi il seguente teorema.
+Teorema 2.5.1 Se la funzione F(x) `e differenziabile con continuita` in un intorno del punto fisso a, e risulta
+?(JF(a)) < 1
+allora, scelto x(0) appartenente a tale intorno, la successione costruita con il metodo delle approssimazioni successive `e convergente a a.
+Chiaramente il risultato appena enunciato ha un'importanza teorica in quan- to generalmente `e molto complesso (o non `e possibile) conoscere gli autovalori della matrice Jacobiana nella soluzione del sistema non lineare.
+
+2.5.1 Il Metodo di Newton per Sistemi non Lineari
+Se si conosce abbastanza bene l'approssimazione iniziale della soluzione del sistema di equazioni
+F (x) = 0	(2.18)
+il metodo di Newton risulta molto efficace. Il Metodo di Newton per risolvere il sistema (2.18) pu`o essere derivato in modo semplice come segue. Sia x(k) una buona approssimazione a a, soluzione di F (x) = 0, possiamo allora scrivere lo sviluppo in serie della funzione F valutata nella soluzione del sistema non lineare prendendo come punto iniziale proprio il vettore x(k) :
+0 = F (a) = F (x(k)) + JF (dk)(a - x(k))
+
+
+dove dk `e un vettore appartenente al segmento congiungente a e x(k) e JF (x) indica la matrice Jacobiana i cui elementi sono le derivate prime delle funzioni componenti di F (x) :
+? ?f1 (x)	?f1 (x)  . . .	 ?f1 (x) ?
+
+?x1
+?
+
+?x2
+
+?xn
+?
+
+?f2	?f1	?f1
+?	(x)	(x)  . . .	(x) ?
+
+JF (x) = ?
+?
+
+?x1
+.
+.
+
+?x2
+.
+.
+
+?xn
+.
+.
+?
+
+?? ?fn (x)	?fn (x)  . . .	?fn (x) ??
+Suppondendo ora che la matrice Jacobiana sia invertibile possiamo scrivere,
+a - x(k) = -J-1(dk)F (x(k)) ? a = x(k) - J-1(dk)F (x(k)).	(2.19)
+Se x(k) `e sufficietemente vicino a a allora possiamo confondere x(k) con dk: in tal modo pero` (2.19) non fornir`a esattamente a ma una sua ulteriore ap- prossimazione, che indichiamo con x(k+1). In questo modo abbiamo definito il seguente processo iterativo
+x(k+1) = x(k) - J-1(x(k))F (x(k)).	(2.20)
+che definisce, appunto il metodo di Newton.
+Puo` essere interessante soffermarsi su alcuni dettagli di implementazione del metodo (2.20). Poniamo infatti
+z(k) = x(k+1) - x(k)
+e osserviamo che, moltiplicando per la matrice JF (x(k)) l'espressione del metodo di Newton diventa
+JF (x(k))z(k) = -F (x(k))
+da cui, risolvendo il sistema lineare che ha JF (x(k)) come matrice dei coeffi- cienti e F (x(k)) come vettore dei termini noti si pu`o ricavare il vettore z(k) e ottenere il vettore al passo k + 1:
+x(k+1) = x(k) + z(k).
+L'algoritmo, ad un generico passo k, pu`o essere cos`i riassunto:
+
+
+1. Calcolare la matrice JF (x(k)) e il vettore -F (x(k));
+2. Risolvere il sistema lineare JF (x(k))z(k) = -F (x(k));
+3. Calcolare il vettore x(k+1) = x(k) + z(k);
+4. Valutare la convergenza: fissata una tolleranza e, se risulta
+ z(k)  = e
+
+allora x(k+1) `e una buona approssimazione della soluzione, altrimenti si ritorna al passo 1.
+Consideriamo come esempio la funzione vettoriale composta da due compo- nenti
+f1(x, y) = x3 + y - 1,	f2(x, y) = y3 - x + 1.
+Il sistema non lineare
+
+
+F (x) = 0 =
+
+x3 + y - 1
+y3 - x + 1
+
+=  0 
+
+ammette come soluzione x = 1 e y = 0. La matrice Jacobiana di F (x) `e la seguente
+
+JF (x, y) =
+
+3x2	1
+-1	3y
+
+pertanto il metodo di Newton `e definito dal seguente schema:
+
+
+  xk+1
+
+=  xk
+
+3x2
+-
+
+1	 -1  x3 + y - 1
+
+yk+1
+
+yk	-1	3yk
+
+y3 - xk + 1
+
+
+
+
+Capitolo 3
+Metodi numerici per sistemi lineari
+
+3.1 Introduzione
+Siano assegnati una matrice non singolare A Rn×n ed un vettore b Rn. Risolvere un sistema lineare avente A come matrice dei coefficienti e b come vettore dei termini noti significa trovare un vettore x ? Rn tale che
+Ax = b.	(3.1)
+Esplicitare la relazione (3.1) significa imporre le uguaglianze tra le compo- nenti dei vettori a primo e secondo membro:
+a11x1+	a12x2+	· · · +	a1nxn =	b1
+
+a21x1+	a22x2+	· · · +	a2nxn =	b2
+
+(3.2)
+
+.	.
+an1x1+  an2x2+  · · · +  annxn =  bn.
+Le (3.2) definiscono un sistema di n equazioni algebriche lineari nelle n inco- gnite x1, x2, . . . , xn. Il vettore x viene detto vettore soluzione. Prima di af- frontare il problema della risoluzione numerica di sistemi lineari richiamiamo alcuni importanti concetti di algebra lineare.
+Definizione 3.1.1 Se A Rn×n `e una matrice di ordine 1, si definisce determinante di A il numero
+det A = a11.
+
+41
+
+
+Se la matrice A `e quadrata di ordine n allora fissata una qualsiasi riga (colon- na) di A, diciamo la i-esima (j-esima) allora applicando la cosiddetta regola di Laplace il determinante di A `e:
+n
+det A =	aij(-1)i+j det Aij
+j=1
+dove Aij `e la matrice che si ottiene da A cancellando la i-esima riga e la
+j-esima colonna.
+Il determinante `e pure uguale a
+n
+det A =	aij(-1)i+j det Aij,
+i=1
+cio`e il determinante `e indipendente dall'indice di riga (o di colonna) fissato. Se A `e la matrice di ordine 2
+
+
+
+
+allora
+
+A =	a11	a12
+a21	a22
+
+det A = a11a22 - a21a12.
+Il determinante ha le seguenti proprieta`:
+1. Se A `e una matrice triangolare o diagonale allora
+
+
+
+
+2. det I = 1;
+3. det AT = det A;
+
+n
+det A =	aii;
+i=1
+
+4. det AB = det A det B (Regola di Binet);
+5. se a  R allora det aA = an det A;
+6. det A = 0 se una riga (o una colonna) `e nulla, oppure una riga (o una colonna) `e proporzionale ad un'altra riga (o colonna) oppure `e combinazione lineare di due (o piu`) righe (o colonne) di A.
+7. Se A `e una matrice triangolare a blocchi
+A =	B	 C O	D
+
+
+con B e D matrici quadrate, allora
+                      det A = det B det D.	(3.3)
+Una matrice A di ordine n si dice non singolare se il suo determinante `e diverso da zero, in caso contrario viene detta singolare. Si definisce inversa di A la matrice A-1 tale che:
+AA-1 = A-1A = In
+Per quello che riguarda il determinante della matrice inversa vale la seguente proprieta`:
+det A-1 =	1	.
+det A
+Un metodo universalmente noto per risolvere il problema (3.1) `e l'applica- zione della cosiddetta Regola di Cramer la quale fornisce:
+
+
+x = det Ai i	det A
+
+i = 1, . . . , n,	(3.4)
+
+dove Ai `e la matrice ottenuta da A sostituendo la sua i-esima colonna con il termine noto b. Dalla (3.4) `e evidente che per ottenere tutte le componenti del vettore soluzione `e necessario il calcolo di n + 1 determinanti di ordine n. Calcoliamo ora il numero di operazioni aritmetiche necessario per calcolare une determinante con la regola di Laplace. Indichiamo con f (n) il numero di operazioni aritmetiche su numeri reali necessario per calcolare un deter- minante di ordine n, ricordando che f (2) = 3. La regola di Laplace richiede il calcolo di n determinanti di matrici di ordine n 1 (il cui costo compu- tazionale in termini di operazioni `e nf (n 1)) inoltre n prodotti ed n 1 somme algebriche, ovvero
+f (n) = nf (n - 1) + 2n - 1.
+Per semplicit`a tralasciamo gli ultimi addendi ottenendo il valore approssima- to
+f (n) ? nf (n - 1)
+Applicando lo stesso ragionamento al numero f (n	1)	(n	1)f (n	2) e in modo iterativo si ottiene
+3
+f (n) ? n(n - 1)(n - 2) . . . 3f (2) = 2 n!.
+
+
+Se n = 100 si ha 100!  10157. Anche ipotizzando di poter risolvere il problema con un elaboratore in grado di eseguire miliardi di operazioni al secondo sarebbero necessari diversi anni di tempo per calcolare un singolo determinante. Questo esempio rende chiara la necessit`a di trovare metodi alternativi per risolvere sistemi lineari, in particolare quando le dimensioni sono particolarmente elevate.
+
+3.2 Risoluzione di sistemi triangolari
+Prima di affrontare la soluzione algoritmica di un sistema lineare vediamo qualche particolare sistema che pu`o essere agevolmente risolto. Assumiamo che il sistema da risolvere abbia la seguente forma:
++a1ixi	. . .	+a1nxn	= b1
++a2ixi	. . .	+a2nxn	= b2
+
+.	.	.
+aiixi	. . .	+ainxn	= bi
+
+(3.5)
+
+. . .	.	.
+annxn	= bn
+In questo caso la matrice A `e detta triangolare superiore. Il determinante di una matrice di questo tipo `e uguale al prodotto degli elementi diagonali pertanto la matrice `e non singolare se risulta aii = 0 per ogni i. In questo caso, la soluzione `e facilmente calcolabile infatti `e sufficiente osservare che nell'ultima equazione compare solo un'incognita che pu`o essere calcolata e che procedendo a ritroso da ogni equazione pu`o essere ricavata un'incognita poich`e le successive sono gia` state calcolate. Il metodo pu`o essere riassunto nelle seguenti formule:
+
+
+xn
+,
+
+,,, xi
+
+= bn ann
+
+
+bi -
+=
+
+
+
+
+
+jS=i+1
+a
+
+
+
+
+
+
+aijxj
+
+
+
+
+
+
+i = n - 1, . . . , 1.
+
+
+
+
+(3.6)
+
+ii
+Il metodo (3.6) prende il nome di metodo di sostituzione all'indietro, poich`e il vettore x viene calcolato partendo dall'ultima componente.
+
+
+Anche per il seguente sistema il vettore soluzione `e calcolabile in modo analogo.
+
+
+
+
+.	.
+.	.	. . .	.
+
+(3.7)
+
+an1x1	+an2x2	. . .	+anixi	. . .	+annxn	= bn
+In questo caso la matrice dei coefficienti `e triangolare inferiore e la soluzione viene calcolata con il metodo di sostituzione in avanti:
+
+x	= b1 a11
+,
+
+
+
+
+
+i-1
+
+,,, xi
+
+bi	aijxj
+	j=1	
+=
+a
+
+
+i = 2, . . . , n.
+
+ii
+Concludiamo questo paragrafo facendo alcune considerazioni sul costo com- putazionale dei metodi di sostituzione. Per costo computazionale di un al- goritmo si intende il numero di operazioni che esso richiede per fornire la soluzione di un determinato problema. la misura del costo computazionale di un algoritmo fornisce una stima (seppur grossolana) del tempo che esso richiede per fornire la soluzione approssimata di un determinato problema indipendentemente dall'elaboratore che viene utilizzato e dal linguaggio di programmazione in cui esso `e stato codificato. nel caso di algoritmi numerici le operazioni che si contano sono quelle aritmetiche su dati reali. conside- rando per esempio il metodo di sostituzione in avanti. per calcolare x1 `e necessaria una sola operazione (una divisione), per calcolare x2 le operazioni sono tre (un prodotto, una somma algebrica e una divisione), mentre il ge- nerico xi richiede 2i 1 operazioni (i 1 prodotti, i 1 somme algebriche e una divisione), indicato con c(n) il numero totale di operazioni necessarie `e:
+n	n	n
+C(n) = S(2i - 1) = 2 S i - S 1 = 2 n(n + 1) - n = n2,
+
+i=1
+
+i=1
+
+i=1
+
+
+sfruttando la proprieta` che
+n
+i = n(n + 1).
+2
+i=1
+Il costo computazionale viene sempre valutato in funzione di un determinato parametro (il numero assoluto in s`e non avrebbe alcun significato) che, in questo caso `e la dimensione del sistema. In questo modo `e possibile prevedere il tempo necessario per calcolare la soluzione del problema.
+
+3.3 Metodo di Eliminazione di Gauss
+L'idea di base del metodo di Gauss `e appunto quella di operare delle oppor- tune trasformazioni sul sistema originale Ax = b, che non costino eccessiva- mente, in modo da ottenere un sistema equivalente1 avente come matrice dei coefficienti una matrice triangolare superiore.
+Supponiamo di dover risolvere il sistema:
+2x1	+x2	+x3	=  -1
+-6x1	-4x2	-5x3	+x4	=  1
+-4x1	-6x2	-3x3		-x4	= 2 2x1	-3x2	 +7x3	-3x4	= 0.
+Il vettore soluzione di un sistema lineare non cambia se ad un'equazione viene sommata la combinazione lineare di un'altra equazione del sistema. L'idea alla base del metodo di Gauss `e quella di ottenere un sistema linea- re con matrice dei coefficienti triangolare superiore effettuando opportune combinazioni lineari tra le equazioni. Poniamo
+
+2	1	1	0
+?	?
+
+? -1 ?
+
+A(1) = ? -6 -4 -5	1 ? ,	b(1) = ?	?
+-4 -6 -3 -1	2
+	2 -3	 7 -3	0
+    1Due sistemi si dicono equivalenti se ammettono lo stesso insieme di soluzioni, quindi nel nostro caso la stessa soluzione. Osserviamo che se x* `e un vettore tale che Ax* = b e B `e una matrice non singolare allora BAx* = Bb; viceversa se BAx* = Bb e B `e non singolare allora B-1BAx* = B-1Bb e quindi Ax* = b. Dunque se B `e non singolare i sistemi Ax = b e BAx = Bb sono equivalenti.
+
+
+rispettivamente la matrice dei coefficienti e il vettore dei termini noti del sistema di partenza. Calcoliamo un sistema lineare equivalente a quello ini- ziale ma che abbia gli elementi sottodiagonali della prima colonna uguali a zero. Azzeriamo ora l'elemento a(1). Lasciamo inalterata la prima equazione.
+
+Poniamo
+
+
+l21
+
+
+=	a21
+a11
+
+=	-6 = 3
+2
+
+e moltiplichiamo la prima equazione per l21 ottenendo:
+6x1 + 3x2 + 3x3 = -3.
+La nuova seconda equazione sar`a la somma tra la seconda equazione e la prima moltiplicata per l21:
+-6x1	-4x2	-5x3	+x4	= 1 6x1	 +3x2	 +3x3		= -3
+-x2	-2x3	+x4	= -2	[Nuova seconda equazione].
+Prcediamo nello stesso modo per azzerare gli altri elementi della prima co- lonna. Poniamo
+ a(1) 	4
+l31 = -	= - 2  = 2
+11
+e moltiplichiamo la prima equazione per l31 ottenendo:
+4x1 + 2x2 + 2x3 = -2.
+La nuova terza equazione sar`a la somma tra la terza equazione e la prima moltiplicata per l31:
+-4x1	-6x2	-3x3	-x4	= 2 4x1	 +2x2	 +2x3		= -2
+-4x2	-x3	-x4	= 0	[Nuova terza equazione].
+
+
+Poniamo ora
+
+ a(1) 	2
+l41 = - 41  = -
+11
+
+= -1
+
+e moltiplichiamo la prima equazione per l41 ottenendo:
+-2x1 - x2 - x3 = 1.
+
+
+La nuova quarta equazione sar`a la somma tra la quarta equazione e la prima moltiplicata per l41:
+2x1	-3x2	+7x3	-3x4	= 0
+-2x1	-x2	-x3	= 1
+-4x2	+6x3	-3x4	= 1	[Nuova quarta equazione].
+I numeri l21, l3,1, . . . sono detti moltiplicatori. Al secondo passo il sistema lineare `e diventato:
+2x1	+x2	+x3	= -1
+-x2	-2x3	+x4	= -2
+-4x2	-x3	-x4	= 0
+-4x2	+6x3	-3x4	= 1.
+La matrice dei coefficienti e il vettore dei termini noti sono diventati:
+
+2	1	1	0
+?	?
+
+? -1 ?
+
+0 -4 -1 -1	0
+0 -4	6 -3	1
+Cerchiamo ora di azzerare gli elementi sottodiagonali della seconda colonna, a partire da a32, usando una tecnica simile. Innanzitutto osserviamo che non conviene prendere in considerazione una combinazione lineare che coinvolga la prima equazione perch`e avendo questa un elemento in prima posizione diverso da zero quando sommata alla terza equazione canceller`a l'elemento uguale a zero in prima posizione. Lasciamo inalterate le prime due equazioni del sistema e prendiamo come equazione di riferimento la seconda. Poich`e a(2) /= 0 poniamo
+
+ a(2) 	4
+l32 = -	= -	1
+22
+
+= -4
+
+e moltiplichiamo la seconda equazione per l32 ottenendo:
+4x2 + 8x3 - 4x4 = 8.
+La nuova terza equazione sar`a la somma tra la terza equazione e la seconda appena modificata:
+-4x2	-x3	-x4	= 0
+	4x2	+8x3	-4x4	= 8	
+7x3	-5x4	= 8	[Nuova terza equazione].
+
+
+
+Poniamo
+
+ a(2) 	4
+l42 = -	= -	1
+22
+
+= -4
+
+e moltiplichiamo la seconda equazione per l42 ottenendo:
+4x2 + 8x3 - 4x4 = 8.
+La nuova quarta equazione sar`a la somma tra la quarta equazione e la seconda appena modificata:
+-4x2	+6x3	-3x4	= 1
+	4x2	+8x3	-4x4	= 8	
+14x3	-7x4	= 9	[Nuova quarta equazione].
+Al terzo passo il sistema lineare `e diventato:
+2x1	+x2	+x3	= -1
+-x2	-2x3	+x4	= -2
+7x3	-5x4	= 8
+14x3	-7x4	= 9.
+La matrice dei coefficienti e il vettore dei termini noti sono quindi
+
+2	1	1	0
+?	?
+
+? -1 ?
+
+0	0	7 -5	8
+0	0	14 -7	9
+Resta da azzerare l'unico elemento sottodiagonali della terza colonna. La- sciamo inalterate le prime tre equazioni del sistema. Poniamo
+
+ a(3) 	14
+l43 = - 43  = -
+33
+
+= -2
+
+e moltiplichiamo la terza equazione per l43 ottenendo:
+-14x3 + 10x4 = -16.
+La nuova quarta equazione sar`a la somma tra la quarta equazione e la terza appena modificata:
+14x3	-7x4	= -16
+	-14x3	+10x4	= 9	
+3x4	= -7	[Nuova quarta equazione].
+
+
+Abbiamo ottenuto un sistema triangolare superiore:
+2x1	+x2	+x3	= -1
+-x2	-2x3	+x4	= 4
+7x3	-5x4	= 8
+3x4	= -7.
+La matrice dei coefficienti e il vettore dei termini noti sono diventati:
+
+??	??
+
+? -1 ?
+
+A(4) = ?
+
+? ,	b(4) = ?	? .
+
+?	?	?	8
+
+Cerchiamo ora di ricavare le formule di trasformazione del metodo di eli- minazione di Gauss per rendere un generico sistema di ordine n in forma triangolare superiore.
+Consideriamo il sistema di equazioni nella sua forma scalare (3.2):
+n
+aijxj = bi,	i = 1, . . . , n.	(3.8)
+j=1
+
+Poich`e il procedimento richiede un certo numero di passi indichiamo con a(1) e
+b(1) gli elementi della matrice dei coefficienti e del vettore dei termini noti del sistema di partenza. Isoliamo in ogni equazione la componente x1. Abbiamo:
+
+
+a(1)x1 + S a(1)xj = b(1)
+
+
+(3.9)
+
+a(1)x1 + S a(1)xj = b(1),	i = 2, . . . , n.	(3.10)
+
+Moltiplicando l'equazione (3.9) per -a(1)/a(1), i = 2, . . . , n, si ottengono le
+
+seguenti n - 1 equazioni:
+
+i1	11
+
+(1)	S	i(11)
+
+(1)!
+
+(1)
+i1	(1)
+
+-ai1 x1 +
+
+j=2
+
+- (1) a1j
+11
+
+xj = - (1) bi  ,	i = 2, . . . , n.	(3.11)
+11
+
+
+Sommando alle equazioni (3.10) le (3.11) si ricavano n - 1 nuove equazioni:
+
+
+Sj=2
+
+
+(1)
+ij
+
+(1)
+i1 (1)
+11
+
+
+(1)
+1j
+
+
+xj = b(1) -
+
+(1)
+i1 (1)
+11
+
+b(1),	i = 2, . . . , n.	(3.12)
+
+L'equazione (3.9) insieme alle (3.12) formano un nuovo sistema di equazioni, equivalente a quello originario, che possiamo scrivere nel seguente modo:
+,, a(1)x1 + S a(1)xj = b(1)
+
+	
+
+a(2)xj = b(2)
+
+
+
+i = 2, . . . , n
+
+dove
+
+,, a(2) = a(1) -	i(11) a(1)
+
+
+
+i, j = 2, . . . , n
+
+,?
+,,,
+
+ij
+
+
+
+(2)
+i
+
+ij
+
+
+
+(1)
+i
+
+(1)
+11
+
+(1)
+i1 (1)
+11
+
+1j
+
+
+
+(1)
+1
+
+
+
+i = 2, . . . , n.
+
+(3.14)
+
+Osserviamo che la matrice dei coefficienti del sistema (3.13) `e la seguente
+
+
+(1)
+11
+
+
+(1)
+12
+
+. . .	a(1) ?
+
+A(2) = ?
+
+(2)
+22
+
+. . .	a(2)
+.
+
+??	.	.
+
+.	??
+
+(2)
+n2
+Ora a partire dal sistema di equazioni
+
+. . .	a(2)
+
+S a(2)xj = b(2)	i = 2, . . . , n,
+
+ripetiamo i passi fatti precedentemente:
+
+
+a(2)x2 + S a(2)xj = b(2)
+
+
+(3.15)
+
+a(2)x2 + S a(2)xj = b(2),	i = 3, . . . , n.	(3.16)
+
+Moltiplicando l'equazione (3.15) per -a(2)/a(2), per i = 3, . . . , n, si ottiene
+
+
+
+a(2)x2 +
+
+
+Sj=3
+
+
+(2)
+i2 (2)
+22
+
+
+
+(2)
+2j
+
+
+xj = -
+
+i2
+
+(2)
+i2 (2)
+22
+
+22
+
+
+b(2),	i = 3, . . . , n.	(3.17)
+
+Sommando le equazioni (3.17) alle (3.16) si ottengono n - 2 nuove equazioni:
+
+
+Sj=3
+
+
+(2)
+ij
+
+(2)
+i2 (2)
+22
+
+
+(2)
+2j
+
+
+xj = b(2) -
+
+(2)
+i2 (2)
+22
+
+b(2),	i = 3, . . . , n	(3.18)
+
+che possiamo scrivere in forma piu` compatta:
+
+
+S a(3)xj = b(3)
+
+
+
+i = 3, . . . , n
+
+dove
+
+,, a(3) = a(2) -
+
+
+(2)
+i2
+
+
+
+a(2)
+
+
+i, j = 3, . . . , n
+
+,?
+,,, b
+
+ij
+
+
+
+(3)
+i
+
+ij
+
+
+
+(2)
+i
+
+
+(2)
+22
+
+(2)
+i2 (2)
+22
+
+2j
+
+
+
+(2)
+2
+
+
+
+i = 3, . . . , n.
+
+Abbiamo il nuovo sistema equivalente:
+
+
+a(1)xj = b(1)
+1j	1
+j=1
+,
+2j	2
+j=2
+,
+
+
+a(3)xj = b(3)
+
+
+i = 3, . . . , n.
+
+
+Osserviamo che in questo caso la matrice dei coefficienti `e
+
+
+(1)
+11
+
+
+(1)
+12
+
+
+(1)
+13
+
+. . .	a(1) ?
+
+(2)
+22
+
+(2)
+23
+
+. . .	a(2)
+
+A(3) =
+
+0	0	a(3)
+
+. . .	a(3)
+?
+
+.	.
+?	.	.	.	.	??
+E` evidente ora che dopo n	1 passi di questo tipo arriveremo ad un sistema equivalente a quello di partenza avente la forma:
+
+(1)
+11
+
+(1)
+12
+
+. . .	. . .	a(1)
+
+? ?	x1	?	?
+
+(1)
+1
+
+(2)
+22
+
+. . .	. . .	a(2)
+
+?	2	?	?
+
+(2)
+?
+
+0	0	. . .
+
+.
+.	? ?
+
+.	.
+.	?	?	.	?
+
+??	.	.	. . .	(n-1)	(n-1) ?? ?? xn-1 ??	? b(n-1) ??
+	
+la cui soluzione, come abbiamo visto, si ottiene facilmente, e dove le formule di trasformazione al passo k sono:
+a(k)
+
+a(k+1) = a(k) -  ik a(k)
+
+i, j = k + 1, . . . , n	(3.19)
+
+ij	ij
+
+e
+(k) 
+kj kk
+
+a(k)
+
+b(k+1) = b(k) -  ik b(k)
+
+i = k + 1, . . . , n.	(3.20)
+
+i	i	(k) k kk
+Soffermiamoci ora un momento sul primo passo del procedimento. Osservia- mo che per ottenere il 1o sistema equivalente abbiamo operato le seguenti fasi:
+1. moltiplicazione della prima riga della matrice dei coefficienti (e del corrispondente elemento del termine noto) per un opportuno scalare;
+2. sottrazione dalla riga i-esima di A della prima riga modificata dopo il passo 1.
+Il valore di k varia da 1 (matrice dei coefficienti e vettori dei termini noti iniziali) fino a n - 1, infatti la matrice A(n) avr`a gli elementi sottodiagonali
+
+
+delle prime n	1 colonne uguali a zero.
+Si pu`o osservare che il metodo di eliminazione di Gauss ha successo se tutti gli elementi a(k) sono diversi da zero, che sono detti elementi pivotali.
+Un proprieta` importante delle matrici A(k) `e il fatto che le operazioni effet- tuate non alterano il determinante della matrice, quindi
+det A(k) = det A,
+per ogni k.	Poich`e la matrice A(n) `e triangolare superiore allora il suo determinante pu`o essere calcolato esplicitamente
+n
+(k)	(k)
+kk
+k=1
+Quello appena descritto `e un modo, alternativo alla regola di Laplace per calcolare il determinante della matrice A.
+Esempio 3.3.1 Calcolare il determinante della matrice
+3  3  5	0
+?	?
+0  2  0	4
+1  3  0	4
+utlizzando il metodo di eliminazione di Gauss.
+Posto A(1) = A, calcoliamo i tre moltiplicatori
+1
+l2,1 = -1,	l3,1 = 0,	l4,1 = - 3 .
+Calcoliamo la seconda riga:
+[2a riga di A(1) + ]	3	2	6	-1	+
+[(-1)× 1a riga di A(1)]	-3	-3	-5	0	=
+[2a riga di A(2)]	0	-1	1	1
+La terza riga non cambia perch`e il moltiplicatore `e nullo, mentre la quarta riga `e
+[4a riga di A(1) + ]		1		3		0	4 + [(-1/3)× 1a riga di A(1)]	-1	-1	-5/3	0  =
+[4a riga di A(2)]	0	2	-5/3	4
+
+
+Abbiamo ottenuto la seguente matrice al passo 2:
+3	3	5	0
+?	?
+0	2	0	4
+0	2	-5/3	4
+Calcoliamo i due moltiplicatori
+l3,2 = 2,	l4,2 = 2.
+Calcoliamo la terza riga:
+[3a riga di A(2) + ]	0	2	0	4	+
+[(2)	2a riga di A(2)]	0	2	2	2	=
+[3a riga di A(3)]	0	0	2	2
+La quarta riga `e
+[4a riga di A(2) + ]	0	2	5/3	4 + [(2)	2a riga di A(2)]	0	2		2	2  =
+[4a riga di A(3)]	0	0	1/3	2
+Abbiamo ottenuto la seguente matrice al passo 3:
+3	3	5	0
+?	?
+A(3) = ? 0  -1	1	-1 ? .
+
+
+Calcoliamo l'unico moltiplicatore del terzo passo:
+1
+l4,3 = - 6 .
+La quarta riga `e
+[4a riga di A
+[(  1/6)	3a r
+[4a riga di A(4)]	0	0	0	5/3
+
+
+La matrice triagolarizzata `e
+3	3	5	0
+?	?
+
+
+Il determinante della matrice `e uguale al prodotto degli elementi diagonali della matrice triangolare, ovvero
+det A = -10.
+Esempio 3.3.2 Calcolare l'inversa della matrice
+
+A = ????
+
+utlizzando il metodo di eliminazione di Gauss.
+L'inversa di A `e la matrice X tale che
+
+????
+
+AX = I
+ovvero, detta xi la i esima colonna di X, questo `e soluzione del sistema lineare
+Axi = ei	(3.21)
+dove ei `e l'i esimo versore della base canonica di Rn. Posto i = 1 risolvendo il sistema
+?? 2	1  0  1 ? ? x1 ?	? 1 ?
+
+Ax  = e ,
+
+1	1  2  0	x2
+
+? = ?	?
+
+1	1	? -1 0 3 1 ? ? x3 ?	? 0 ?
+si ottengono gli elementi della prima colonna di A-1. Posto A(1) = A gli elementi della matrice al passo 2 sono calcolati applicando le formule
+a(1)
+a(2) = a(1) -  i1  a(1),	i, j = 2, 3, 4.
+
+ij	ij
+(1) 
+1j
+11
+
+
+Tralasciando il dettaglio delle operazioni risulta
+
+2	1	0	1
+?	?
+
+?	1	?
+
+0  1/2  3	3/2
+0  1/2  2	3/2
+Applicando le formula
+
+1	1/2
+-1/2
+
+
+a(2)
+a(3) = a(2) -  i2  a(2),	i, j = 3, 4.
+
+ij	ij
+(2) 
+2j
+22
+
+si ottiene il sistema al terzo passo
+2	1	0	1
+?	?
+
+?	1	?
+
+A(3) = ? 0 1/2 2 -1/2 ? ,	e(3) = ? -1/2 ? .
+
+
+In questo caso non `e necessario applicare l'ultimo passo del metodo in quanto la matrice `e gia` triangolare superiore e pertanto si pu`o risolvere il sistema triangolare superiore ottenendo:
+x4 = 0,	x3 = 1,	x2 = -5,	x1 = 3.
+Cambiando i termini noti del sistema (3.21), ponendo i = 2, 3, 4 si ottengono le altre tre colonne della matrice inversa.
+
+3.3.1 Costo Computazionale del Metodo di Elimina- zione di Gauss
+Cerchiamo ora di determinare il costo computazionale (cio`e il numero di operazioni aritmetiche) richiesto dal metodo di eliminazione di Gauss per risolvere un sistema lineare di ordine n. Il calcolo del costo computazionale richiede quattro fasi:
+1. Numero di operazioni aritmetiche necessarie per modificare un singolo elemento della matrice dei coefficienti e del vettore dei termini noti;
+2. Numero di operazioni aritmetiche necessarie per calcolare la matrice
+A(k+1) ed il vettore b(k+1) partendo da A(k) e b(k), con k valore generico;
+
+
+3. Numero di operazioni aritmetiche richiesto per effettuare tutte gli n	1 passi del metodo;
+4. Numero di operazioni aritmetiche richiesto dalla risoluzione del sistema triangolare superiore.
+Di tali fasi solo per l'ultima sappiamo che esso `e pari a n2.
+Per la prima fase dalle relazioni
+a(k)
+b(k+1)	= b(k) -  ik b(k),	i = k + 1, . . . , n,
+
+i
+
+
+
+(k+1)
+ij
+
+i
+
+
+
+= a(k) -
+
+(k)
+kk
+
+(k) ik (k) kk
+
+k
+
+
+
+a(k),	i, j = k + 1, . . . , n
+
+`e evidente che servono 3 operazioni aritmetiche per calcolare b(k+1) (noti a(k)
+i	ij
+e b(k)) mentre sono necessarie che solo 2 operazioni per calcolare a(k+1) (noti
+i	ij
+a(k) e b(k)), infatti il moltiplicatore viene calcolato solo una volta.
+ij	i
+Per determinare il numero richiesto dalla seconda fase esso `e pari a:
+3 elementi del vettore calcolati +2	elementi della matrice calco- lati.
+Il numero di elementi del vettore dei termini noti che vengono modificati `e pari ad n k mentre gli elementi della matrice cambiati sono (n k)2 quindi complessivamente il numero di operazioni per calcolare gli elementi al passo k + 1 `e:
+2(n - k)2 + 3(n - k).	(3.22)
+Osserviamo che nel computo del numero di elementi della matrice che ven- gono calcolati non si tiene conto degli elementi che sono stati azzerati, in quanto `e noto che sono uguali a zero non c`e alcuna necessit`a di calcolarli.
+Per trasformare A in A(n) e b in b(n) `e necessario un numero di operazioni pari alla somma, rispetto a k, di (3.22), ovvero
+n-1	n-1
+f (n) = 2 S(n - k)2 + 3 S(n - k).
+
+
+Sapendo che
+
+k=1
+
+n
+
+k=1
+
+n2 = n(n + 1)(2n + 1)
+6
+k=1
+
+
+ed effettuando un opportuno cambio di indice nelle sommatorie risulta
+ n(n - 1)(2n - 1)	n(n - 1)	2 3	n2	7
+
+
+Nel calcolo del costo computazionale di un algoritmo si tende a considerare solo la componente piu` grande tralasciando quelle che contribuiscono meno a tale valore, pertanto si ha
+f (n)	2 n3.
+3
+A questo valore bisognerebbe aggiungere le n2 operazioni aritmetiche neces- sarie per risolvere il sistema triangolare superiore ma tale valore non altera l'ordine di grandezza della funzione che `e un valore molto inferiore rispetto alle n! operazioni richieste dalla regola di Cramer, applicata insieme alla re- gola di Laplace.
+Nel calcolo delle operazioni aritmetiche sono state conseiderate tutte le 4 operazioni aritmetiche, ipotizzando implicitamente che esse richiedano lo stesso tempo di esecuzione da parte dall'elebaoratore (ottenendo una sti- ma del tempo di risoluzione richiesto dal metodo). Nella realt`a non `e cos`i in quanto le somme algebriche richiedono un tempo inferiore rispetto al pro- dotto ed al quoziente e pertanto il numero di tali operazioni andrebbe con- tato a parte. Facendo questo tipo di calcolo si scoprirebbe che il numero di moltiplicazioni/divisioni richiesto dal metodo `e circa la met`a di quello
+trovato:
+       n3 f1(n) ?  3 .
+3.3.2 Strategie di Pivoting per il metodo di Gauss
+Nell'eseguire il metodo di Gauss si `e fatta l'implicita ipotesi (vedi formule (3.19) e (3.20)) che gli elementi pivotali a(k) siano non nulli per ogni k. Tale situazione si verifica quando i minori principali di testa di ordine di A sono diversi da zero. Infatti vale il seguente risultato.
+Teorema 3.3.1 Se A Rn×n , indicata con Ak la matrice principale di testa di ordine k, risulta
+(k)	 det Ak 
+a	=	,	k = 1, . . . , n
+kk	det Ak-1
+avendo posto per convenzione det A0 = 1.
+
+
+In pratica questa non `e un'ipotesi limitante in quanto la non singolarita` di A permette, con un opportuno scambio di righe in A(k), di ricondursi a questo caso. Infatti scambiare due righe in A(k) significa sostanzialmente scambiare due equazioni nel sistema A(k)x = b(k) e ci`o non altera la natura del sistema stesso.
+Consideriamo la matrice A(k) e supponiamo a(k) = 0. In questo caso possia- mo scegliere un elemento sottodiagonale appartenente alla k esima colonna diverso da zero, supponiamo a(k), scambiare le equazioni di indice i e k e con- tinuare il procedimento perch`e in questo modo l'elemento pivotale `e diverso da zero. In ipotesi di non singolarita` della matrice A possiamo dimostrare tale elemento diverso da zero esiste sicuramente. Infatti supponendo che, ol- tra all'elemento pivotale, siano nulli tutti gli a(k) per i = k + 1, . . . , n, allora
+A(k) ha la seguente struttura:
+
+
+
+
+
+
+A(k) =
+
+(1)
+11
+
+?
+
+(1)
+1,k-1
+. . .	.
+(k-1)
+k-1,k-1
+
+(1)
+1k
+.
+(k-1)
+k-1,k
+
+(1) 1,k+1
+.
+(k-1)
+k-1,k+1
+
+. . .	a(1)
+.
+(k-1)
+k-1,n ?
+
+0	a(k)	a(k)
+
+?	0	.
+
+k,k+1	kn
+?
+
+
+Se partizioniamo A(k) nel seguente modo
+" A(k)	A(k) #
+(k)
+22
+
+con A(k) ? R(k-1)×(k-1) allora il determinante di A(k) `e
+det A(k) = det A(k) det A(k) = 0
+11	22
+perch`e la matrice A(k) ha una colonna nulla. Poich`e tutte la matrici A(k) han- no lo stesso determinante di A, dovrebbe essere det A = 0 e questo contrasta
+con l'ipotesi fatta. Possiamo concludere che se a(k) = 0 e det A /= 0 deve
+necessariamente esistere un elemento a(k) = 0, con i  k + 1, k + 2, . . . , n . Per evitare che un elemento pivotale possa essere uguale a zero si applica una delle cosiddette strategie di pivoting. La strategia di Pivoting parziale prevede che prima di fare ci`o si ricerchi l'elemento di massimo modulo tra
+
+
+
+
+
+
+k
+
+
+
+r
+
+
+
+
+Figura 3.1: Strategia di pivoting parziale.
+
+gli elementi a(k), a(k)	, . . . , a(k) e si scambi l'equazione in cui si trova questo
+kk	k+1,k	nk
+elemento con la k-esima qualora esso sia diverso da a(k). In altri termini il
+pivoting parziale richiede le seguenti operazioni:
+1. determinare l'elemento a(k) tale che
+
+(k)	(k)
+ark  = max aik  ;
+k=i=n
+
+2. effettuare lo scambio tra le equazioni del sistema di indice r e k.
+in alternativa si pu`o adottare la strategia di pivoting totale che `e la seguente:
+1. determinare gli indici r, s tali che
+
+
+(k)
+rs
+k=i,j=n
+
+|aij |;
+
+
+2. effettuare lo scambio tra le equazioni del sistema di indice r e k.
+3. effettuare lo scambio tra le colonne di indice s e k della matrice dei coefficienti.
+
+
+k	s
+
+
+
+
+k
+
+
+
+r
+
+
+Figura 3.2: strategia di pivoting totale.
+
+La strategia di pivoting totale `e senz'altro migliore perch`e garantisce mag- giormente che un elemento pivotale non sia un numero piccolo (in questa
+eventualita` potrebbe accadere che un moltiplicatore sia un numero molto
+grande) ma richiede che tutti gli eventuali scambi tra le colonne della matri- ce siano memorizzati. Infatti scambiare due colonne significa scambiare due incognite del vettore soluzione pertanto dopo la risoluzione del sistema trian- golare per ottenere il vettore soluzione del sistema di partenza `e opportuno permutare le componenti che sono state scambiate.
+Esempio 3.3.3 Risolvere il sistema lineare Ax = b dove
+
+1	2	-1 0
+?	?
+
+? 2 ?
+
+3	0	-1 1
+1 -3	1	1
+
+? 4 ?
+
+
+utlizzando il metodo di eliminazione di Gauss con strategia di pivoting par- ziale.
+
+
+Posto A(1) = A, osserviamo che l'elemento pivotale della prima colonna si trova sulla terza riga allora scambiamo per equazioni 1 e 3:
+
+3	0	-1 1
+?	?
+
+? 4 ?
+
+1	2	-1 0
+1 -3	1	1
+calcoliamo i tre moltiplicatori
+
+? 2 ?
+
+
+2	1	1
+l2,1 = - 3 ,	l3,1 = - 3 ,	l4,1 = - 3 .
+Calcoliamo la seconda riga:
+[2a riga di A(1) + ]	2  -1		-1	1	1 + [(-2/3)× 1a riga di A(1)]   -2	0	2/3   -2/3   -8/3   =
+[2a riga di A(2)]	0-1-1/31/3-5/3La terza riga `e la seguente:
+[3a riga di A(1) + ]	1
+a	(1)
+[(-1/3)× 1	riga di A	]	1
+2
+0
+-1
+1/3
+0
+-1/3
+2
+-4/3
++
+= [3a riga di A(2)]	0	2	-2/3	-1/3	2/3 mentre la quarta riga `e
+[4a riga di A(1) + ]	1  -3	1		1		2 + [(-1/3)× 1 riga di A ]  -1	0  1/3  -1/3  -4/3  = [4a riga di A(2)]	0  -3  4/3	2/3	2/3
+Abbiamo ottenuto la matrice ed il vettore al passo 2:
+
+3	0	-1	1
+?	?
+
+?	4	?
+
+A(2) = ? 0 -1 -1/3	1/3 ? ,	b(2) = ? -5/3 ? .
+
+0	2	-2/3 -1/3
+0 -3	4/3	2/3
+
+2/3
+2/3
+
+L'elemento pivotale della seconda colonna si trova sulla quarta riga quindi scambiamo le equazioni 2 e 4:
+
+3	0	-1	1
+?	?
+
+?	4	?
+
+A(2) = ? 0 -3	4/3	2/3
+
+? ,	b(2) = ?
+
+2/3
+.
+
+0	2	-2/3 -1/3
+0 -1 -1/3	1/3
+
+2/3
+-5/3
+
+
+Calcoliamo i due moltiplicatori
+2	1
+l3,2 = 3 ,	l4,2 = - 3 .
+La terza riga `e la seguente:
+[3a riga di A(2) + ]	0	2	2/3	1/3 2/3 + [(2/3)  2a riga di A(2)]  0		2	8/9	4/9  4/9  = [3a riga di A(3)]	0	0	2/9	1/9  10/9
+mentre la quarta riga `e
+[4a riga di A(2) + ]	0  -1  -1/3	1/3  -5/3 + [(-1/3)× 2 riga di A ]  0		1  -4/9  -2/9   -2/9  = [4a riga di A(3)]	0	0  -7/9	1/9  -17/9
+Abbiamo ottenuto la matrice ed il vettore al passo 3:
+
+3	0	-1	1
+?	?
+
+?	4	?
+
+A(3) = ? 0 -3	4/3	2/3 ? ,	b(3) = ?
+
+2/3
+.
+
+0	0	2/9	1/9
+0	0	-7/9 1/9
+
+10/9
+-17/9
+
+L'elemento pivotale della terza colonna si trova sulla quarta riga quindi scambiamo le equazioni 3 e 4:
+
+3	0	-1	1
+?	?
+
+?	4	?
+
+A(3) = ? 0 -3	4/3	2/3 ? ,	b(3) = ?
+
+2/3
+.
+
+
+
+Calcoliamo l'unico moltiplicatore del terzo passo:
+2
+l4,3 = 7 .
+La quarta riga `e
+[4a riga di A(3) + ]	0  0	2/9   1/9		10/9 + [(2/7)  3a riga di A(3)]  0  0	2/9  2/63	34/63 = [4a riga di A(4)]	0  0		0   1/7			4/7
+
+
+Il sistema triagolare superiore equivalente a quello iniziale ha come matrice dei coefficienti e come termine noto:
+
+3	0	-1	1
+?	?
+
+?	4	?
+
+A(3) = ? 0 -3	4/3	2/3 ? ,	b(3) = ?
+
+2/3
+.
+
+
+
+Risolvendo tale sistema triangolare superiore si ricava il vettore:
+x4 = 4,	x3 = 3,	x2 = 2,	x1 = 1.
+Nelle pagine seguenti sono riportati i codici MatLab che implementano il metodo di Gauss con entrambe le strategie di pivoting descritte.
+function x=Gauss(A,b)
+%
+% Metodo di eliminazione di Gauss
+%
+% Parametri di input:
+% A = Matrice dei coefficienti del sistema
+% b = Vettore dei termini noti del sistema
+%
+% Parametri di input:
+% x = Vettore soluzione del sistema lineare
+%
+n = length(b); x = zeros(n,1); for k=1:n-1
+if abs(A(k,k))<eps
+  error('Elemento pivotale nullo ') end
+for i=k+1:n
+A(i,k) = A(i,k)/A(k,k);
+b(i) = b(i)-A(i,k)*b(k); for j=k+1:n
+ A(i,j) = A(i,j)-A(i,k)*A(k,j); end
+end
+
+
+end
+x(n) = b(n)/A(n,n); for i=n-1:-1:1
+ x(i) = (b(i)-A(i,i+1:n)*x(i+1:n))/A(i,i); end
+return
+function x=Gauss_pp(A,b)
+%
+% Metodo di Gauss con pivot parziale
+%
+% Parametri di input:
+% A = Matrice dei coefficienti del sistema
+% b = Vettore dei termini noti del sistema
+%
+% Parametri di input:
+% x = Vettore soluzione del sistema lineare
+%
+n = length(b); x = zeros(n,1); for k=1:n-1
+[a,i] = max(abs(A(k:n,k))); i = i+k-1;
+if i~=k
+A([i k],:) = A([k i],:);
+ b([i k]) = b([k i]); end
+for i=k+1:n
+A(i,k) = A(i,k)/A(k,k);
+b(i) = b(i)-A(i,k)*b(k); for j=k+1:n
+ A(i,j) = A(i,j)-A(i,k)*A(k,j); end
+ end end
+x(n) = b(n)/A(n,n); for i=n-1:-1:1
+x(i) = (b(i)-A(i,i+1:n)*x(i+1:n))/A(i,i);
+
+
+end return
+function x=Gauss_pt(A,b)
+%
+% Metodo di Gauss con pivot totale
+%
+% Parametri di input:
+% A = Matrice dei coefficienti del sistema
+% b = Vettore dei termini noti del sistema
+%
+% Parametri di input:
+% x = Vettore soluzione del sistema lineare
+%
+n = length(b); x = zeros(n,1); x1 = x;
+indice = [1:n]; for k=1:n-1
+[a,riga] = max(abs(A(k:n,k:n))); [mass,col] = max(a);
+j = col+k-1;
+i = riga(col)+k-1; if i~=k
+A([i k],:) = A([k i],:);
+b([i k]) = b([k i]); end
+if j~=k
+A(:,[j k]) = A(:,[k j]);
+ indice([j k]) = indice([k j]); end
+for i=k+1:n
+A(i,k) = A(i,k)/A(k,k);
+b(i) = b(i)-A(i,k)*b(k); for j=k+1:n
+ A(i,j) = A(i,j)-A(i,k)*A(k,j); end
+end
+
+
+end
+%
+% Risoluzione del sistema triangolare superiore
+%
+x1(n) = b(n)/A(n,n); for i=n-1:-1:1
+ x1(i) = (b(i)-A(i,i+1:n)*x1(i+1:n))/A(i,i); end
+%
+% Ripermutazione del vettore
+%
+for i=1:n x(indice(i))=x1(i);
+end return
+
+3.3.3 La Fattorizzazione LU
+Introduzione
+Supponiamo di dover risolvere un problema che richieda, ad un determinato passo, la risoluzione del sistema lineare Ax = b e di utilizzare il metodo di Gauss. La matrice viene resa triangolare superiore e viene risolto il sistema triangolare
+A(n)x = b(n).	(3.23)
+Ipotizziamo che, nell'ambito dello stesso problema, dopo un certo tempo sia necessario risolvere il sistema
+Ax = c
+i cui la matrice dei coefficienti `e la stessa mentre `e cambiato il termine noto. Appare chiaro che non `e possibile sfruttare i calcoli gia fatti in quanto il calcolo del vettore dei termini noti al passo n dipende dalle matrici ai passi precedenti all'ultimo, quindi la conoscenza della matrice A(n) `e del tutto
+inutile. E` necessario pertanto applicare nuovamente il metodo di Gauss e
+risolvere il sistema triangolare
+A(n)x = c(n).	(3.24)
+L'algoritmo che sar`a descritto in questo paragrafo consentir`a di evitare l'e- ventualita` di dover rifare tutti i calcoli (o una parte di questi).
+
+
+Calcolo diretto della fattorizzazione LU
+La Fattorizzazione LU di una matrice stabilisce, sotto determinate ipotesi, l'esistenza di una matrice L triangolare inferiore con elementi diagonali uguali a 1 e di una matrice triangolare superiore U tali che A = LU.
+Vediamo ora di determinare le formule esplicite per gli elementi delle due matrici. Fissata la matrice A, quadrata di ordine n, imponiamo quindi che risulti
+A = LU.
+Una volta note tali matrici il sistema di partenza Ax = b viene scritto come
+LUx = b
+e, posto Ux = y, il vettore x viene trovato prima risolvendo il sistema triangolare inferiore
+Ly = b
+e poi quello triangolare superiore
+Ux = y.
+Imponiamo quindi che la matrice A ammetta fattorizzazione LU :
+? a11	. . .	a1j	. . .	a1n ?
+
+.
+.
+ai1
+??	.
+
+.
+.
+. . .	aij
+.
+
+.
+.
+. . .	ain	=
+.	??
+
+an1	. . .	anj	. . .	ann
+?? 1	0	. . .	. . .	. . .	0 ?? ? u11	. . .	. . .	u1j	. . .	u1n ?
+
+l21	1
+
+. . .
+
+.	0	u22	. . .	u2j	. . .	u2n
+? ?	?
+
+=
+? li1	. . .	li,i-1	1
+
+. . .	. ? ?	.
+
+. . .	ujj
+
+.
+. . .	ujn
+
+?	. . .
+
+0 ?? ??	.
+
+.	??
+
+ln1	. . .	ln,i-1	ln,i	. . .	1
+Deve essere
+
+0	. . .	. . .	. . .	0	unn
+
+n
+aij =	likukj =
+k=1
+
+min(i,j)
+
+
+k=1
+
+
+likukj	i, j = 1, . . . , n.	(3.25)
+
+
+Considerando prima il caso i	j, uguagliando quindi la parte triangolare superiore delle matrici abbiamo
+
+i
+aij =	likukj	j = i	(3.26)
+k=1
+ovvero
+i-1	i-1
+aij = S likukj + liiuij = S likukj + uij	j = i
+
+
+infine risulta
+
+k=1
+
+
+
+i-1
+
+k=1
+
+uij = aij -	likukj	j = i	(3.27)
+k=1
+e ovviamente u1j = a1j, per j = 1, . . . , n. Considerando ora il caso j < i, uguagliando cio`e le parti strettamente triangolari inferiori delle matrici risulta:
+j
+aij =	likukj	i > j	(3.28)
+k=1
+ovvero
+
+
+
+da cui
+
+j-1
+aij =	likukj + lijujj	i > j
+k=1
+
+1
+lij =
+jj
+
+
+aij -
+
+j-1
+
+
+k=1
+
+likukj !
+
+i > j.	(3.29)
+
+Si osservi che le formule (3.27) e (3.29) vanno implementate secondo uno degli schemi riportati nella seguente figura.
+
+
+
+
+
+	
+Tecnica di Crout	Tecnica di Doolittle
+Ogni schema rappresenta in modo schematico una matrice la cui parte trian- golare superiore indica la matrice U mentre quella triangolare inferiore la matrice L mentre i numeri indicano l'ordine con cui gli elementi saranno calcolati. Per esempio applicando la tecnica di Crout si segue il seguente ordine:
+• 1o Passo: Calcolo della prima riga di U ;
+• 2o Passo: Calcolo della seconda riga di L;
+• 3o Passo: Calcolo della seconda riga di U ;
+• 4o Passo: Calcolo della terza riga di L;
+• 5o Passo: Calcolo della terza riga di U ;
+• 6o Passo: Calcolo della quarta riga di L;
+• 7o Passo: Calcolo della quarta riga di U ;
+e cos`i via procedendo per righe in modo alternato. Nel caso della tecnica di Doolittle si seguono i seguenti passi:
+• 1o Passo: Calcolo della prima riga di U ;
+• 2o Passo: Calcolo della prima colonna di L;
+• 3o Passo: Calcolo della seconda riga di U ;
+
+
+• 4 Passo: Calcolo della seconda colonna di L;
+• 5 Passo: Calcolo della terza riga di U ;
+• 6 Passo: Calcolo della terza colonna di L;
+• 7 Passo: Calcolo della quarta riga di U .
+La fattorizzazione LU `e un metodo sostanzialmente equivalente al metodo di Gauss, infatti la matrice U che viene calcolata coincide con la matrice A(n). Lo svantaggio del metodo di fattorizzazione diretto risiede essenzialmente nella maggiore difficolt`a, rispetto al metodo di Gauss, di poter programmare una strategia di pivot. Infatti se un elemento diagonale della matrice U `e uguale a zero non `e possibile applicare l'algoritmo.
+function [L,U]=crout(A);
+%
+% La funzione calcola la fattorizzazione LU della
+% matrice A applicando la tecnica di Crout
+%
+% L = matrice triang. inferiore con elementi diagonali
+%	uguali a 1
+% U = matrice triangolare superiore
+%
+[m n] = size(A); U = zeros(n);
+L = eye(n); U(1,:) = A(1,:);
+for i=2:n
+for j=1:i-1
+L(i,j) = (A(i,j) - L(i,1:j-1)*U(1:j-1,j))/U(j,j);
+end
+for j=i:n
+U(i,j) = A(i,j) - L(i,1:i-1)*U(1:i-1,j);
+end
+end
+return
+function [L,U]=doolittle(A);
+
+
+%
+% La funzione calcola la fattorizzazione LU della
+% matrice A applicando la tecnica di Doolittle
+%
+% L = matrice triang. inferiore con elementi diagonali
+%	uguali a 1
+% U = matrice triangolare superiore
+%
+[m n] = size(A); L = eye(n);
+U = zeros(n); U(1,:) = A(1,:);
+for i=1:n-1
+for riga=i+1:n
+L(riga,i)=(A(riga,i)-L(riga,1:i-1)*U(1:i-1,i))/U(i,i);
+end
+for col=i+1:n
+U(i+1,col) = A(i+1,col)-L(i+1,1:i)*U(1:i,col);
+end
+end
+return
+Equivalenza tra metodo di Gauss e fattorizzazione LU
+In questo paragrafo esplicitiamo la relazione di equivalenza che lega il metodo di eliminazione di Gauss (senza alcuna strategia di pivoting) e la fattorizza- zione LU .
+Supponiamo di dover risolvere il sistema
+Ax = b	?	A(1)x = b(1)
+con A  Rn×n e tale che tutti i suoi minori principali siano diversi da zero, e b Rn. Definiamo ora la seguente matrice L(1), quadrata di ordine n, detta matrice elementare di Gauss:
+
+L(1) = ??
+
+1
+m21	1	0
+m31	0	1
+
+
+
+
+? ,	mi1 ? R	i = 2, . . . , n.	(3.30)
+
+
+
+
+
+i cui elementi mi1 sono i moltiplicatori definiti al primo passo del metodo di
+Gauss. E` facile verificare che
+A(2) = L(1)A(1),	b(2) = L(1)b(1)
+pertanto il sistema al secondo passo si ottiene moltiplicando (a sinistra) il sistema di partenza per la matrice (3.30). La matrice L(1) ha determinante unitario pertanto le matrici A(1) e A(2) hanno lo stesso determinante (come abbiamo gia` osservato in precedenza). Si pu`o verificare che ad un generico passo k, definita la k-esima matrice elementare di Gauss
+
+? 1
+
+L(k) =
+??
+
+
+. . .
+
+
+
+1
+mk+1,k
+.
+
+?
+
+,
+. . .	??
+
+mn,k	1
+in cui i numeri mik sono i moltiplicatori al passo k, si ottiene
+A(k+1) = L(k)A(k),	b(k+1) = L(k)b(k).	(3.31)
+Arrivando all'ultimo passo si ottiene
+A(n) = L(n-1)A(n-1),	b(n) = L(n-1)b(n-1)
+e, applicando ripetutamente la (3.31) `e possibile mettere in relazione la matrice triangolare A(n) con la matrice dei coefficienti del sistema iniziale:
+A(n) = L(n-1)L(n-2) . . . L(2)L(1)A(1) = L(n-1)L(n-2) . . . L(2)L(1)A.	(3.32)
+A questo punto enunciamo, senza dimostrare, le seguenti proprieta`:
+  I proprieta`: l'inversa di una matrice elementare di Gauss si ottiene cam- biando il segno dei moltiplicatori:
+
+? 1
+
+ L(k) -1 = ?
+??
+
+
+. . .
+
+
+
+1
+mk+1,k	1
+.
+.
+
+?
+
+.
+. . .	??
+
+
+
+• II proprieta`: per ogni k = 1, . . . , n - 1 risulta
+
+1
+-m21
+
+. . .	?
+?
+
+L(1)
+
+ -1
+
+. . .
+
+L(k-1)
+
+ -1 = ?
+?
+
+m	. . .	1
+.
+.	-mk+1,k	1
+?
+
+. . .
+-mn1	. . .	-mn,k	1
+La relazione (3.32) pu`o essere riscritta come
+L(n-1)L(n-2) . . . L(2)L(1) -1 A(n) = A
+da cui, sfruttando la proprieta` della matrice inversa di un prodotto di matrici
+L(1) -1  L(2) -1 . . . L(n-1) -1 A(n) = A	(3.33)
+Applicando la II proprieta` si deduce che il prodotto delle inverse delle matrici elementari di Gauss `e una matrice triangolare inferiore con elementi diagonali uguali a 1, pertando ponendo
+L = L(1) -1 L(2) -1	 L(n-1) -1 ,
+
+
+e
+
+da (3.33) segue
+
+
+U = A(n) A = LU.
+
+3.4 Condizionamento di sistemi lineari
+Nel Capitolo 1 `e stato introdotto il concetto di rappresentazione in base ed `e stata motivata la sostanziale inaffidabilita` dei risultati dovuti ad elaborazio- ni numeriche, a causa dell'artimetica finita dell'elaboratore. Appare chiaro come la bassa precisione nel calcolo potrebbe fornire dei risultati numeri-
+
+ci molto lontani da quelli reali.	In alcuni casi tale proprieta` problema. Consideriamo il sistema lineare
+  x	+	y	=	2 1000x + 1001y	= 2001
+
+`e insita nel
+
+
+(3.34)
+
+
+la cui soluzione `e x = y = 1. Perturbiamo ora dell'1% il coefficiente di x nella prima equazione e consideriamo pertanto il seguente sistema
+(1 + 0.01)x +	y	=	2 1000x	+ 1001y	= 2001.
+Sarebbe naturale attendersi che la soluzione del sistema non sia molto lontana da quella del sistema (3.34), invece la soluzione `e x˜ = 1/9 e x˜ = 1901/900, il che porta ad una differenza pari a
+ x - x˜  = 1.57.
+Se consideriamo inoltre il sistema
+Ax = b	(3.35)
+dove A ? Rn×n `e la cosiddetta matrice di Hilbert, i cui elementi sono
+1
+aij = i + j - 1 ,	i, j = 1, . . . , n
+
+
+ovvero, se n = 5 :
+??
+??
+
+????
+
+
+mentre il vettore b `e scelto in modo tale che il vettore soluzione abbia tutte componenti uguali a 1, cosicch`e si possa conoscere con esattezza l'errore commesso nel suo calcolo. Risolvendo il sistema di ordine 20 con il metodo di Gauss senza pivoting si osserva che la soluzione `e, in realt`a, molto lontana da quella teorica (l'errore relativo `e pari circa a 23.5). Questa situazione peggiora prendendo matrici di dimensioni crescenti.
+Definizione 3.4.1 Un sistema lineare per cui a piccoli errori dei dati cor- rispondono grandi errori nella soluzione si definisce mal condizionato o mal posto.
+
+
+L'importanza dello studio del condizionamento dei problemi dipende dal fatti che bisogna ricordare che, a causa degli errori legati alla rappresentazione dei numeri reali, il sistema che l'elaboratore risolve non coincide con quello teorico, poich`e alla matrice A ed al vettore b e necessario aggiungere la matrice dA ed il vettore db (che contengono le perturbazioni legate a tali errori), e che la soluzione ovviamente non `e la stessa, pertanto la indichiamo con x + dx:
+(A + dA)(x + dx) = b + db.	(3.36)
+Si pu`o dimostrare che l'ordine di grandezza della perturbazione sulla solu- zione `e
+ dx  =  A  A-1    dA  +  db   .
+x 	A 	b 
+Il numero K(A) =  A  A-1  , detto indice di condizionamento del sistema, misura le amplificazioni degli errori sui dati del problema (ovvero la misura di quanto aumentano gli errori sulla soluzione). Il caso della matrice di Hilbert `e appunto uno di quelli per cui l'indice di condizionamento assume valori molto grandi (di ordine esponenziale) all'aumentare della dimensione, si parla infatti di matrici malcondizionate. Quando ci`o non accade si parla invece di matrici bencondizionate. Tra i metodi numerici che si possono
+applicare per la risoluzione di un problema un metodo risulta piu` stabile
+di un altro se `e meno sensibile agli errori indotti dai calcoli. Lo studio della stabilita` di un metodo numerico pu`o perdere di significato quando il problema
+`e fortemente mal condizionato, poich`e in questo caso l'errore inerente (legato alla rappresentazione dei dati) prevale sull'errore algoritmico (introdotto nelle operazioni macchina).
+
+
+
+
+Capitolo 4
+Interpolazione di dati e Funzioni
+
+4.1 Introduzione
+Nel campo del Calcolo Numerico si possono incontrare diversi casi nei quali
+`e richiesta l'approssimazione di una funzione (o di una grandezza incognita):
+1) non `e nota l'espressione analitica della funzione f (x) ma si conosce il valo- re che assume in un insieme finito di punti x1, x2, . . . , xn. Si potrebbe pensare anche che tali valori siano delle misure di una grandezza fisica incognita va- lutate in differenti istanti di tempo.
+2) Si conosce l'espressione analitica della funzione f (x) ma `e cos`i complicata dal punto di vista computazionale che `e piu` conveniente cercare un'espres- sione semplice partendo dal valore che essa assume in un insieme finito di punti. In questo capitolo analizzeremo un particolare tipo di approssimazio- ne di funzioni cio`e la cosiddetta interpolazione che richiede che la funzione approssimante assume in determinate ascisse esattamente lo stesso valore di f (x). In entrambi i casi appena citati `e noto, date certe informazioni supplementari, che la funzione approssimante va ricercata della forma:
+                f (x) ? g(x; a0, a1, . . . , an).	(4.1) Se i parametri a0, a1, . . . , an sono definiti dalla condizione di coincidenza di
+f e g nei punti x0, x1, . . . , xn, allora tale procedimento di approssimazione
+si chiama appunto Interpolazione. Invece se x [mini xi, maxi xi] allora si parla di Estrapolazione.  Un problema simile `e invece quello in cui i valori
+
+78
+
+
+della funzione f che sono noti sono affetti da errore e quindi si cerca una funzione approssimante che passi vicino ai valori assegnati ma che non sia perfettamente coincidente con essi. Il problema in questo caso prende il nome di Approssimazione. Tra i procedimenti di interpolazione il piu` usato `e quello in cui si cerca la funzione g in (4.1) nella forma
+n
+g(x; a0, a1, . . . , an) =	aiFi(x)
+i=0
+dove Fi(x), per i = 0, . . . , n, sono funzioni fissate e i valori di ai, i = 0, . . . , n, sono determinati in base alle condizioni di coincidenza di f con la funzione approssimante nei punti di interpolazione (detti anche nodi), xj, cio`e si pone
+
+n
+f (xj) =	aiFi(xj)	j = 0, . . . , n.	(4.2)
+i=0
+Il processo di determinazione degli ai attraverso la risoluzione del sistema (4.2) si chiama metodo dei coefficienti indeterminati. Il caso piu` studiato `e quello dell'interpolazione polinomiale, in cui si pone:
+Fi(x) = xi	i = 0, . . . , n
+e perci`o la funzione approssimante g assume la forma
+n
+aixi,
+i=0
+mentre le condizioni di coincidenza diventano
+a0	+a1x0	+a2x2	+ . . .	+an-1xn-1	+anxn	=	f (x0)
+a0	+a1x1	+a2x2	+ . . .	+an-1xn-1	+anxn	=	f (x1)
+
+1
+.	.	.
+.	.	.
+
+1	1	.	(4.3)
+.
+
+a0	+a1xn	+a2x2	+ . . .	+an-1xn-1	+anxn	=  f (xn)
+Le equazioni (4.3) costituiscono un sistema di n + 1 equazioni nelle n + 1 incognite ai, i = 0, . . . , n :
+V a = y
+
+
+
+dove la matrice dei coefficienti `e
+? 1	x0	x2
+1 x1	x2
+
+
+
+. . .	xn-1	n
+
+. . .	xn-1	n
+
+V =
+.	.	.
+?
+
+,
+.	.  ?
+
+
+i vettori dei termini noti e delle incognite sono, rispettivamente,
+y = [f (x0), f (x1), . . . , f (xn)]T
+e a = [a0, a1, . . . , an]T .
+Se i nodi xj sono a due a due distinti allora la matrice dei coefficienti del sistema (4.3), detta matrice di Vandermonde, `e non singolare e pertanto il problema dell'interpolazione ammette sempre un'unica soluzione. Il metodo dei coefficienti indeterminati consente di trovare la soluzione del problema so- lo risolvendo un sistema lineare che potrebbe avere grandi dimensioni, essere malcondizionato (soprattutto se due nodi sono molto vicini) e comunque non in grado di fornire un'espressione in forma chiusa del polinomio. Per questi motivi descriviamo un modo alternativo per risolvere il problema di interpolazione in grado di fornire l'espressione esplicita del polinomio cercato.
+
+4.2 Il Polinomio Interpolante di Lagrange
+Al fine di dare una forma esplicita al polinomio interpolante, scriviamo il candidato polinomio nella seguente forma:
+n
+Ln(x) =	lnk(x)f (xk)	(4.4)
+k=0
+dove gli lnk(x) sono per il momento generici polinomi di grado n. Imponendo le condizioni di interpolazione
+Ln(xi) = f (xi)	i = 0, . . . , n
+
+
+deve essere, per ogni i:
+
+
+
+
+
+ed `e evidente che se
+
+n
+Ln(xi) =	lnk(xi)f (xk) = f (xi)
+k=0
+
+
+
+0 se k /= i
+lnk(xi) =
+1 se k = i
+
+
+
+
+
+
+
+(4.5)
+
+allora esse sono soddisfatte.	Infatti calcolando il polinomio (4.4) in un generico nodo xi risulta
+n
+Ln(xi)  =	lnk(xi)f (xk)
+k=0
+
+i-1
+=	lnk(xi)f (xk) + lni(xi) f (xi) + S lnk(xi)f (xk) = f (xi).
+=?¸0	x	` ?¸x	?¸	x
+k=0	=1	k=i+1
+=0
+Per determinare l'espressione del generico polinomio lnk(x) osserviamo che la
+prima condizione di (4.5) indica che esso si annulla negli n nodi x0, x1, . . . , xk-1, xk+1, . . . , xn
+pertanto deve essere
+lnk(x) = ck	Y (x - xi)
+i=0,i/=k
+mentre impondendo la seconda condizione di (4.5)
+lnk(xk) = ck	Y (xk - xi) = 1
+i=0,i/=k
+
+
+si trova immediatamente:
+
+
+
+ck =
+
+
+
+
+i=Y0,i/=k
+
+
+1
+.
+(xk - xi)
+
+
+In definitiva il polinomio interpolante ha la seguente forma:
+L (x) = S	Y	x - xi ! f (x ).	(4.6)
+
+n
+k=0
+
+
+i=0,i/=k
+
+
+
+xk - xi
+
+Il polinomio (4.6) prende il nome di Polinomio di Lagrange mentre i polinomi:
+l	(x) =	Y	 x - xi  ;	k = 0, 1, . . . , n
+si chiamano Polinomi Fondamentali di Lagrange.
+
+4.2.1 Il Resto del Polinomio di Lagrange
+Assumiamo che la funzione interpolata f (x) sia di classe Cn+1([a, b]) e va- lutiamo l'errore che si commette nel sostituire f (x) con Ln(x) in un punto x = xi. Supponiamo che l'intervallo [a, b] sia tale da contenere sia i nodi xi che l'ulteriore punto x. Sia dunque
+e(x) = f (x) - Ln(x)
+l'errore (o resto) commesso nell'interpolazione della funzione f (x). Poich`e
+e(xi) = f (xi) - Ln(xi) = 0	i = 0, . . . , n
+`e facile congetturare per e(x) la seguente espressione:
+e(x) = c(x)?n+1(x)
+
+
+dove
+
+
+n
+?n+1(x) =	(x - xi)
+i=0
+
+`e il cosiddetto polinomio nodale mentre c(x) `e una funzione da determinare. Definiamo ora la funzione
+F(t; x) = f (t) - Ln(t) - c(x)?n+1(t)
+dove t `e una variabile ed x `e un valore fissato. Calcoliamo la funzione F(t; x) nei nodi xi:
+F(xi; x) = f (xi) - Ln(xi) - c(x)?n+1(xi) = 0
+
+
+e anche nel punto x:
+F(x; x) = f (x) - Ln(x) - c(x)?n+1(x) = e(x) - c(x)?n+1(x) = 0
+pertanto la funzione F(t; x) ammette almeno n + 2 zeri distinti. Osserviamo inoltre che `e F(t; x) `e derivabile con continuit`a n +1 volte poich`e, per ipotesi, f (x) `e di classe n+1. Applicando il teorema di Rolle segue che FJ(t; x) ammette almeno n + 1 zeri distinti. Riapplicando lo stesso teorema segue che FJJ(t; x) ammette almeno n zeri distinti. Cos`i proseguendo segue che
+??x ? [a, b] ?	F	(?x; x) = 0.
+Calcoliamo ora la derivata di ordine n+1 della funzione F(t; x), osservando in- nanzitutto che la derivata di tale ordine del polinomio Ln(x) `e identicamente nulla. Pertanto
+
+
+F(n+1)
+
+(t; x) = f
+
+
+(n+1)
+
+dn+1
+(t) - c(x)dtn+1 ?n+1(t).
+
+Calcoliamo la derivata di ordine n + 1 del polinomio nodale. Osserviamo innanzitutto che
+n
+?n+1(t) =	(t - xi) = tn+1 + pn(t)
+i=0
+dove pn(t) `e un polinomio di grado al piu` n. Quindi
+
+
+dn+1
+
+dn+1
+
+
+n+1
+
+Poich`e e
+
+dtn+1 ?n+1(t) = dtn+1 t	.
+
+d tn+1 = (n + 1)tn
+dt
+
+
+
+`e facile dedurre che
+
+d2
+dt2 t
+
+n+1
+
+= (n + 1)nt
+
+n-1
+
+
+
+Pertanto
+
+dn+1 dtn+1 t
+
+
+n+1
+
+dn+1
+= dtn+1 ?n+1(t) = (n + 1)!.
+
+F(n+1)(t; x) = f (n+1)(t) - c(x)(n + 1)!
+
+
+
+e cio`e
+e in definitiva
+
+
+F(n+1)(?x; x) = f (n+1)(?x) - c(x)(n + 1)! = 0
+
+f (n+1)(?x)
+c(x) =
+(n + 1)!
+
+f (n+1)(?x)
+
+e(x) =		?n+1(x).	(4.7) (n + 1)!
+Esempio 4.2.1 Supponiamo di voler calcolare il polinomio interpolante di Lagrange passante per i punti ( 1, 1), (0, 1), (1, 1), (3, 2) e (5, 6). Il grado di tale polinomio `e 4, quindi definiamo i nodi
+x0 = -1,	x1 = 0,	x2 = 1,	x3 = 3,	x4 = 5,
+cui corrispondono le ordinate che indichiamo con yi, i = 0, . . . , 4:
+y0 = -1,	y1 = 1,	y2 = -1,	y3 = 2,	y4 = 6.
+Scriviamo ora l'espressione del polinomio L4(x):
+L4(x) = l4,0(x)y0 + l4,1(x)y1 + l4,2(x)y2 + l4,3(x)y3 + l4,4(x)y4	(4.8)
+e calcoliamo i 5 polinomi fondamentali di Lagrange:
+
+
+l4,0
+
+
+
+
+
+
+l
+
+(x)  = 	(x - 0)(x - 1)(x - 3)(x - 5)	
+(-1 - 0)(-1 - 1)(-1 - 3)(-1 - 5)
+1
+= 48 x(x - 1)(x - 3)(x - 5)
+(x)  = (x + 1)(x - 1)(x - 3)(x - 5)
+
+4,1
+
+
+
+
+
+l4,2
+
+(0 + 1)(0 - 1)(0 - 3)(0 - 5)
+1
+= - 15 (x + 1)(x - 1)(x - 3)(x - 5)
+(x)  = (x + 1)(x - 0)(x - 3)(x - 5)
+(1 + 1)(1 - 0)(1 - 3)(1 - 5)
+1
+= 16 x(x + 1)(x - 3)(x - 5)
+
+
+
+
+l4,3
+
+
+
+
+
+l4,4
+
+(x)  = (x + 1)(x - 0)(x - 1)(x - 5)
+(3 + 1)(3 - 0)(3 - 1)(3 - 5)
+1
+= - 48 x(x + 1)(x - 1)(x - 5)
+(x)  = (x + 1)(x - 0)(x - 1)(x - 3)
+(5 + 1)(5 - 0)(5 - 1)(5 - 3)
+1
+= 240 x(x + 1)(x - 1)(x - 3)
+
+Sostituendo in (4.8) il valore della funzione nei nodi si ottiene l'espressione finale del polinomio interpolante:
+L4(x) = -l4,0(x) + l4,1(x) - l4,2(x) + 2l4,3(x) + 6l4,4(x).
+Se vogliamo calcolare il valore approssimato della funzione f (x) in un'ascissa diversa dai nodi, per esempio x = 2 allora dobbiamo calcolare il valore del polinomio interpolante L4(2).
+Nelle figure 4.1-4.5 sono riportati i grafici dei cinque polinomi fondamentali di Lagrange: gli asterischi evidenziano il valore assunto da tali polinomi nei nodi di interpolazione. Nella figura 4.6 `e tracciato il grafico del polinomio interpolante di Lagrange, i cerchi evidenziano ancora una volta i punti di interpolazione.
+
+4.2.2 Il fenomeno di Runge
+Nell'espressione dell'errore `e presente, al denominatore, il fattore (n + 1)!, che potrebbe indurre a ritenere che, utilizzando un elevato numero di no- di, l'errore tenda a zero ed il polinomio interpolante converga alla funzione f (x). Questa ipotesi `e confutata se si costruisce il polinomio che interpola la funzione
+1
+f (x) = 1 + x2
+nell'intervallo [ 5, 5] e prendendo 11 nodi equidistanti 5, 4, 3, . . . , 3, 4, 5. Nella successiva figura viene appunto visualizzata la funzione (in blu) ed il relativo polinomio interpolante (in rosso).
+Il polinomio interpolante presenta infatti notevoli oscillazioni, soprattutto verso gli estremi dell'intervallo di interpolazione, che diventano ancora piu`
+
+
+
+
+
+
+1
+
+
+
+0.8
+
+
+
+0.6
+
+
+
+0.4
+
+
+
+0.2
+
+
+
+0
+
+
+
+-0.2
+
+
+
+-0.4
+-1	0	1	2	3	4	5
+
+Figura 4.1: Grafico del polinomio l40(x).
+
+
+
+1.2
+
+
+1
+
+
+0.8
+
+
+0.6
+
+
+0.4
+
+
+0.2
+
+
+0
+
+
+-0.2
+
+
+-0.4
+
+
+-0.6
+
+-1	0	1	2	3	4	5
+
+Figura 4.2: Grafico del polinomio l41(x).
+
+
+
+
+1.5
+
+
+
+
+1
+
+
+
+
+0.5
+
+
+
+
+0
+
+
+
+
+-0.5
+
+
+
+
+-1
+
+
+
+
+-1.5
+-1	0	1	2	3	4	5
+
+Figura 4.3: Grafico del polinomio l42(x).
+
+
+
+
+
+
+
+1.2
+
+
+1
+
+
+0.8
+
+
+0.6
+
+
+0.4
+
+
+0.2
+
+
+0
+
+
+-0.2
+-1	0	1	2	3	4	5
+
+Figura 4.4: Grafico del polinomio l43(x).
+
+
+
+
+
+
+
+
+1
+
+
+
+0.8
+
+
+
+0.6
+
+
+
+0.4
+
+
+
+0.2
+
+
+
+0
+
+
+
+-0.2
+-1	0	1	2	3	4	5
+
+Figura 4.5: Grafico del polinomio l44(x).
+
+
+
+8
+
+
+7
+
+
+6
+
+
+5
+
+
+4
+
+
+3
+
+
+2
+
+
+1
+
+
+0
+
+
+-1
+
+
+-2
+-1	0	1	2	3	4	5
+
+Figura 4.6: Grafico del polinomio interpolante di Lagrange L4(x).
+
+
+
+Fenomeno di Runge
+2
+
+
+
+
+
+1.5
+
+
+
+
+
+1
+
+
+
+
+
+0.5
+
+
+
+
+
+0
+
+
+
+
+
+-0.5
+-5	-4	-3	-2	-1	0	1	2	3	4	5
+x
+
+Figura 4.7: Il fenomeno di Runge.
+
+evidenti all'aumentare di n.	Tale fenomeno, detto appunto fenomeno di Runge, `e dovuto ad una serie di situazioni concomitanti:
+1. il polinomio nodale, al crescere di n, assume un'andamento fortemente oscillante, soprattutto quando i nodi sono equidistanti;
+2. alcune funzioni hanno le derivate il cui valore tende a crescere con un ordine di grandezza talmente elevato da neutralizzare di fatto la presenza del fattoriale al denominatore dell'espressione dell'errore.
+Per ovviare al fenomeno di Runge si possono utilizzare insiemi di nodi non equidistanti oppure utilizzare funzioni interpolanti polinomiali a tratti (in-
+terpolando di fatto su intervalli piu` piccoli e imponendo le condizioni di
+continuit`a fino ad un ordine opportuno).
+function	yy=lagrange(x,y,xx);
+%
+% La funzione calcola il polinomio interpolante di Lagrange
+% in un vettore assegnato di ascisse
+%
+
+
+% Parametri di input
+% x = vettore dei nodi
+% y = vettore delle ordinate nei nodi
+% xx = vettore delle ascisse in cui calcolare il polinomio
+% Parametri di output
+% yy = vettore delle ordinate del polinomio
+%
+n = length(x); m = length(xx);
+yy = zeros(size(xx)); for i=1:m
+yy(i)=0; for k=1:n
+yy(i)=yy(i)+prod((xx(i)-x([1:k-1,k+1:n]))./...
+(x(k)-x([1:k-1,k+1:n])))*y(k);
+end
+end
+return
+
+4.3 Minimizzazione del Resto nel Problema di Interpolazione
+Supponiamo che la funzione f (x) sia approssimata su [a, b] dal polinomio interpolante Ln(x) e siano x0, x1, . . . , xn i nodi di interpolazione. Come gia` sappiamo se x ? [a, b] risulta
+
+
+
+e dove
+
+e(x) = f (x) - Ln(x) =
+
+f (n+1)(?x)
+(n + 1)! ?n+1(x)	?x ? [a, b]
+n
+
+?n+1(x) =	(x - xi).
+i=0
+Si noti che variando i nodi xi, i = 0, . . . , n, cambia il polinomio ?n+1(x) e di conseguenze cambia l'errore. Ha senso allora porsi il seguente problema: indicato con Pn+1 l'insieme di tutti i polinomi di grado al piu` n+1 cerchiamo il polinomio p˜ ? Pn+1 tale che:
+max |p˜(x)| = min max |p(x)|.	(4.9)
+
+
+Per dare una risposta a questo problema `e essenziale introdurre i Polinomi di Chebyshev di 1a Specie.
+
+4.3.1 Polinomi di Chebyshev
+I polinomi di Chebyshev Tn(x), n = 0, sono cos`i definiti:
+                      Tn(x) = cos(n arccos x)	(4.10) per x ? [-1, 1]. Per esempio:
+T0(x)  = cos(0 arccos x) = cos 0 = 1
+T1(x)  = cos(1 arccos x) = x
+e cos`i via. E` possibile ricavare una relazione di ricorrenza sui polinomi di
+Chebyshev che permette un piu` agevole calcolo. Infatti, posto
+arccos x = ?	(ovvero x = cos ?)
+risulta
+Tn(x) = cos n?(x).
+Considerando le relazioni
+Tn+1(x) = cos(n + 1)? = cos n? cos ? - sin n? sin ? Tn-1(x) = cos(n - 1)? = cos n? cos ? + sin n? sin ?
+e sommandole membro a membro,
+            Tn+1(x) + Tn-1(x) = 2 cos ? cos n? = 2xTn(x) si ricava la seguente relazione di ricorrenza
+Tn+1(x) = 2x Tn(x) - Tn-1(x),	n = 1	(4.11)
+che, insieme all'espressione dei primi due polinomi,
+T0(x) = 1,	T1(x) = x.
+
+
+consente di calcolare tutti i polinomi di Chebyshev. L'espressione dei primi polinomi `e la seguente
+T2(x)  = 2xT1(x) - T0(x) = 2x2 - 1
+T3(x)  = 2xT2(x) - T1(x) = 4x3 - 3x
+T4(x)  = 2xT3(x) - T2(x) = 8x4 - 8x2 + 1
+T5(x)  = 2xT4(x) - T3(x) = 16x5 - 20x3 + 5x
+Le seguenti proprieta` dei polinomi di Chebyshev sono di facile dimostrazione:
+
+
+1. max
+x?[-1,1]
+
+|Tn(x)| = 1
+
+2. T2k( x) = T2k(x) ovvero i polinomio di grado pari sono funzioni pari, quindi tutti i coefficienti delle potenze dispari di x sono nulli;
+3. T2k+1( x) = T2k+1(x) ovvero i polinomio di grado dispari sono fun- zioni dispari, quindi tutti i coefficienti delle potenze pari di x sono nulli;
+4. Tn(x) = 2n-1xn + . . . . . .
+5. Tn(x) assume complessivamente n + 1 volte il valore +1 e -1 nei punti:
+kp
+
+xk	= cos
+
+k = 0, . . . , n;
+n
+
+Tn(xk)  = (-1)k	k = 0, . . . , n;
+6. Tn(x) ha n zeri distinti nell'intervallo ] - 1, 1[ dati da
+(2k + 1)p
+
+xk = cos
+Infatti `e sufficiente porre
+
+da cui risulta
+p
+
+2n	k = 0, . . . , n - 1.
+  cos n? = 0 (2k + 1)p
+
+n? =
+
++ kp =
+2
+
+2	,	k = 0, . . . , n - 1.
+
+
+
+
+Figura 4.8: Grafico dei primi cinque polinomi di Chebyshev
+
+Nella Figura 4.8 sono tracciati i grafici dei primi cinque polinomi di Cheby- shev nell'intervallo [-1, 1]. Ovviamente per calcolare il valore del polinomio Tn(x) in un punto x fissato si usa la formula di ricorrenza (4.11), in quanto tale espressione `e valida per ogni x  R.
+Sia
+T˜ (x) =	1 T (x)
+n	2n-1 n
+il polinomio di Chebyshev normalizzato in modo da risultare monico (ricor- diamo che un polinomio di grado n `e monico se il coefficiente del termine di grado massimo `e 1). Vale allora la seguente proprieta` di minimax.
+Teorema 4.3.1 (Proprieta` di minimax) Se pn(x) `e un qualunque polinomio monico di grado n si ha:
+
+ 1 
+=  max
+
+|T˜ (x)| = max
+
+|p (x)|.
+
+
+Dimostrazione.	Assumiamo per assurdo che sia
+1
+
+max
+x?[-1,1]
+
+|pn(x)| <
+
+
+
+2n-1
+
+e consideriamo il polinomio d(x) = T˜n(x) - pn(x). Osserviamo subito che
+essendo sia T˜n(x) che pn(x) monici, d(x) `e un polinomio di grado al piu`
+n - 1. Siano t0, t1, . . . , tn i punti in cui Tn assume valore -1 e +1. Allora:
+segn(d(tk))  = segn(T˜n(tk) - pn(tk)) = segn(T˜n(tk)).
+Poich`e T˜n(x) cambia segno n volte anche d(x) cambia segno n volte e pertan- to ammetter`a n zeri, in contraddizione con il fatto che d(x) `e un polinomio di grado al piu` n - 1. ?
+
+Osservazione. In verita` vale un'affermazione piu` forte di quella del teorema, cio`e se p(x) `e un polinomio monico di grado n diverso da T˜n(x) allora:
+1
+
+max
+x?[-1,1]
+
+|p(x)| >
+
+2n-1 .
+
+Il teorema di minimax stabilisce che, tra tutti i polinomi di grado n definiti nell'intervallo [-1, 1], il polinomio di Chebyshev monico `e quello che ha il
+massimo piu` piccolo.	Supponendo che l'intervallo di interpolazione della
+funzione f (x) sia appunto [ 1, 1] e scegliendo come nodi gi zeri del polinomio di Chebyshev risulta
+
+
+pertanto
+
+?n+1(x) = T˜n+1(x)
+
+f (n+1)(?x) ˜
+
+e(x) =	Tn+1(x)
+(n + 1)!
+e, massimizzando tale errore, risulta
+f (n+1)(?x)
+
+
+
+
+	1	
+=	max
+
+
+(n+1)
+
+)|.
+
+
+La crescita dell'errore pu`o dipendere solo dalla derivata di ordine n + 1 della funzione f (x).
+Se l'intervallo di interpolazione `e [a, b] = [ 1, 1] allora il discorso pu`o essere ripetuto egualmente effettuando una trasformazione lineare tra i due inter- valli, nel modo riportato in Figura 4.9. Calcolando la retta nel piano (x, t)
+
+
+
+    Figura 4.9: Trasformazione lineare tra gli intervalli [-1, 1] e [a, b]. passante per i punti (-1, a) e (1, b):
+
+
+t = b - ax + a + b
+
+(4.12)
+
+2	2
+detti xk gli zeri del polinomio di Chebyshev Tn+1(x) allora si possono usare come nodi i valori
+
+
+
+ovvero
+
+t = b - ax
+k	2	k
+
+a + b
++	,	k = 0, 1, . . . , n,
+2
+
+t  = b - a cos (2k + 1)p + a + b
+
+k = 0, 1, . . . , n.	(4.13)
+
+k	2	2(n + 1)	2
+Per determinare l'espressione del polinomio di Chebyshev traslato nell'inter- vallo [a, b], si deve utilizzare la trasformazione lineare che fornisce x ? [a, b] a partire da t ? [-1, 1]:
+
+ovvero
+
+x = 2t - (b + a)
+b - a
+
+T [a,b](x) = T
+
+n+1
+
+2t - (b + a)	,
+b - a
+
+
+il cui coefficiente di grado massimo vale
+n	2n+1	22n+1
+2 (b - a)n+1 = (b - a)n+1 .
+Se come nodi di interpolazione scegliamo i punti tk dati da (4.13), cio`e gli
+n + 1 zeri del polinomio T˜[a,b](x), allora abbiamo il polinomio monico `e
+
+
+T˜[a,b](x) =
+
+(b	a)n+1
+22n+1	Tn+1
+
+2t - (b + a)	, b - a
+
+considerato che la trasformazione lineare inversa della (4.12) `e
+x = 2t - (b + a),	t ? [a, b] ? x ? [-1, 1]
+
+quindi per l'errore dell'interpolazione vale la seguente maggiorazione:
+
+
+f (n+1)(?x)
+
+˜[a,b]
+
+max |e(x)|  = max	 max |Tn+1 (x)|
+
+
+f (n+1)(?x) (b - a)n+1
+= max	 
+x?[a,b]  (n + 1)!	22n+1
+Nella Figura 4.10 sono raffigurati la funzione di Runge ed il polinomio in- terpolante di Lagrange di grado 10 calcolato prendendo come nodi gli zeri del polinomio di Chebyshev di grado 11. Si pu`o osservare la differenza con la Figura 4.7. Di seguito viene riportato il codice per tracciare il grafico del polinomio interpolante la funzione di Runge nei nodi di Chebyshev in un intervallo scelto dall'utente.
+clear
+format long e
+a = input('Inserire estremo sinistro ');
+b = input('Inserire estremo destro ');
+n = input('Inserire il numero di nodi ');
+%
+% Calcolo del vettore dei nodi di Chebyshev
+%
+x = (a+b)/2+(b-a)/2*cos((2*[0:n-1]+1)*pi./(2*n));
+
+
+
+Interpolazione su nodi di Cheyshev
+1.2
+
+
+
+1
+
+
+
+0.8
+
+
+
+0.6
+
+
+
+0.4
+
+
+
+0.2
+
+
+
+0
+
+
+
+-0.2
+-5	-4	-3	-2	-1	0	1	2	3	4	5
+x
+
+Figura 4.10: Interpolazione su nodi di Chebyshev.
+
+xx = linspace(a,b,200); y = 1./(x.^2+1);
+yy = 1./(xx.^2+1);
+%
+% Calcolo del polinomio interpolante
+%
+zz = lagrange(x,y,xx); figure(1)
+plot(xx,yy) hold on pause
+plot(x,y,'ok') pause plot(xx,zz,'r')
+title('Grafico della funzione e del polinomio interpolante ') hold off
+figure(2) plot(xx,abs(yy-zz))
+title('Grafico dell'errore nell''interpolazione')
+
+4.4 Interpolazione con Funzioni Polinomiali a Tratti
+L'interpolazione polinomiale con un numero di nodi sufficientemente alto pu`o dar luogo a polinomi interpolanti che mostrano un comportamento fortemen- te oscillatorio che pu`o essere inaccettabile. In questo caso si preferisce usare una diversa strategia consistente nell'approssimare la funzione con polinomi di basso grado su sottointervalli dell'intervallo di definizione. Per esempio, supposto che l'intero n sia un multiplo di 3, denotiamo con P3,j(x) il polino- mio di interpolazione di terzo grado associato ai nodi x3j-3, x3j-2, x3j-1, x3j, j = 1, 2, . . . , n/3. Come funzione interpolante prendiamo poi la funzione:
+In(x) = P3,j(x)	in [x3j-3, x3j]
+che prende il nome di Funzione di tipo polinomiale a tratti. La tecnica esposta non `e l'unica, anzi la piu` popolare `e forse quella basata sull'uso delle cosiddette Funzioni Spline.
+
+4.4.1 Interpolazione con Funzioni Spline
+Con il termine spline si indica in lingua inglese un sottile righello usato nella progettazione degli scafi dagli ingegneri navali, per raccordare su un piano un insieme di punti (xi, yi), i = 0, . . . , n + 1.
+Imponendo mediante opportune guide che il righello passi per i punti as- segnati, si ottiene una curva che li interpola. Detta y = f (x) l'equazione della curva definita dalla spline, sotto opportune condizioni f (x) pu`o essere approssimativamente descritta da pezzi di polinomi di terzo grado in modo che la funzione e le sue prime due derivate risultino continue nell'intervallo di interesse. La derivata terza pu`o presentare discontinuit`a nei punti xi. La spline pu`o essere concettualmente rappresentata e generalizzata nel seguente modo.
+Sia
+? =: a = x0 < x1 < x2 < · · · < xn < xn+1 = b
+una decomposizione dell'intervallo [a, b].
+Definizione 4.4.1 Si dice funzione Spline di grado m	1 relativa alla decomposizione ? una funzione s(x) soddisfacente le seguenti proprieta`:
+
+
+1. s(x) ristretta a ciascun intervallo [xi, xi+1], i = 0, . . . , n, `e un polinomio di grado al piu` m;
+2. la derivata s(k)(x) `e una funzione continua su [a, b] per k = 0, 1, . . . , m
+1.
+Si verifica facilmente che l'insieme delle spline di grado assegnato `e uno spazio vettoriale. In generale le spline vengono utilizzate in tutte quelle situazioni dove l'approssimazione polinomiale sull'intero intervallo non `e soddisfacente. Per m = 1 si hanno le cosiddette spline lineari, mentre per m = 3 si hanno le spline cubiche.
+
+4.5 Approssimazione ai minimi quadrati
+Come si `e gia` accennato nell'introduzione di questo Capitolo quando i dati (xi, yi), i = 0, . . . , n, sono rilevati con scarsa precisione, non ha molto senso cercare un polinomio di grado n (o, piu` in generale una funzione ?(x)) che interpoli i valori yi nei nodi xi. In questo caso `e piu` utile cercare una funzione
+che si avvicini il piu` possibile ai dati rilevati.	Chiaramente i criteri che
+si possono scegliere per tradurre l'espressione "si avvicini il piu` possibile" in termini matematici sono molteplici. Nel seguito descriviamo uno dei piu` usati non senza aver richiamato alcune definizioni di algebra lineare. In particolare ricordiamo che si definisce norma 2 di un vettore (o norma euclidea) x  Rn la quantit`a
+n
+ x  2 =	2
+i=1
+che, introducendo il prodotto scalare tra vettori x, y ? Rn,
+n
+(x, y) = yT x =	xiyi.
+i=1
+pu`o essere scritta nel seguente modo:
+ x  2 = vxT x =	(x, x).
+Indichiamo con F(a0, a1, . . . , am; x) la funzione (nella variabile x) che stiamo cercando e che dipende dagli m + 1 coefficienti a0, a1, . . . , am, e sia ei la
+
+
+differenza tra il valore assunto da tale funzione nei nodi xi ed valore rilevato
+yi:
+ei = F(a0, a1, . . . , am; xi) - yi,	i = 0, . . . , n.
+Si possono determinare i coefficienti a0, . . . , am in modo tale che il vettore
+e =	e0	e2	. . .	en
+abbia la minima norma euclidea al quadrato. Definita la funzione
+n	n
+Q(a0, a1, . . . , am) =  e  2 = S e2 = S (F(a0, a1, . . . , am; xi) - yi)2
+
+si deve risolvere il seguente problema di minimo
+Q(a*, a*, . . . , a* ) =	min	Q(a0, a1, . . . , am).	(4.14)
+
+0	1	m
+
+a0,...,am?Rm+1
+
+Tale metodo prende il nome, appunto, di approssimazione ai minimi quadrati, poich`e consiste nel minimizzare una somma di quadrati. Un caso partico- lare di tale metodo consiste nel cercare una funzione F(a0, . . . , am) di tipo lineare che risolve il problema di minimo appena definito. Tale metodo viene descritto nel successivo paragrafo.
+
+4.5.1 La Retta di Regressione
+In questo caso si pone
+               F(a, ß; x) = ax + ß,	a, ß ? R	(4.15)
+e si cercano, tra tutte le possibili rette, i coefficienti a e ß che globalmente minimizzano la differenza
+F(a, ß; xi) - yi = axi + ß - yi
+La retta (4.15) che risolve tale problema viene detta Retta di regressione. Nel- la seguente figura sono evidenziate le quantit`a che devono essere globalmente minimizzate (i punti (xi, yi) sono evidenziati con il simbolo ?).
+
+
+
+Un modo per minimizzare globalmente le distanze della retta dalle approssi- mazioni `e quello di trovare i valori a, ß che minimizzano la funzione:
+n
+?(a, ß) =	(axi + ß - yi)2 .
+i=0
+Per questo si parla di problema ai minimi quadrati (si minimizza una somma di quantit`a elevate al quadrato).
+Per determinare tali valori calcoliamo le derivate parziali rispetto alle inco- gnite:
+
+n
+?? = 2	x
+?a	i
+i=0
+n
+
+(axi
+
++ ß - yi)
+
+?? = 2	(ax
+?ß	i
+i=0
+
++ ß - yi)
+
+,,?,
+,,,
+
+??
+= 2
+?a
+i=0
+
+??
+= 2
+?ß
+i=0
+
+
+xi (axi + ß - yi) = 0
+
+
+(axi + ß - yi) = 0
+
+
+
+,?, Si=0
+,,, Si=0
+
+xi (axi + ß - yi) = 0
+
+
+(axi + ß - yi) = 0
+
+,,,?  a
+
+,
+
+Si=0 S
+
+x2 + ß
+
+Si=0
+
+
+xi -
+
+Si=0 S
+
+xiyi = 0
+
+Poniamo per sempli,cit`a
+
+
+i=0
+
+xi + (n + 1)ß -
+
+
+i=0
+
+yi = 0.
+
+n
+2
+i
+i=0
+
+n
+Sx =	xi
+i=0
+
+
+n	n
+Sxy = S xiyi	Sy = S yi.
+
+
+Il sistema diventa
+
+i=0	i=0
+
+S	a + S ß = S
+
+
+
+
+la cui soluzione `e
+
+, Sxa + (n + 1)ß = Sy
+
+a	= (n + 1)Sxy - SxSy
+(n + 1)Sxx - S2
+ß	=  SySxx - SxSxy .
+(n + 1)Sxx - S2
+
+La tecnica della retta di regressione pu`o essere applicata anche nel caso in cui la relazione tra le ascisse xi e le ordinate yi sia di tipo esponenziale, ovvero si pu`o ipotizzare che la funzione che meglio approssima i dati sperimentali sia
+F(x) = BeAx,	A, B ? R, B > 0.
+Ponendo
+Y = log F(x)
+
+
+
+risulta ovvero
+
+
+Y = log(BeAx) = Ax + log B
+
+Y = ax + ß,	a = A, ß = log B
+
+quindi si pu`o applicare la tecnica della retta di regressione ai dati (xi, log yi) (osserviamo che affinch`e il modello abbia senso i valori yi devono essere tutti strettamente positivi).
+
+4.5.2 Approssimazione polinomiale ai minimi quadrati
+Torniamo ora al problema di minimo (4.14). Poich`e la funzione f : Rn  R
+condizione necessaria affinch`e un punto sia di minimo `e
+?Q
+
+
+e, poich`e
+
+
+
+?ak
+
+(a0, . . . , am) = 0,	k = 0, . . . , m
+
+
+n
+
+
+
+segue
+
+Q(a0, a1, . . . , am) =	(F(a0, a1, . . . , am; xi) - yi)2
+i=0
+
+S (F(a , a , . . . , a ; x) - y )  ?F (a , . . . , a ; x) = 0
+Si ottiene un sistema di m + 1 equazioni (in generale non lineari) nelle m + 1 incognite a0, . . . , am, detto sistema delle equazioni normali.
+Vediamo ora come affrontare in generale tale problema. Consideriamo m + 1 funzioni base ?0(x), ?1(x), . . . , ?m(x) e supponiamo che la funzione F(x) abbia la seguente forma:
+F(a0, . . . , am; x) = a0?0(x) + a1?1(x) + · · · + am?m(x).
+In questo caso la funzione Q(a0, . . . , am) da minimizzare assume una forma particolare, infatti, osservato che
+F(a0, . . . , am; x)  = a0?0(x) + a1?1(x) + · · · + am?m(x)
+
+
+
+=	?0(x)  . . .	?m
+
+
+
+(x)
+
+? a0 ?
+am ?
+
+calcolando la funzione nei nodi xi :
+?? F(a0, . . . , am; x0) ??	?? ?0(x0)	?1(x0)	. . .	?m(x0) ? ? a0 ?
+
+F(a0, . . . , am; x1)
+?	?	?
+
+?0(x1)	?1(x1)	. . .	?m(x1)
+
+a1 
+= Aa.
+
+?	?	?	.	.
+
+
+
+
+
+.	?? ??
+
+.	??
+
+
+A	a
+Ricaviamo ora l'espressione della funzione Q(a0, . . . , am)
+
+n
+Q(a0, . . . , am)  =	(F(a0, . . . , am; xi) - yi)2
+i=0
+¨?? F(a0, . . . , am; x0) ?	? y0 ?¨2
+
+F(a0, . . . , am; x1)
+¨?
+
+? - ?	?¨
+
+¨? F(a0, . . . , am; xn) ??	yn ??¨2
+=  Aa - y  2
+= (Aa - y)T (Aa - y)
+= (aT AT - yT )(Aa - y)
+= aT AT Aa - 2aT AT y + yT y.
+Calcolando le derivate parziali rispetto ad ai ed imponendo che siano uguali a zero risulta
+?Q = 0	AT Aa	AT y = 0.
+?ai
+Il vettore dei coefficienti cercato `e la soluzione del sistema di equazioni normali
+AT Aa = AT y	(4.16)
+che ammette un'unica soluzione se e solo se le colonne di A sono linearmente indipendenti e che vale
+a = (AT A)-1AT y.
+
+
+Un caso particolare `e il caso dell'approssimazione polinomiale ai minimi quadrati, in cui le funzioni base sono
+?j(x) = xj,	j = 0, . . . , m.
+
+
+In tal caso
+
+
+2
+0
+1 x1	x2
+A =
+
+. . .	xn-1
+. . .	xn-1
+
+
+m
+0
+m
+1 ? ,
+
+?? .	.	.	.	.	??
+1  xn	x2	. . .	xn-1	m
+e il sistema ammette un'unica soluzione. Osserviamo infine che le dimensioni del sistema da risolvere dipendono solo dal numero di funzioni base scelte e non dal numero di dati a disposizione.
+Per risolvere il sistema delle equazioni normali si pu`o utilizzare un metodo alternativo alla fattorizzazione LU , ovvero la cosiddetta fattorizzazione di Cholesky
+A = LLT
+dove A indica la matrice dei coefficienti del sistema delle equazioni normali, L
+`e una matrice triangolare inferiore con elementi diagonali positivi. Le formule per il calcolo di lij sono le seguenti:
+
+
+1
+lij	=
+jj
+
+
+
+aij -
+
+
+i-1
+
+k=1
+
+likljk!
+
+
+i = 1, . . . , n, j < i
+
+
+
+lii	=
+
+,u,
+
+
+
+aii -
+
+
+i-1
+2
+ik
+k=1
+
+
+
+
+Capitolo 5
+Quadratura e Derivazione Numerica
+
+5.1 Formule di Quadratura di Tipo Interpo- latorio
+Siano assegnati due valori a, b, con a < b, ed una funzione f integrabile sull'intervallo (a, b). Il problema che ci poniamo `e quello di costruire degli algoritmi numerici che ci permettano di valutare, con errore misurabile, il numero
+
+I(f ) =
+
+b
+f (x)dx.
+a
+
+Diversi sono i motivi che possono portare alla richiesta di un algoritmo nu- merico per questi problemi.
+Per esempio pur essendo in grado di calcolare una primitiva della funzione f , questa risulta cos`i complicata da preferire un approccio di tipo numerico. Non `e da trascurare poi il fatto che il coinvolgimento di funzioni, elementa- ri e non, nella primitiva e la loro valutazione negli estremi a e b comporta comunque un'approssimazione dei risultati. Un'altra eventualita` `e che f sia nota solo in un numero finito di punti o comunque pu`o essere valutata in ogni valore dell'argomento solo attraverso una routine. In questi casi l'approccio analitico non `e neanche da prendere in considerazione.
+Supponiamo dunque di conoscere la funzione f (x) nei punti distinti x0, x1, . . . ,
+
+
+
+106
+
+
+xn prefissati o scelti da noi, ed esaminiamo la costruzione di formule del tipo
+n
+wkf (xk)	(5.1)
+k=0
+che approssimi realizzare I(f ).
+Formule di tipo (5.1) si dicono di quadratura, i numeri reali x0, x1, . . . , xn e w0, . . . , wn si chiamano rispettivamente nodi e pesi della formula di quadra- tura.
+Il modo piu` semplice ed immediato per costruire formule di tipo (5.1) `e quello di sostituire la funzione integranda f (x) con il polinomio di Lagrange Ln(x) interpolante f (x) nei nodi xi, i = 0, . . . , n. Posto infatti
+                  f (x) = Ln(x) + e(x) dove e(x) `e la funzione errore, abbiamo:
+
+b
+f (x)dx =
+a
+
+b
+[Ln(x) + e(x)]dx =
+a
+
+b
+Ln(x)dx +
+a
+
+b
+e(x)dx
+a
+
+? b Sn
+
+
+lnk(x)f (xk)dx +
+
+
+b
+e(x)dx
+
+
+
+
+
+Ponendo
+
+a
+
+=
+k=0
+
+k=0
+ ? b
+
+? b
+
+
+
+lnk(x)dx
+
+a
+
+
+f (xk) +
+
+
+
+b
+e(x)dx.
+a
+
+wk =
+e
+
+lnk(x)dx	k = 0, 1, . . . , n	(5.2)
+a
+? b
+
+
+otteniamo
+
+Rn+1(f ) =	e(x)dx	(5.3)
+a
+
+n
+
+I(f ) ?	wkf (xk)
+k=0
+con un errore stabilito dalla relazione (5.3). Le formule di quadratura con pesi definiti dalle formule (5.2) si dicono interpolatorie. La quantit`a Rn+1(f )
+
+
+prende il nome di Resto della formula di quadratura. Un utile concetto per misurare il grado di accuratezza con cui una formula di quadratura, interpolatoria o meno, approssima un integrale `e il seguente.
+Definizione 5.1.1 Una formula di quadratura ha grado di precisione q se fornisce il valore esatto dell'integrale quando la funzione integranda `e un qualunque polinomio di grado al piu` q ed inoltre esiste un polinomio di grado q + 1 tale che l'errore `e diverso da zero.
+E` evidente da questa definizione che ogni formula di tipo interpolatorio con
+nodi x0, x1, . . . , xn ha grado di precisione almeno n. Infatti applicando una formula di quadratura costruita su n + 1 nodi al polinomio pn(x), di grado n
+si ottiene:
+
+b
+pn(x)dx =
+a
+? b
+
+Si=0
+
+wipn(xi) + Rn+1(f )
+
+p(n+1)(x)
+
+Rn+1(f ) =	?n+1(x) (n + 1)! dx = 0
+ovvero la formula fornisce il risultato esatto dell'integrale, quindi q = n.
+
+5.2 Formule di Newton-Cotes
+Suddividiamo l'intervallo [a, b] in n sottointervalli di ampiezza h, con
+h = b - a
+n
+e definiamo i nodi
+xi = a + ih	i = 0, 1, . . . , n.
+La formula di quadratura interpolatoria costruita su tali nodi, cio`e
+
+
+b
+f (x)dx =
+a
+
+Si=0
+
+wif (xi) + Rn+1(f )
+
+`e detta Formula di Newton-Cotes.
+Una proprieta` di cui godono i pesi delle formule di Newton-Cotes `e la cosid- detta proprieta` di simmetria. Infatti poich`e i nodi sono a due a due simmetrici
+
+
+rispetto al punto medio c dell'intervallo [a, b], cio`e c = (xi + xn-i)/2, per ogni i, tale proprieta` si ripercuote sui pesi che infatti sono a due a due uguali, cio`e wi = wn-i, per ogni i. Infatti
+w	=	x - xi dx
+
+k
+a i=0,i/=k
+
+
+
+xk - xi
+
+
+=	x - 2c + xn-i	dx
+a i=0,i/=k 2c - xn-k - 2c + xn-i
+
+=	x - 2c + xn-i dx
+
+
+
+=
+
+Posto t = 2c - x risulta
+
+a i=0,i/=k b
+a i=0,i/=k
+
+xn-i - xn-k
+
+
+2c - x - xn-i dx.
+xn-k - xn-i
+
+x = a	?	t = 2c - a = b x = b	?	t = 2c - b = a
+quindi gli estremi di integrazione risultano invertiti, ma poich`e dt =	dx
+possiamo invertirli nuovamente, ottenendo
+w  =	t - xn-i	dt,
+
+k
+a i=0,i/=k
+
+xn-k
+
+- xn-i
+
+ponendo quindi nella produttoria j = n - i risulta
+w =	t - xj	dt = w	,
+
+k
+a j=0,j/=n-k
+
+xn-k
+
+- xj
+
+n-k
+
+e la proprieta` di simmetria dei pesi `e dimostrata. Descriviamo ora due esempi di formule di Newton-Cotes.
+
+5.2.1 Formula dei Trapezi
+Siano x0 = a, x1 = b e h = b - a.
+T2 = w0f (x0) + w1f (x1)
+
+? b	? b  x - x1 	? b x - b
+
+  1   "(x - b)2#x=b	h
+
+a - b	2
+
+2
+x=a
+
+Poich`e i nodi scelti sono simmetrici rispetto al punto medio c = (a + b)/2 `e
+          h w1 = w0 = 2 .
+Otteniamo dunque la formula
+h
+T2 = 2 [f (a) + f (b)] .
+che viene detta Formula dei Trapezi. Per quanto riguarda il resto abbiamo
+1 ? b
+
+Prima di vedere come tale espressione pu`o essere manipolata enunciamo il seguente teorema che `e noto come teorema della media generalizzato.
+Teorema 5.2.1 Siano f, g : [a, b] ? R, funzioni continue con g(x) a segno costante e g(x) /= 0 per ogni x ?]a, b[. Allora
+
+
+b
+f (x)g(x)dx = f (?)
+a
+
+b
+g(x)dx,	?	[a, b]. ?
+a
+
+
+Poich`e la funzione (x - a)(x - b) `e a segno costante segue:
+
+
+R2(f ) =
+
+posto x = a + ht otteniamo
+1
+
+
+1 f JJ(?)
+2
+
+? 1
+
+
+b
+(x - a)(x - b)dx
+
+
+
+
+1 
+
+
+L'errore della formula dipende dalla derivata seconda della funzione quindi il grado di precisione `e pari a 1 in quanto solo se f `e un polinomio di grado
+
+
+al piu` 1 essa fornisce il risultato esatto dell'integrale.
+L'interpretazione geometrica della formula del trapezio `e riassunta nella se- guente figura, l'area tratteggiata (ovvero l'integrale della funzione viene ap- prossimato attraverso l'area del trapezio che ha come basi i valori della funzione in a e b e come altezza l'intervallo [a, b]).
+
+a	b
+5.2.2 Formula di Simpson
+Siano x0 = a, x2 = b mentre poniamo x1 = c, punto medio dell'intervallo [a, b]. Allora
+
+
+Posto
+
+abbiamo
+
+S3 = w0f (a) + w1f (c) + w2f (b).
+
+h = b - a
+2
+
+w0 =
+
+b
+l2,0(x)dx =
+a
+
+b (x 	c)(x 	b)
+dx.
+a (a - c)(a - b)
+
+Effettuando il cambio di variabile x = c + ht `e facile calcolare quest'ultimo integrale, infatti
+x = a ? a = c + ht ? a - c = ht ? -h = ht ? t = -1
+e
+x = b ? b = c + ht ? b - c = ht ? h = ht ? t = 1.
+
+
+Inoltre a - c = -h e a - b = -2h mentre
+x-c = c+ht-c = ht,	x-b = c+ht-b = c-b+ht = -h+ht = h(t-1), ed il differenziale dx = hdt cosicch`e
+
+w0	=
+
+b (x 	c)(x 	b)
+dx =
+a (a - c)(a - b)
+
+1  hth(t 	1)
+hdt
+-1 (-h)(-2h)
+
+
+h	1
+=	(t2 - t)dt =
+
+h ? 1
+
+
+t2dt =
+
+
+h	t3 1	h
+=	.
+
+2	-1
+2 
+-1
+
+2	3 -1	3
+
+Per la proprieta` di simmetria `e anche
+h
+w2 = w0 = 3
+mentre possiamo calcolare w1 senza ricorrere alla definizione. Infatti pos- siamo notare che la formula deve fornire il valore esatto dell'integrale quan- do la funzione `e costante nell'intervallo [a, b], quindi possiamo imporre che, prendendo f (x) = 1 in [a, b], sia
+? b	h	2
+
+a
+da cui segue
+
+dx = b - a = 3 (f (a) + f (b)) + w1f (c) = 3 h + w1
+
+2	2	4
+
+Dunque
+
+w1 = b - a - 3 h = 2h - 3 h = 3 h.
+h
+S3 = 3 [f (a) + 4f (c) + f (b)] .
+
+Questa formula prende il nome di Formula di Simpson. Per quanto riguarda l'errore si pu`o dimostrare, e qui ne omettiamo la prova, che vale la seguente relazione
+
+R3(f ) = -h
+
+5 f (4)(s)
+90	s ? (a, b),
+
+che assicura che la formula ha grado di precisione 3.
+
+5.3 Formule di Quadratura Composte
+Come abbiamo gia` avuto modo di vedere le formule di quadratura interpo- latorie vengono costruite approssimando su tutto l'intervallo di integrazione la funzione integranda con un unico polinomio, quello interpolante la funzio- ne sui nodi scelti. Per formule convergenti la precisione desiderata si ottiene prendendo n sufficientemente grande. In tal modo comunque, per ogni fissato n, bisogna costruire la corrispondente formula di quadratura. Una strategia alternativa che ha il pregio di evitare la costruzione di una nuova formula di quadratura, e che spesso produce risultati piu` apprezzabili, `e quella delle formule composte. Infatti scelta una formula di quadratura l'intervallo di integrazione (a, b) viene suddiviso in N sottointervalli di ampiezza h,
+
+
+
+
+sicch`e
+
+h = b - a
+N
+
+b	N -1	xi+1
+f (x)dx =
+
+
+
+
+
+f (x)dx
+
+(5.4)
+
+a
+dove i punti xi sono:
+
+i=0	xi
+
+xi = a + ih	i = 0, . . . , N	(5.5)
+quindi la formula di quadratura viene applicata ad ognuno degli intervalli [xi, xi+1]. Il grado di precisione della formula di quadratura composta coin- cide con il grado di precisione della formula da cui deriva. Descriviamo ora la Formula dei Trapezi Composta.
+
+5.3.1 Formula dei Trapezi Composta
+Per quanto visto in precedenza suddividiamo l'intervallo [a, b] in N sottointer- valli, ognuno di ampiezza data da h, come in (5.4), e con i nodi xi definiti in (5.5). Applichiamo quindi in ciascuno degli N intervalli [xi, xi+1] la formula dei trapezi. Nella seguente figura sono evidenziate le aree che approssimano l'integrale utilizzando la formula dei trapezi semplice e quella composta.
+
+
+
+
+a	b
+Applicando la formula dei trapezi a ciascun sottointervallo si ottiene
+
+b
+f (x)dx =
+
+NS-1 ? xi+1
+
+
+f (x)dx =
+
+NS-1  h
+
+
+
+
+
+(f (xi) + f (xi+1)) -
+
+1
+h3f JJ(?i)
+
+a	i=0	xi
+
+2	12
+i=0
+
+con ?i ? (xi, xi+1). Scrivendo diversamente la stessa espressione
+
+b
+f (x)dx =
+a
+
+h
+2 (f (x0) + f (xN )) + h
+
+N -1
+
+i=1
+
+
+f (xi) -
+
+1 h3
+12
+
+N -1
+
+i=0
+
+
+f JJ(?i)
+
+h	S	 1  3	JJ
+=	(f (x ) + f (x  )) + h	f (x ) -	h Nf (?)
+
+dove ?  (a, b). L'esistenza di tale punto ? `e garantito dal cosiddetto Teorema della media nel discreto applicato a f JJ(x), che stabilisce che se g(x) `e una funzione continua in un intervallo [a, b] e ?i ? [a, b] i = 1, N, sono N punti distinti, allora esiste un punto ? ? (a, b) tale che
+N
+g(?i) = Ng(?).
+i=1
+Dunque la formula dei trapezi composta `e data da:
+
+h
+T (h) =	(f (x ) + f (x
+
+N -1
+)) + h	f (x )
+
+
+
+
+
+
+con resto
+R  = - 1 h3Nf JJ
+
+
+1 (b	a)3
+(?) = - 12	N 3	Nf
+
+
+1 (b	a)3
+(?) = - 12	N 2	f
+
+
+
+(?).
+
+Quest'ultima formula pu`o essere utile per ottenere a priori una suddivisione dell'intervallo [a, b] in un numero di intervalli che permetta un errore non superiore ad una prefissata tolleranza. Infatti
+
+
+|RT | =
+
+1 (b	a)3
+2	M,	M = max |f
+
+(x)|.
+
+
+Imponendo che |RT | = e, precisione prefissata, segue
+r(b - a)3M
+
+Tuttavia questo numero spesso risulta una stima eccessiva a causa della maggiorazione della derivata seconda tramite M .
+Esempio 5.3.1 Determinare il numero di intervalli cui suddividere l'inter- vallo di integrazione per approssimare
+? 2
+
+
+con la formula dei trapezi composta con un errore inferiore a e = 10-4.
+La derivata seconda della funzione integranda `e
+f JJ(x) =	 1
+x2
+quindi il valore di M `e 1. Dalla relazione (5.6) segue che
+
+
+
+1
+Ne
+12e
+
+= 29.
+
+5.3.2 Formula di Simpson Composta
+Per ottenere la formula di Simpson composta, si procede esattamente come per la formula dei trapezi composta. Suddividiamo [a, b] in N intervalli di ampiezza h, con N numero pari. Allora
+N -1
+
+
+b
+f (x)dx =
+a
+
+2
+
+
+i=0
+
+x2i+2
+
+
+x2i
+
+f (x)dx
+
+
+
+N -1
+=
+i=0
+
+h
+3 (f (x2i) + 4f (x2i+1) + f (x2i+2)) -
+
+
+h5
+f (4)(?i)
+90
+
+
+
+N -1
+h 2
+=
+3
+i=0
+
+
+[f (x2i) + 4f (x2i+1) + f (x2i+2)] -
+
+h5N
+
+
+180
+
+
+f (4)(?)
+
+dove ?i	(xi, xi+1) e ?	(a, b).
+La formula di Simpson composta `e dunque
+n -1
+
+SC(h)  = 3
+
+
+
+i=0
+?
+
+[f (x2i) + 4f (x2i+1) + f (x2i+2)]
+
+n -1
+
+
+
+
+
+n -1	?
+
+
+h
+= 3	f (x0) + f (xn) + 2
+mentre la formula dell'errore `e
+
+2
+
+
+i=1
+
+f (x2i) + 4
+
+2
+
+
+i=0
+
+f (x2i+1)?
+
+       (b	a)5 RS = - 180N 4 f
+
+(4)
+
+(?)
+
+Anche quest'ultima formula talvolta pu`o essere utile per ottenere a priori una suddivisione dell'intervallo [a, b] in un numero di intervalli che permetta un errore non superiore ad una prefissata tolleranza. Infatti
+
+|RS| =
+
+1 (b	a)5
+4	M,	M = max |f
+
+
+(iv)
+
+(x)|.
+
+
+
+Imponendo che |RS| = e segue
+Ne = r
+
+
+
+(b	a)5M
+.	(5.7)
+180e
+
+
+Esempio 5.3.2 Risolvere il problema descritto nell'esempio 5.3.1 applican- do la formula di Simpson composta.
+La derivata quarta della funzione integranda `e
+f iv(x) =	 6
+x4
+quindi `e maggiorata da M = 6. Dalla relazione (5.7) segue che
+
+
+
+quindi Ne = 6.
+
+N = r4
+
+
+
+  6 
+> 4,
+180e
+
+5.3.3 La formula del punto di mezzo
+Sia c il punto medio dell'intervallo [a, b]. Sviluppiamo f (x) in serie di Taylor prendendo c come punto iniziale:
+J	f JJ(?x)	2
+f (x) = f (c) + f (c)(x - c) +	2	(x - c) ,	?x ? [a, b].
+Integrando membro a membro
+
+b
+f (x)dx =
+
+b
+f (c)dx + f J(c)
+
+b
+(x - c)dx +
+
+? b f JJ(?x)
+
+
+
+
+
+(x - c)2dx
+
+a	a
+
+
+= (b - a)f (c) +
+
+a
+? b f JJ(?x)
+
+
+
+a	2
+(x - c)2dx.
+
+a	2
+Poich`e la funzione x	c `e dispari rispetto a c il suo integrale nell'intervallo [a, b] `e nullo. La formula
+b
+f (x)dx ? (b - a)f (c)
+prende appunto il nome di formula del punto di mezzo (o di midpoint). Per quanto riguarda l'errore abbiamo
+? b f JJ(?x)
+
+	
+
+
+f JJ(?)	b
+=
+
+
+(x - c)2dx.
+
+2 a
+
+
+In questo caso la funzione (x	c)2 `e a segno costante quindi `e stato possibile applicare il teorema 5.2.1. Calcoliamo ora l'integrale
+
+
+b
+(x	c)2dx = 2
+a
+
+(x	c)2 = 2
+c	3
+
+(x - c)3
+
+b	h3
+c = 12
+
+avendo posto h = b - a. L'espressione del resto di tale formula `e quindi
+
+R(f ) =
+
+h3  JJ
+24
+
+(?).
+
+Osserviamo che la formula ha grado di precisione 1, come quella dei trapezi,
+pero` richiede il calcolo della funzione solo nel punto medio dell'intervallo
+mentre la formula dei trapezi necessita di due valutazioni funzionali.
+
+5.3.4 Formula del punto di mezzo composta
+Anche in questo caso suddividiamo l'intervallo [a, b] in N intervallini di ampiezza h, con N pari. Allora
+N -1
+
+b
+f (x)dx =
+a
+
+2
+
+
+i=0
+
+x2i+2
+
+
+x2i
+
+f (x)dx
+
+
+
+N -1
+=
+i=0
+
+
+2hf (x2i+1) +
+
+(2h)3 24
+
+
+f JJ(?i)
+
+
+
+
+= 2h
+
+N -1
+
+
+i=0
+
+
+f (x2i+1) +
+
+Nh3
+
+
+6
+
+
+f JJ(?)
+
+
+
+
+= 2h
+
+N -1
+
+
+i=0
+
+
+f (x2i+1) +
+
+(b - a)3
+
+
+6N 2
+
+
+f JJ(?)
+
+dove ?i	(x2i, x2i+2) e ?	(a, b). La formula del punto di mezzo composta `e dunque
+N -1
+MC(h) = 2h	f (x2i+1)
+i=0
+
+
+
+
+a	b
+
+Figura 5.1: Formula del Punto di Mezzo Composta
+
+
+mentre il resto `e
+
+
+RM =
+
+(b	a)3
+6N 2	f
+
+
+JJ(?).	(5.8)
+
+Se e `e la tolleranza fissata risulta
+1 (b - a)3	JJ
+
+|RM | = 6	N
+
+M,	M = max f
+x?[a,b]
+
+(x)|.
+
+Imponendo che |RT | = e, precisione prefissata, segue
+r(b - a)3M
+
+Nella Figura 5.1 sono evidenziate le aree che approssimano l'integrale utiliz- zando la formula del punto di mezzo composta.
+Esempio 5.3.3 Risolvere il problema descritto nell'esempio 5.3.1 applican- do la formula di Simpson composta.
+La derivata seconda della funzione integranda `e maggiorata da M = 1. Da (5.9) risulta
+1
+Ne	6e > 40.
+
+5.4 Derivazione numerica
+Il problema della derivazione numerica consiste nell'approssimazione delle derivate di una funzione in un punto del dominio utilizzando opportune com- binazioni lineari tra i valori assunti dalla funzione in un insieme discreto di punti. In questo paragrafo considereremo esclusivamente le formule per l'ap- prossimazione della derivate prima e seconda di una funzione in una variabile, precisando che tali formule possono essere utilizzate anche per l'approssima- zione discreta delle derivate parziali di una funzione in due variabili.
+Supponiamo per ipotesi che f  k([a, b]) e suddividiamo l'intervallo di varia- bilita` di t in sottointervalli di ampiezza h. Consideriamo tre punti consecutivi appartenenti a tale reticolazione, rispettivamente tn-1, tn e tn+1 tali che
+tn-1 = tn - h,	tn+1 = tn + h.
+Scriviamo lo sviluppo in serie di Taylor di f (tn+1) prendendo come punto iniziale tn:
+
+
+f (tn+1) = f (tn) + hf J(tn) +
+
+h2  JJ
+2
+
+
+(tn) +
+
+h3  JJJ
+6
+
+h4
+(tn) + 24 f
+
+
+(?n), ?n ? [tn, tn+1]
+
+e procediamo in modo analogo per f (tn-1):
+
+
+f (tn-1) = f (tn) - hf J(tn) +
+
+h2  JJ
+2
+
+
+(tn) -
+
+h3  JJJ
+6
+
+
+h4
+(tn) + 24 f
+
+
+(?n), ?n ? [tn-1, tn].
+
+Sommiamo ora le due espressioni
+2 JJ	h4  iv	iv
+f (tn+1) + f (tn-1) = 2f (tn) + h f (tn) + 24 f  (?n) + f  (?n)
+ricavando
+2  iv	iv
+JJ	f(tn+1) - 2f(tn) + f(tn-1)	h
+
+e, trascurando l'ultimo termine, l'approssimazione della derivata seconda `e:
+
+
+f JJ(tn
+
+)	f(tn+1) - 2f(tn) + f(tn-1)
+h2
+
+
+(5.10)
+
+mentre si pu`o provare che l'errore vale:
+
+
+E(f
+
+JJ	h2
+(tn)) = - 12 f
+
+
+(?),	? ? [tn-1, tn+1].
+
+
+Poniamoci il problema di approssimare derivata prima e procediamo nello stesso modo cio`e scrivendo le serie di Taylor per f (tn+1) e f (tn-1) :
+
+f (tn+1) = f (tn) + hf J(tn) +
+
+f (tn-1) = f (tn) - hf J(tn) +
+
+h2  JJ
+2
+h2  JJ
+
+2
+
+(tn) +
+
+(tn) -
+
+h3  JJJ
+6
+h3  JJJ
+
+6
+
+(sn), sn ? [tn, tn+1]
+
+(µn), µn ? [tn-1, tn]
+
+e questa volta sottraiamo la seconda dalla prima:
+
+
+
+ottenendo
+
+f (tn+1) - f (tn-1) = 2hf J(tn) +
+
+h3	JJJ
+
+6
+
+(sn) + f
+
+
+JJJ
+
+(µn)]
+
+J	f(tn+1) - f(tn-1)
+
+h2	JJJ
+
+
+JJJ
+
+f (tn) =
+
+2h	- 12 [f
+
+(sn) + f
+
+(µn)]
+
+e, trascurando l'ultimo termine, l'approssimazione della derivata prima `e:
+
+f J(tn
+
+)	f(tn+1) - f(tn-1)
+2h
+
+(5.11)
+
+mentre si pu`o provare che l'errore vale:
+J	h2 JJJ
+E(f (tn)) = - 6 f  (d),	d ? [tn-1, tn+1].
+
+tn-1	tn	tn+1
+
+
+La formula (5.11) prende il nome di formula alle differenze centrali. Osser- viamo che sia per questa che per l'approssimazione numerica per la derivata seconda l'errore dipende da h2, sono formule cio`e del secondo ordine. Ve- diamo ora altre due approssimazioni per la derivata prima. Infatti possiamo anche scrivere:
+
+f (tn+1) = f (tn) + hf J(tn) +
+
+h2  JJ
+2
+
+(?n),	?n ? [tn, tn+1]
+
+da cui si ricava immediatamente la formula alle differenze in avanti:
+
+
+
+con errore
+
+f J(tn
+
+)	f(tn+1) - f(tn)
+h
+
+(5.12)
+
+E(f J(tn
+
+)) =	hf JJ(? ).
+1 n
+
+
+
+tn-1	tn	tn+1
+
+Analogamente si ricava
+J	h2 JJ
+f (tn-1) = f (tn) - hf (tn) + 2 f (µn),	µn ? [tn-1, tn]
+da cui si ricava immediatamente la formula alle differenze all'indietro:
+
+f J(tn
+
+)	f(tn) - f(tn-1)
+h
+
+(5.13)
+
+
+
+con errore
+
+
+E(f J(tn
+
+)) =	hf JJ(µ ).
+2	n
+
+Queste due formule hanno ordine 1, quindi sono meno precise rispetto alla formula alle differenze centrali, tuttavia hanno il pregio di poter essere ap- plicate quando la funzione `e discontinua (oppure non `e definita) a destra o a sinistra di tn.
+
+tn-1	tn	tn+1
+
+
+
+
+Capitolo 6
+Esercitazioni di laboratorio MatLab
+Esercitazione 1
+Argomento: Introduzione al MATLAB
+Scopo: Eseguire alcune semplici istruzioni MatLab e imparare l'uso della grafica.
+Scopo di questa prima esercitazione `e quello di iniziare a conoscere l'ambiente MatLab ed in particolare le istruzioni per la manipolazione di matrici e vet- tori, le funzioni predefinite, le istruzioni per la grafica e quelle di iterazione e selezione.
+Una volta lanciato il programma iniziare la sessione di lavoro assegnando alcuni vettori o matrici:
+>> x = [1 4 5 3 -4 5]
+>> y = [-1; 0; -5; 13; 4; -5]
+>> length(x)
+>> length(y)
+>> z=x+y
+>> z=x'+y
+>> a=x*y
+>> a=y*x
+>> x=[x 10]
+>> n=length(x)
+>> x=x(n:-1:1)
+
+124
+
+
+Dal risultato delle operazioni precedenti si `e potuto osservare che la somma dei due vettori non `e consentita a meno che questi non abbiano esattamente le stesse dimensioni (cio`e siano due vettori riga o colonna della stessa lun- ghezza). Anche per il prodotto le dimensioni devono essere compatibili. Un vettore riga (di dimensione 1 n) pu`o essere moltiplicato per un vettore colonna (di dimensione n 1) e d`a come risultato un valore scalare. Un vettore colonna (di dimensione n 1) pu`o essere moltiplicato per un vettore riga (di dimensione 1 n) e produce come risultato una matrice quadrata di dimensione n. In ultimo osserviamo che l'ultima istruzione di questo blocco inverte gli elementi del vettore.
+>> a=max(x)
+>> [a i]=max(x)
+>> a1=min(x)
+>> [a k]=min(x)
+>> sort(x)
+In questo caso possiamo osservare come le funzioni predefinite max e min possano dare due tipi di output diversi, cio`e possono fornire solo il valore del massimo (o del minimo) del vettore ma anche l'indice della componente massima (o minima).
+Vediamo ora alcune istruzioni che riguardano le matrici.
+>> A = [1 4 5 3; 0 1 -4 5; 3 4 5 6; -1 0 1 9 ...
+; 0 7 6 -9]
+>> A(1:3,4)
+>> A(2,2:4)
+>> A(:,4)
+>> A(5,:)
+>> A(1:3,2:4)
+>> A([1 5],:)=A([5 1],:)
+>> [m,n]=size(A)
+>> x=max(A)
+>> x=max(max(A))
+>> B=cos(A)
+La prima istruzione di questo blocco consiste nell'assegnazione di una matrice 5 × 4 alla variabile A.  Si osservi la funzione dei tre punti che servono a
+
+
+spezzare su piu` righe istruzioni troppo lunghe. Nelle altre possiamo osservare come la cosiddetta notazione due punti permetta di visualizzare in modo compatto porzioni di righe o di colonne, o intere sottomatrici. La sesta istruzione permette di poter scambiare simultaneamente due righe di una stessa matrice (istruzione analoga vale anche per le colonne) senza l'ausilio di vettori ausiliari. Va infine osservato cosa succede se si applica una funzione di tipo vettoriale (in questo caso max) ad una matrice: il risultato `e un vettore, che (in questo caso) contiene i massimi delle colonne di A. Applicandolo due volte si ottiene come risultato il massimo elemento della matrice.
+Vediamo ora di scrivere la seguente funzione che calcoli le radici del polinomio di secondo grado
+ax2 + bx + c
+che indichiamo con x1 e x2. Come noto, posto
+? = b2 - 4ac
+
+
+allora
+
+    	  
++	?	?
+x1 =	,	x2 =	.
+2a	2a
+
+function [x1,x2]=radici(a,b,c)
+%
+% Sintassi [x1,x2]=radici(a,b,c)
+%
+% Calcola le radici di un polinomio di secondo grado
+%
+Delta = b?2-4*a*c;
+x1 = (-b+sqrt(Delta))/(2*a);
+x2 = (-b-sqrt(Delta))/(2*a); return
+
+Applichiamo ora la funzione al polinomio che ammette come radici i due numeri x1 = 107 e x2 = 10-7. In questo caso i valori dei coefficienti a, b e c sono:
+a = 1,	b = -(107 + 10-7),	c = 1.
+Scriviamo pertanto le seguenti istruzioni:
+
+
+>> a = 1;
+>> b = -(10?7+10?(-7));
+>> c = 1;
+>> [x1,x2] = radici(a,b,c);
+
+Adesso provvediamo a modificare la funzione nel seguente modo:
+function [x1,x2]=radici1(a,b,c)
+%
+% Sintassi [x1,x2]=radici1(a,b,c)
+%
+% Calcola le radici di un polinomio di secondo grado
+%
+Delta = b?2-4*a*c;
+x1 = (-b-sign(b)*sqrt(Delta))/(2*a); x2 = c/x1;
+return
+
+Scriviamo pertanto le seguenti istruzioni:
+>> a = 1;
+>> b = -(10?7+10?(-7));
+>> c = 1;
+>> [r1,r2] = radici1(a,b,c);
+
+Osserviamo la differenza tra i valori calcolati.
+Proviamo ora a tracciare il grafico di una funzione. In MatLab ci`o pu`o essere
+
+fatto in molti modi diversi, vediamone solo i piu` scegliamo una funzione, per esempio:
+
+semplici.	Innanzitutto
+
+f (x) = sin2(x) cos(x) + (sin(ex))2 + 1
+e decidiamo di tracciarne il grafico nell'intervallo [0, 2p]. Come `e noto un grafico in MatLab non `e nient'altro se non una spezzata che congiunge un insieme discreto di punti del piano. Per prima cosa dobbiamo scegliere nel- l'intervallo un certo numero di punti equidistanti, per esempio 100 punti, utilizzando la seguente istruzione:
+
+
+>> x=linspace(0,2*pi,100);
+Adesso dobbiamo calcolare il valore della funzione f (x) nel vettore delle
+ascisse appena assegnato. Il modo piu` semplice `e quello di utilizzare una
+variabile di tipo stringa per memorizzare la funzione attraverso la funzione
+inline:
+>>   funz=inline('(sin(x).?2).*cos(x)+(sin(exp(x))).?2+1')
+Osserviamo che quando alla variabile funz viene assegnata una funzione le operazioni che compaiono nella stringa devono essere considerate come se fossero applicate a vettori.
+A questo punto per calcolare il valore della funzione nel vettore x si pu`o utilizzare la funzione feval:
+>> y=feval(funz,x);
+A questo punto si pu`o procedere a tracciare il grafico della funzione:
+>> plot(x,y,'b-');
+Il grafico `e stato tracciato in blu a tratto continuo, ma possiamo anche variare il colore e il tipo di tratto, proviamo le seguenti istruzioni:
+>> plot(x,y,'y--');
+>> plot(x,y,'r:');
+>> plot(x,y,'go');
+Un secondo modo per tracciare il grafico `e quello di utilizzare la funzione predefinita fplot. In questo caso il modo di procedere `e lo stesso tranne per la definizione del vettore delle ascisse che non va assegnato:
+>> fplot(funz,[0 2*pi]);
+Infatti i parametri di tale funzione sono solo la stringa contenente la funzione e l'intervallo di variabilita` delle ascisse.
+Tracciando i diversi grafici si `e potuto osservare che ogni volta che viene aperta una nuova figura la precedente viene cancellata. Per poter tracciare piu` grafici su una stessa figura va utilizzata l'opzione hold on nel seguente modo:
+
+
+>> fplot(funz,[0 2*pi]);
+>> hold on
+>> g=inline('2+sin(x).*cos(x)');
+>> y1=feval(g,x);
+>> plot(x,y1);
+Una volta che tale opzione `e eseguita essa rimane attiva per tutta la sessione di lavoro. Questo vuol dire che tutti i grafici che saranno tracciati successi- vamente si andranno a sovrapporre sulla stessa figura. Per disattivare tale opzione `e sufficiente l'istruzione
+>> hold off
+
+Esercitazione 2
+Argomento: Sistemi triangolari
+Scopo: Implementare i metodi di sostituzione in avanti e all'indietro per sistemi triangolari inferiori e superiori.
+function x=indietro(A,b)
+%
+% Sintassi x=indietro(A,b)
+%
+% Risolve un sistema triangolare superiore utilizzando
+% il metodo di sostituzione all'indietro
+%
+% Parametri di input:
+% A = Matrice triangolare superiore
+% b = Vettore colonna
+%
+% Parametri di output:
+% x = Vettore soluzione
+%
+n=length(b); x=zeros(n,1);
+if abs(A(n,n))<eps
+error('La matrice A e'' singolare ');
+end x(n)=b(n)/A(n,n); for k=n-1:-1:1
+x(k)=b(k); for i=k+1:n
+x(k)=x(k)-A(k,i)*x(i);
+end
+if abs(A(k,k))<eps
+error('La matrice A e'' singolare ');
+
+
+
+end
+
+else end
+
+x(k)=x(k)/A(k,k);
+
+return
+
+
+Esempio di applicazione: Vedere la routine gauss.m in una delle prossime esercitazioni.
+Possibili modifiche:
+La routine appena descritta risolve un sistema triangolare superiore. Osser- viamo innanzitutto che se viene incontrato un elemento diagonale piu` piccolo, in modulo, della precisione di macchina allora l'algoritmo segnala un errore. Si pu`o inoltre osservare che la routine potrebbe essere scritta in modo piu` compatto utilizzando la notazione : del MatLab. Infatti il ciclo descritto dalla variabile i si potrebbe sostituire con un'unica istruzione:
+x(k)=b(k)-A(k,k+1:n)*x(k+1:n);
+Per completezza vediamo anche l'implementazione del metodo di sostituzione in avanti per matrici triangolari inferiori.
+
+function x=avanti(A,b)
+%
+% Sintassi x=avanti(A,b)
+%
+% Risolve un sistema triangolare inferiore utilizzando
+% il metodo di sostituzione in avanti
+%
+% Parametri di input:
+% A = Matrice triangolare inferiore
+% b = Vettore colonna
+%
+% Parametri di output:
+% x = Vettore soluzione
+%
+n=length(b); x=zeros(n,1);
+if abs(A(1,1))<eps
+error('La matrice A e'' singolare ');
+end x(1)=b(1)/A(1,1);
+for k=2:n
+x(k)=b(k)-A(k,1:k-1)*x(1:k-1);
+
+
+if abs(A(k,k))<eps
+error('La matrice A e'' singolare ');
+
+
+
+end
+
+else x(k)=x(k)/A(k,k); end
+
+return
+
+Esercitazione 3
+Argomento: Il metodo di eliminazione di Gauss
+Scopo: Risoluzione di un sistema lineare Ax = b utilizzando il metodo di eliminazione di Gauss senza strategie di pivoting.
+function x=gauss(A,b);
+%
+% Sintassi x=gauss(A,b)
+%
+% Risolve un sistema lineare utilizzando il
+% metodo di eliminazione di Gauss
+%
+% Parametri di input:
+% A = Matrice dei coefficienti
+% b = Vettore dei termini noti
+%
+% Parametri di output:
+% x = Vettore soluzione
+%
+[m, n]=size(A); if m =n
+error('Metodo  non  applicabile');
+end
+if length(b) =n
+error('Metodo  non  applicabile');
+end
+for k=1:n
+if abs(A(k,k))<eps
+error('Elemento pivotale nullo ');
+end
+for i=k+1:n
+A(i,k)=A(i,k)/A(k,k); for j=k+1:n
+A(i,j)=A(i,j)-A(k,j)*A(i,k);
+
+
+end
+
+end
+b(i)=b(i)-b(k)*A(i,k);
+
+
+end x=indietro(A,b); return
+
+Esempi di applicazione: Per verificare il funzionamento dell'algoritmo si pu`o applicare ad un sistema lineare avente una matrice dei coefficienti a predominanza diagonale per colonne.
+>> A=[6 4 1 0;-1 8 1 1;3 0 6 -3;1 -2 1 7]
+>> b=[1;2;3;4]
+>> x=gauss(A,b)
+Per verificare invece che il metodo di Gauss non funziona se la matrice dei coefficienti ammette un minore principale uguale a zero si pu`o applicarlo in questa circostanza e verificare che la routine appena scritta segnala tale circostanza.
+>> A=[1 1 2 1 0;2 1 3 1 -4;-1 -1 -2 3 0;4 2 -1 1 0;5 2 -2 1 7]
+>> b=[1;2;3;4;5]
+>> x=gauss(A,b)
+Ci sono casi in cui il metodo di eliminazione di Gauss pu`o fornire una soluzio- ne del sistema molto diversa da quella teorica. Vediamo il seguente esempio: scegliamo come matrice dei coefficienti una cosiddetta matrice di Hilbert, definita nel seguente modo:
+1
+hij = i + j - 1	i, j = 1, . . . , n.
+Per esempio se n = 4 la matrice sarebbe
+
+H = ????
+
+???? .
+
+
+Proviamo ora ad applicare il metodo di Gauss ad un sistema di dimensione 15 avente come matrice dei coefficienti quella di Hilbert e come soluzione il vettore avente tutte le componenti uguali a 1 e confrontiamo la soluzione che ci fornisce il metodo di Gauss con quella teorica.
+
+
+>> clear
+>> format long e
+>> n=15;
+>> A=hilb(n);
+>> x=ones(n,1);
+>> b=A*x;
+>> y=gauss(A,b)
+>>  norm(x-y,'inf')
+
+Le prime due istruzioni servono rispettivamente a cancellare tutte le variabili presenti nell'area di lavoro del MatLab e a scrivere i valori delle variabili in formato esponenziale lungo, cio`e con 15 cifre decimali. La funzione hilb(n) assegna ad una variabile la matrice di Hilbert della dimensione indicata. Il vettore b viene assegnato in modo tale che la soluzione del sistema, cio`e il vettore colonna x, sia nota. Nella variabile y viene memorizzata la soluzione del sistema calcolata utilizzando il metodo di Gauss. L'ultima istruzione serve a dare una misura della differenza tra la soluzione teorica del sistema e quella calcolata utilizzando la funzione norm che, in questo caso, misura la norma infinito della differenza tra i due vettori, cio`e il massimo valore assoluto del vettore differenza x-y.
+Argomento: Il metodo di eliminazione di Gauss con pivot parziale
+Scopo: Risoluzione di un sistema lineare utilizzando il metodo di eliminazione di Gauss con strategia di pivoting parziale.
+function x=gausspiv(A,b);
+%
+% Sintassi x=gausspiv(A,b)
+%
+% Risolve un sistema lineare utilizzando il metodo
+% di eliminazione di Gauss con pivoting parziale
+%
+% Parametri di input:
+% A = Matrice dei coefficienti
+% b = Vettore dei termini noti
+%
+% Parametri di output:
+% x = Vettore soluzione
+
+
+%
+[m, n]=size(A); if m =n
+error('Metodo  non  applicabile');
+end
+if length(b) =n
+error('Metodo  non  applicabile');
+end
+for k=1:n
+[pivot indice]=max(abs(A(k:n,k))); riga=indice+k-1;
+if riga =k
+A([riga k],:)=A([k riga],:); b([riga k])=b([k riga]);
+end
+if abs(A(k,k))<eps
+error('Elemento pivotale nullo ');
+end
+for i=k+1:n
+A(i,k)=A(i,k)/A(k,k); for j=k+1:n
+A(i,j)=A(i,j)-A(k,j)*A(i,k);
+
+
+
+end
+
+
+end
+
+end
+b(i)=b(i)-b(k)*A(i,k);
+
+x=indietro(A,b);
+
+
+Esempi di applicazione: Si pu`o applicare la funzione ad un sistema lineare la cui matrice dei coefficienti ha un minore principale uguale a zero e verificare che in questo caso essa fornisce la soluzione del sistema.
+
+>> A=[1 1 2 1 0;2 1 3 1 -4;-1 -1 -2 3 0;4 2 -1 1 0;5 2 -2 1 7]
+>> b=[1;2;3;4;5]
+>> x=gausspiv(A,b)
+
+Esercitazione 4
+Argomento: Il polinomio interpolante di Lagrange
+Scopo: Tracciare il grafico del polinomio di Lagrange che interpola un insieme discreto di dati.
+
+function z=lagrange(x,y,x1)
+%
+% Sintassi z=lagrange(x,y,x1)
+%
+% Calcola il polinomio interpolante di Lagrange
+% nei punti memorizzati nel vettore x1
+%
+% Parametri di input:
+% x = vettore dei nodi
+% y = vettore delle ordinate
+% x1= vettore delle ascisse
+%
+% Parametri di output:
+% z = vettore delle ordinate del polinomio interpolante
+%
+n=length(x); m=length(x1); z=zeros(1,m); for i=1:m
+for j=1:n
+p=1;
+for k=1:n
+if j  =k
+p=p*(x1(i)-x(k))/(x(j)-x(k));
+end
+end
+
+
+end
+
+end
+
+z(i)=z(i)+y(j)*p;
+
+return
+
+
+Esempio di applicazione: Per eseguire l'algoritmo appena scritto `e neces- sario assegnare i vettori x e y, cio`e i nodi e le ordinate dei dati da interpolare. Vediamo un esempio.
+>> x=[-4; -3; 0; 1; 4; 5];
+>> y=[-1; 3; 4; 5; -3; 7];
+>> a=min(x);
+>> b=max(x);
+>> x1=linspace(a,b,200);
+>> y1=lagrange(x,y,x1);
+>> plot(x1,y1,'r',x,y,'o')
+Esempio di applicazione: Osserviamo che la funzione lagrange `e utiliz- zata anche nella successiva esercitazione.
+
+Esercitazione 5
+Argomento: Il fenomeno di Runge
+Scopo: Visulizzazione grafica del fenomeno di Runge scegliendo come funzio- ne da interpolare:
+1
+f (x) = 1 + x2 .
+
+function runge(a,b,n)
+%
+% Sintassi runge(a,b,n)
+%
+% Visualizza il fenomeno di Runge
+%
+% Parametri di input:
+% a = estremo sinistro dell'intervallo
+% b = estremo destro dell'intervallo
+% n = numero di nodi
+%
+% Grafico:
+% Curva rossa = funzione interpolata
+% Curva blu = polinomio interpolante
+% Cerchi neri = nodi dell'interpolazione
+%
+f=inline('1./(x.?2+1)'); x=linspace(a,b,n); y=feval(f,x); x1=linspace(a,b,100); y2=feval(f,x1); y1=lagrange(x,y,x1);
+plot(x,y,'ko',x1,y2,'r',x1,y1,'b') return
+Esempio di applicazione: Per eseguire l'algoritmo appena scritto `e neces-
+
+sario assegnare solo gli estremi dell'intervallo e il numero dei nodi.
+
+E` conve-
+
+niente assegnare prima gli estremi ed eseguire la funzione con un numero cre- scente di nodi per osservare meglio le oscillazioni del polinomio interpolante verso gli estremi dell'intervallo.
+
+
+>> a=-5;
+>> b=5;
+>> runge(a,b,5)
+>> runge(a,b,10)
+>> runge(a,b,20)
+>> runge(a,b,30)
+>> runge(a,b,40)
+Si pu`o modificare il codice scegliendo i nodi coincidenti con gli zeri del poli- nomio di Chebyshev di grado n, Tn(x) ed interpolando la stessa funzione di Runge:
+function rungeCheb(a,b,n)
+%
+% Sintassi rungeCheb(a,b,n)
+%
+% Traccia il grafico del polinomio interpolante la funzione di Runge
+% utilizzando i nodi di Chebyshev
+%
+% Parametri di input:
+% a = estremo sinistro dell'intervallo
+% b = estremo destro dell'intervallo
+% n = numero di nodi
+%
+% Grafico:
+% Curva rossa = funzione interpolata
+% Curva blu = polinomio interpolante
+% Cerchi neri = nodi dell'interpolazione
+%
+f=inline('1./(x.?2+1)');
+x=(a+b)/2+((b-a)/2)*cos((2*[0:n-1]*pi+1)/(2*n)); y=feval(f,x);
+x1=linspace(a,b,100); y2=feval(f,x1); y1=lagrange(x,y,x1); plot(x,y,'ko',x1,y2,'r',x1,y1,'b') return
+
+Esercitazione 6
+Argomento: Il metodo delle successive bisezioni
+Riferimenti teorici: Capitolo 6, Paragrafo 6.2
+Scopo: Implementare il metodo delle successive bisezioni per la soluzione di equazioni non lineari.
+
+function [alfa,iter]=bisez(f,a,b,epsilon)
+%
+% Sintassi [alfa,iter]=bisez(f,a,b,epsilon)
+%
+% Calcola la radice della funzione f
+% con il metodo delle bisezioni
+%
+% Parametri di input:
+% f = stringa contenente il nome della funzione
+% a = estremo sinistro dell'intervallo
+% b = estremo destro dell'intervallo
+% epsilon = tolleranza prefissata
+%
+% Parametri di output:
+% alfa = approssimazione della radice
+% iter = numero di iterate occorse
+%
+if feval(f,a)*feval(f,b)>0
+disp('Il metodo non converge') return
+end c=(a+b)/2; iter=1;
+fc=feval(f,c);
+while abs(fc)>epsilon | (b-a)>epsilon if fc*feval(f,a)<0
+b=c;
+
+else end
+
+a=c;
+
+
+iter=iter+1; c=(a+b)/2; fc=feval(f,c);
+end
+alfa=c;
+
+
+Esempio di applicazione: La funzione richiede in ingresso la variabi- le stringa dove `e memorizzata la funzione, gli estremi dell'intervallo e la precisione voluta. Come esempio si pu`o considerare la funzione
+f (x) = x - e-x
+e prendere come intervallo iniziale [0, 1] e fissare come precisione e = 10-8.
+
+>> format long e
+>> f=inline('x-exp(-x)')
+>> a=0;
+>> b=1;
+>> epsilon=1e-8;
+>> [alfa, iter]=bisez(f,a,b,epsilon)
+Possibili modifiche:
+La funzione appena descritta prevede come parametri di output un'approssi- mazione della radice e il numero di iterate, tuttavia quest'ultimo pu`o essere calcolato a priori tenendo conto che, una volta nota la precisione richiesta il numero di iterate necessario per calcolare l'approssimazione `e
+k > log2  b - a  .
+
+Si potrebbe calcolare tale valore di k e trasformare il ciclo while in un ciclo
+for e vedere se i risultati del metodo sono gli stessi nei due casi.
+
+
+Argomento: Il metodo di Newton-Raphson
+Riferimenti teorici: Capitolo 6, Paragrafo 6.6
+Scopo: Implementare il metodo di Newton-Raphson per la soluzione di equa- zioni non lineari.
+
+function [x1,iter]=newtraph(f,f1,x0,epsilon)
+%
+% Sintassi [x1,iter]=newtraph(f,f1,x0,epsilon)
+%
+% Calcola la radice della funzione f con il
+% il metodo di Newton-Raphson
+%
+% Parametri di input:
+% f = funzione della quale si vuole approssimare la radice
+% f1 = derivata prima di f
+% x0 = approssimazione iniziale
+% epsilon = tolleranza prefissata
+%
+% Parametri di output:
+% x1 = approssimazione della radice
+% iter = numero di iterate
+%
+iter=0; err=2*epsilon; ff=feval(f,x0); maxiter=100;
+while err>epsilon | abs(ff)>epsilon x1=x0-ff/feval(f1,x0); err=abs(x1-x0);
+iter=iter+1;
+if iter>maxiter
+error('Il metodo non converge ')
+else x0=x1;
+ff=feval(f,x0); end
+end
+
+
+Esempio di applicazione: La funzione richiede in ingresso le variabili di tipo stringa dove sono memorizzate la funzione e la sua derivata prima, l'approssimazione iniziale x0, la precisione voluta e il numero massimo di iterate. Per esempio si pu`o considerare la funzione
+f (x) = x3 - 3x + 2	f J(x) = 3x2 - 3
+prendendo come approssimazione iniziale prima x0 = 2.5 e poi x0 = 1.4, e fissando come precisione e = 10-8.
+>> format long e
+>> f=inline('x.?3-3*x+2')
+>>  f1=inline('3*x.?2-3')
+>> x0=-2.5;
+>> epsilon=1e-8;
+>> maxiter=100;
+>> [alfa0,iter0]=newtraph(f,f1,x0,epsilon)
+>> x0=1.4;
+>> [alfa1,iter1]=newtraph(f,f1,x0,epsilon)
+
+Dai risultati emerge il diverso comportamento del metodo per le due diverse radici: infatti la radice 2 `e semplice e il metodo di Newton-Raphson con- verge con ordine 2 (quindi piu` rapidamente), mentre per la radice doppia 1 la convergenza `e piu` lenta poich`e l'ordine `e 1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
